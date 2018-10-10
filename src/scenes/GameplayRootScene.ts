@@ -180,7 +180,7 @@ export class GameplayRootScene extends Phaser.Scene {
       }
     });
 
-    // this.createEnemy(1, 11);
+    this.createEnemy(10, 11);
     // this.createEnemy(13, 18);
     // this.createEnemy(8, 19);
     // this.createEnemy(15, 10);

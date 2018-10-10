@@ -28,8 +28,8 @@ export class HeroUnit extends BaseUnit implements IUnit, IScoutable {
   public scoutee: ScouteeModule;
   public core: UnitModuleCore;
   
-  private idleAnim:Phaser.Animations.Animation;
-  private walkAnim:Phaser.Animations.Animation;
+  private idleAnim: Phaser.Animations.Animation;
+  private walkAnim: Phaser.Animations.Animation;
 
   constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData) {
     super(scene, x, y, CONST.HERO_SPEED, grid, conf, "mothership_48x48");
@@ -53,7 +53,7 @@ export class HeroUnit extends BaseUnit implements IUnit, IScoutable {
       repeat: -1,
       repeatDelay: 0
     };
-    scene.anims.create(walkAnim);
+    this.walkAnim = scene.anims.create(walkAnim);
 
     this.playUnitAnim('idle', true);
   }
@@ -69,7 +69,7 @@ export class HeroUnit extends BaseUnit implements IUnit, IScoutable {
     
     let frames = this.idleAnim.frames;
     let speed = this.mover.speed;
-    console.log(speed.x + " : " + speed.y)
+
     if(speed.x > 0 && speed.y == 0) this.anims.setCurrentFrame(frames[3])
     if(speed.x > 0 && speed.y > 0) this.anims.setCurrentFrame(frames[2])
     if(speed.x > 0 && speed.y < 0) this.anims.setCurrentFrame(frames[4])
