@@ -32,7 +32,7 @@ export class UnitMoverModule implements IUnitModule {
 
   private nextDest: Point;
   private pathBySteps: Point[];
-  private speed: Phaser.Math.Vector2 = new Phaser.Math.Vector2(0, 0);
+  public speed: Phaser.Math.Vector2 = new Phaser.Math.Vector2(0, 0);
   private updatesPaused: boolean;
 
   public claimedTile: Tile;
@@ -99,8 +99,8 @@ export class UnitMoverModule implements IUnitModule {
       this.unit.playUnitAnim('idle', true);
     }
 
-    if (this.speed.x < 0) this.unit.flipX = true;
-    else if (this.speed.x > 0) this.unit.flipX = false;
+    // if (this.speed.x < 0) this.unit.flipX = true;
+    // else if (this.speed.x > 0) this.unit.flipX = false;
 
     if (this.nextDest != null) {
       this.moveNextStep();
