@@ -4,7 +4,7 @@ import { UI_DEPTH } from "../const/const";
 /**
 * @author       Kirill Nepomnyaschiy <nka1024@gmail.com>
 * @copyright    nka1024
-* @description  subtile
+* @description  nomads
 * @license      Apache 2.0
 */
 
