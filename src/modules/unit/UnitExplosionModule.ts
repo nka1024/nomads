@@ -47,7 +47,7 @@ export class UnitExplosionModule implements IUnitModule {
 
       var explode2: AnimationConfig = {
         key: 'explosion2',
-        frames: this.scene.anims.generateFrameNumbers('explosion_anim_3_48x48', { frames: [0, 1, 2, 3, 4, 4, 4, 5, 5, 5, 6, 6,6, 7, 7,7,8,8,8,9,9,9] }),
+        frames: this.scene.anims.generateFrameNumbers('explosion_anim_3_24x24', { frames: [0, 1, 2, 3, 4, 4, 4, 5, 5, 5, 6, 6,6, 7, 7,7,8,8,8,9,9,9] }),
         frameRate: 26,
         repeat: 0,
         repeatDelay: 0,

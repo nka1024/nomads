@@ -83,6 +83,13 @@ export class AssetsLoader {
       endFrame: 10
     });
 
+
+    scene.load.spritesheet('explosion_anim_3_24x24', './assets/sprites/explosion_anim_3_24x24.png', {
+      frameWidth: 24,
+      frameHeight: 24,
+      endFrame: 10
+    });
+
     for (let idx = 1; idx <= ASSETS.TERRAIN_MAX; idx++) {
       scene.load.image("terrain_" + idx, "./assets/tilemap/terrain_" + idx + ".png");
     }
