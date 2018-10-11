@@ -17,8 +17,8 @@ export class UnitShootModule implements IUnitModule {
   private owner: BaseUnit;
   private scene: Scene;
   private state: UnitStateModule;
-  
-  
+
+
   private baseDistance: number = 5;
   private tmpSpeed: Phaser.Math.Vector2 = new Phaser.Math.Vector2(0, 0);
   private bullets: { object: GameObjects.Image, speed: Point, dest: Point, travel: number }[] = [];
@@ -33,15 +33,28 @@ export class UnitShootModule implements IUnitModule {
 
   // private
 
-  private makeBullet() {
+  private fire() {
+    let a = this.owner;
+    let b = this.state.fightTarget;
+    var angle = Math.atan2(b.y - a.y, b.x - a.x) * (180 / Math.PI);
+    
+    let p1 = this.rotate({x: 0, y: -3}, -angle);
+    let p2 = this.rotate({x: 0, y: 3}, -angle);
+    this.makeBullet(p1);
+    this.makeBullet(p2);
+    if (this.owner.side == 'attack')
+    console.log(p1.x + ' ' + p1.y + ' ' + angle + ' ' +  p2.x + ':'+p2.y) ;
+  }
+
+  private makeBullet(offset: Point) {
     if (!this.state.isFighting) {
       this.stopShooting();
       return;
     }
     let key = this.owner.side == 'attack' ? 'bullet_yellow' : 'bullet_blue';
     let bullet = new GameObjects.Image(this.scene, 0, 0, key);
-    bullet.x = this.owner.x;
-    bullet.y = this.owner.y;
+    bullet.x = this.owner.x + offset.x;
+    bullet.y = this.owner.y + offset.y;
     bullet.depth = UI_DEPTH.BULLETS;
     this.scene.add.existing(bullet);
 
@@ -50,10 +63,19 @@ export class UnitShootModule implements IUnitModule {
     var angle = Math.atan2(b.y - a.y, b.x - a.x) * (180 / Math.PI);
     bullet.angle = angle;
 
-    let dest = { x: this.state.fightTarget.x, y: this.state.fightTarget.y };
+    let dest = { x: this.state.fightTarget.x + offset.x, y: this.state.fightTarget.y + offset.y };
     let speed = this.calculateSpeed(bullet, dest, this.baseDistance);
     this.bullets.push({ object: bullet, speed: speed, dest: dest, travel: 1 });
   }
+
+  private rotate(vec: Point, ang: number) {
+    ang = -ang * (Math.PI / 180);
+    var cos = Math.cos(ang);
+    var sin = Math.sin(ang);
+    let x = Math.round(10000 * (vec.x * cos - vec.y * sin)) / 10000
+    let y = Math.round(10000 * (vec.x * sin + vec.y * cos)) / 10000
+    return { x: x, y: y };
+  };
 
 
   private synchronizeShooting() {
@@ -66,7 +88,7 @@ export class UnitShootModule implements IUnitModule {
 
   private startShooting() {
     this.isShooting = true;
-    this.shootTimer = setInterval(() => { this.makeBullet() }, 300);
+    this.shootTimer = setInterval(() => { this.fire(); }, 300);
   }
 
   private stopShooting() {
@@ -125,7 +147,7 @@ export class UnitShootModule implements IUnitModule {
         }
       }
     }
-    this.bullets = this.bullets.filter((o, idx, arr) => {return o.object.active});
+    this.bullets = this.bullets.filter((o, idx, arr) => { return o.object.active });
   }
 
   destroy() {
