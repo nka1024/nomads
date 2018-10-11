@@ -18,7 +18,6 @@ export class UnitShootModule implements IUnitModule {
   private scene: Scene;
   private state: UnitStateModule;
 
-
   private baseDistance: number = 5;
   private tmpSpeed: Phaser.Math.Vector2 = new Phaser.Math.Vector2(0, 0);
   private bullets: { object: GameObjects.Image, speed: Point, dest: Point, travel: number }[] = [];
@@ -109,7 +108,6 @@ export class UnitShootModule implements IUnitModule {
     return false;
   }
 
-
   private calculateSpeed(bullet: GameObjects.Image, dest: Point, distance: number): Point {
     this.tmpSpeed.x = dest.x - bullet.x;
     this.tmpSpeed.y = dest.y - bullet.y;
@@ -122,7 +120,6 @@ export class UnitShootModule implements IUnitModule {
     return { x: this.tmpSpeed.x, y: this.tmpSpeed.y };
   }
 
-
   private normalize(vec: Phaser.Math.Vector2, newLen: number): Phaser.Math.Vector2 {
     var len = vec.x * vec.x + vec.y * vec.y;
     if (len > 0) {
@@ -132,7 +129,6 @@ export class UnitShootModule implements IUnitModule {
     }
     return vec;
   }
-
 
   // overrides
 
@@ -151,5 +147,15 @@ export class UnitShootModule implements IUnitModule {
   }
 
   destroy() {
+    this.stopShooting();
+    this.owner = null;
+    this.scene = null;
+    this.state = null;
+
+    this.tmpSpeed = null;
+    for (let bullet of this.bullets) {
+      bullet.object.destroy();
+    }
+    this.bullets = null;
   }
 }
