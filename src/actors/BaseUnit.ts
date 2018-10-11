@@ -18,6 +18,7 @@ import { Tile } from "../types/Position";
 import { UnitStateModule } from "../modules/unit/UnitStateModule";
 import { UnitSelectionModule } from "../modules/unit/UnitSelectionModule";
 import { UnitShootModule } from "../modules/unit/UnitShootModule";
+import { UnitExplosionModule } from "../modules/unit/UnitExplosionModule";
 
 export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
 
@@ -37,6 +38,7 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
   public events: Phaser.Events.EventEmitter;
   public chase: UnitChaseModule;
   public state: UnitStateModule;
+  public explosion: UnitExplosionModule;
 
   protected core: UnitModuleCore;
 
@@ -56,8 +58,20 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
     this.chase      = new UnitChaseModule(this, this.state, this.mover, grid);
     this.shoot      = new UnitShootModule(this, scene, this.state);
     this.combat     = new UnitCombatModule(this, scene, this.mover, this.state, grid);
+    this.explosion  = new UnitExplosionModule(this, scene, this.state, this.combat);
 
-    this.core = new UnitModuleCore([this.selection, this.mover, this.progress, this.state, this.perimeter, this.hp, this.chase, this.combat, this.shoot]);
+    this.core = new UnitModuleCore([
+      this.selection, 
+      this.mover, 
+      this.progress, 
+      this.state, 
+      this.perimeter, 
+      this.hp, 
+      this.chase, 
+      this.combat, 
+      this.explosion, 
+      this.shoot
+    ]);
 
     this.setInteractive();
 

@@ -11,6 +11,7 @@ import { IUnitModule } from "../interface/IUnitModule";
 import { UnitStateModule } from "./UnitStateModule";
 import { UI_DEPTH } from "../../const/const";
 import { Point } from "../../types/Position";
+import { UnitCombatModule } from "./UnitCombatModule";
 
 export class UnitShootModule implements IUnitModule {
 
@@ -41,8 +42,6 @@ export class UnitShootModule implements IUnitModule {
     let p2 = this.rotate({x: 0, y: 3}, -angle);
     this.makeBullet(p1);
     this.makeBullet(p2);
-    if (this.owner.side == 'attack')
-    console.log(p1.x + ' ' + p1.y + ' ' + angle + ' ' +  p2.x + ':'+p2.y) ;
   }
 
   private makeBullet(offset: Point) {
@@ -87,7 +86,7 @@ export class UnitShootModule implements IUnitModule {
 
   private startShooting() {
     this.isShooting = true;
-    this.shootTimer = setInterval(() => { this.fire(); }, 300);
+    this.shootTimer = setInterval(() => { this.fire(); }, 250);
   }
 
   private stopShooting() {
@@ -138,6 +137,9 @@ export class UnitShootModule implements IUnitModule {
     for (let bullet of this.bullets) {
       if (bullet.object.active) {
         if (this.stepTowards(bullet.object, bullet.speed, bullet.dest, bullet.travel)) {
+          if (this.state.fightTarget && this.state.fightTarget.combat) {
+            this.state.fightTarget.combat.events.emit('visual_damage_taken');
+          }
           bullet.object.destroy();
           bullet.travel += 10;
         }

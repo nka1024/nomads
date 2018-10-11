@@ -84,9 +84,10 @@ export class UnitCombatModule implements IUnitModule {
     // only destroy after all logic
     this.owner.conf.health -= attack.damage;
 
+    this.events.emit("damage_taken");
     if (this.owner.conf.health <= 0) {
       this.owner.events.emit('death');
-    }
+    } 
   }
 
   public startFight(target: BaseUnit) {
