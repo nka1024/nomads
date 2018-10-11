@@ -61,7 +61,7 @@ export class Hero {
       type: "infantry",
       health: 1,
       energy: 1,
-      range: 1,
+      range: 2,
       quantity: 99
     };
   }

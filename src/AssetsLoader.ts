@@ -37,6 +37,11 @@ export class AssetsLoader {
     scene.load.image("progress_green_32x2", "./assets/progress_green_32x2.png");
     scene.load.image("progress_black_34x4", "./assets/progress_black_34x4.png");
 
+
+    scene.load.image("bullet_blue", "./assets/bullet_blue.png");
+    scene.load.image("bullet_yellow", "./assets/bullet_yellow.png");
+
+
     scene.load.bitmapFont('hello-world-16-white',
       './assets/fonts/hello-world/hello-world-16-white.png',
       './assets/fonts/hello-world/hello-world-16.fnt');

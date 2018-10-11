@@ -1,12 +1,11 @@
-
 /**
 * @author       Kirill Nepomnyaschiy <nka1024@gmail.com>
 * @copyright    nka1024
 * @description  subtile
 * @license      Apache 2.0
 */
+
 import { TileGrid } from "../../TileGrid";
-import { IUnit } from "../../actors/IUnit";
 import { IUnitModule } from "../interface/IUnitModule";
 import { Point, Tile } from "../../types/Position";
 import { UnitStateModule } from "./UnitStateModule";

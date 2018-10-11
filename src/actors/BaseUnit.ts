@@ -17,6 +17,7 @@ import { UnitChaseModule } from "../modules/unit/UnitChaseModule";
 import { Tile } from "../types/Position";
 import { UnitStateModule } from "../modules/unit/UnitStateModule";
 import { UnitSelectionModule } from "../modules/unit/UnitSelectionModule";
+import { UnitShootModule } from "../modules/unit/UnitShootModule";
 
 export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
 
@@ -26,6 +27,7 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
   public grid: TileGrid;
 
   // modules
+  public shoot: UnitShootModule;
   public combat: UnitCombatModule;
   public selection: UnitSelectionModule;
   public mover: UnitMoverModule;
@@ -45,16 +47,17 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
 
     this.events = new Phaser.Events.EventEmitter();
     
-    this.selection = new UnitSelectionModule(this, scene);
+    this.selection  = new UnitSelectionModule(this, scene);
     this.perimeter  = new UnitPerimeterModule(this, grid);
     this.state      = new UnitStateModule(this);
     this.mover      = new UnitMoverModule(this, scene, this.state, grid, speed);
     this.progress   = new ProgressModule(this, scene, 'progress');
     this.hp         = new ProgressModule(this, scene, 'hp');
     this.chase      = new UnitChaseModule(this, this.state, this.mover, grid);
+    this.shoot      = new UnitShootModule(this, scene, this.state);
     this.combat     = new UnitCombatModule(this, scene, this.mover, this.state, grid);
 
-    this.core = new UnitModuleCore([this.selection, this.mover, this.progress, this.state, this.perimeter, this.hp, this.chase, this.combat]);
+    this.core = new UnitModuleCore([this.selection, this.mover, this.progress, this.state, this.perimeter, this.hp, this.chase, this.combat, this.shoot]);
 
     this.setInteractive();
 
