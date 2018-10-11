@@ -71,6 +71,18 @@ export class AssetsLoader {
       endFrame: 6
     });
 
+    scene.load.spritesheet('explosion_anim_2_48x48', './assets/sprites/explosion_anim_2_48x48.png', {
+      frameWidth: 48,
+      frameHeight: 48,
+      endFrame: 7
+    });
+
+    scene.load.spritesheet('explosion_anim_3_48x48', './assets/sprites/explosion_anim_3_48x48.png', {
+      frameWidth: 48,
+      frameHeight: 48,
+      endFrame: 10
+    });
+
     for (let idx = 1; idx <= ASSETS.TERRAIN_MAX; idx++) {
       scene.load.image("terrain_" + idx, "./assets/tilemap/terrain_" + idx + ".png");
     }

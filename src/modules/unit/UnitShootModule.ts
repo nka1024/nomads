@@ -54,6 +54,8 @@ export class UnitShootModule implements IUnitModule {
     bullet.x = this.owner.x + offset.x;
     bullet.y = this.owner.y + offset.y;
     bullet.depth = UI_DEPTH.BULLETS;
+    // bullet.scaleX = 0.5;
+    // bullet.scaleY = 0.5
     this.scene.add.existing(bullet);
 
     let a = this.owner;
