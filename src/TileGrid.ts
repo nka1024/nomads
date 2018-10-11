@@ -10,6 +10,7 @@ import { UI_DEPTH } from "./const/const";
 import { Point, Tile } from "./types/Position";
 import { BaseUnit } from "./actors/BaseUnit";
 import { SquadUnit } from "./actors/SquadUnit";
+import { UnitPerimeterModule } from "./modules/unit/UnitPerimeterModule";
 
 export class TileGrid {
 
@@ -138,17 +139,15 @@ export class TileGrid {
     this.claims[tile.i][tile.j] = null;
   }
 
-  public findClosestFreeTile(to: Tile): Tile {
+  public findClosestFreeTile(to: Tile, from: Tile): Tile {
     let work = { i: 0, j: 0 }
-    for (let radius = 1; radius <= 4; radius++) {
-      for (let i = -radius; i <= radius; i++) {
-        for (let j = -radius; j <= radius; j++) {
-          work.i = to.i + i;
-          work.j = to.j + j;
-          if (this.isFree(work) && this.isFreeDest(work)) {
-            return work;
-          }
-        }
+    let checkOrder = UnitPerimeterModule.spotCheckOrder(to, from);
+    for (let c of checkOrder) {
+      work.i = to.i + c.i;
+      work.j = to.j + c.j;
+
+      if (this.isFree(work) && this.isFreeDest(work)) {
+        return work;
       }
     }
     return null;

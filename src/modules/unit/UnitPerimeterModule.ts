@@ -92,23 +92,7 @@ export class UnitPerimeterModule extends Phaser.Events.EventEmitter implements I
     return this.grid.gridToWorld(tile);
   }
 
-
-  /// returns a spot that is attacked or defended by unit
-  // public spotOfUnit(unit: BaseUnit): UnitPerimeterSpot {
-  //   let result = null;
-  //   this.forEachSpot((spot: UnitPerimeterSpot) => {
-  //     if (spot.attacker == unit || spot.defender == unit) {
-  //       result = spot;
-  //       return false;
-  //     }
-  //     return true;
-  //   });
-  //   return result;
-  // }
-
-
-
-
+  
   // Overrides
 
   public update() {
@@ -167,7 +151,7 @@ export class UnitPerimeterModule extends Phaser.Events.EventEmitter implements I
 
   public findEmptyPerimeterSpot(from: Point, side: string): UnitPerimeterSpot {
     let p = this.grid.worldToGrid(this.owner);
-    let checkOrder = this.spotCheckOrder(this.grid.worldToGrid(from));
+    let checkOrder = UnitPerimeterModule.spotCheckOrder(p, this.grid.worldToGrid(from));
 
     // check if nearby spot is free on map and not occupied by another attacking unit
     for (let c of checkOrder) {
@@ -187,8 +171,9 @@ export class UnitPerimeterModule extends Phaser.Events.EventEmitter implements I
     return this.grid.isFree(tile);
   }
 
-  private spotCheckOrder(s: Tile): Tile[] {
-    let p = this.grid.worldToGrid(this.owner);
+  public static spotCheckOrder(center: Tile, source: Tile): Tile[] {
+    let p = center;
+    let s = source;
     let result = null;
 
     if (s.i == p.i && s.j == p.j) {

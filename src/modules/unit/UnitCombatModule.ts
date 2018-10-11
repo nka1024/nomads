@@ -142,7 +142,6 @@ export class UnitCombatModule implements IUnitModule {
     } else {
       let damage = (Math.random() / 100 + Math.random() / 50) * 2;
       this.target.combat.sufferAttack({ attacker: this.owner, damage: damage });
-      // console.log('performing attack');
 
       this.showFloatyText(damage);
     }
@@ -164,10 +163,10 @@ export class UnitCombatModule implements IUnitModule {
     let side = this.owner.side == "attack" ? "defend" : "attack";
     let nearest = this.grid.findClosestUnits(this.owner.tile, side, this.owner.conf.range);
     for (let squad of nearest) {
-      if (!squad.state.isMoving) {
+      // if (!squad.state.isMoving) {
         console.log('wanna attack ' + squad.conf.id);
         this.startFight(squad);
-      }
+      // }
     }
   }
 

@@ -70,7 +70,7 @@ export class UnitChaseModule implements IUnitModule {
     this.setTarget(target);
     
     this.lastDest = this.grid.worldToGrid(target);
-    let tile = this.grid.findClosestFreeTile(target.tile);
+    let tile = this.grid.findClosestFreeTile(target.tile, this.owner.tile);
 
     let onStepComplete = (stepsToGo: number, nextDest: Point) => {
       if (stepsToGo == 1) {
