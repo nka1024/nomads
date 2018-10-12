@@ -9,7 +9,6 @@ import { IUnitModule } from "../interface/IUnitModule";
 import { BaseUnit } from "../../actors/BaseUnit";
 import { UnitMoverModule } from "./UnitMoverModule";
 import { TileGrid } from "../../TileGrid";
-import { UnitPerimeterSpot } from "./UnitPerimeterModule";
 import { Tile, Point } from "../../types/Position";
 import { UnitStateModule } from "./UnitStateModule";
 
