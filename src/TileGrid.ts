@@ -19,6 +19,7 @@ export class TileGrid {
   private data: number[][];
   private claims: BaseUnit[][];
   private dests: number[][];
+  private fog: Phaser.GameObjects.Image[][];
 
   private scene: Phaser.Scene;
   constructor(scene: Phaser.Scene) {
@@ -28,16 +29,19 @@ export class TileGrid {
     this.tiles = [];
     this.claims = [];
     this.dests = [];
+    this.fog = [];
     for (let i = 0; i < 24; i++) {
       this.data[i] = [];
       this.tiles[i] = [];
       this.claims[i] = [];
       this.dests[i] = [];
+      this.fog[i] = [];
       for (let j = 0; j < 24; j++) {
         this.data[i][j] = 0;
         this.tiles[i][j] = null;
         this.claims[i][j] = null;
         this.dests[i][j] = 0;
+        this.fog[i][j] = null;
       }
     }
 
@@ -61,6 +65,7 @@ export class TileGrid {
       }
       return;
     }
+
 
     var grid = [];
     // grid image
@@ -87,6 +92,57 @@ export class TileGrid {
         let n = this.data[i][j];
         let color = n == 0 ? "green" : "red";
         this.tiles[i][j] = this.createTile({ i: i, j: j }, color);
+      }
+    }
+  }
+
+
+  public toggleFog() {
+    // hide grid if it exists
+    if (this.grid != null) {
+      for (let img of this.grid) {
+        img.destroy();
+      }
+      this.grid = null;
+
+      for (let i = 0; i < 24; i++) {
+        for (let j = 0; j < 24; j++) {
+          this.fog[i][j].destroy();
+          this.fog[i][j] = null;
+        }
+      }
+      return;
+    }
+
+    // grid tiles
+    for (let i = 0; i < 24; i++) {
+      for (let j = 0; j < 24; j++) {
+        let n = this.data[i][j];
+        this.fog[i][j] = this.createTile({ i: i, j: j }, '', true);
+      }
+    }
+  }
+
+  public updateFog(center: Tile) {
+    console.log(center.i + ' ' + center.j)
+    for (let i = center.i - 3; i < center.i + 3; i++) {
+      for (let j = center.j - 3; j < center.j + 3; j++) {
+        if (this.legit({i: i, j: j}))
+          this.fog[i][j].visible = false;
+      }
+    }
+
+    for (let i = center.i - 2; i < center.i + 2; i++) {
+      for (let j = center.j - 4; j < center.j + 4; j++) {
+        if (this.legit({i: i, j: j}))
+          this.fog[i][j].visible = false;
+      }
+    }
+
+    for (let i = center.i - 4; i < center.i + 4; i++) {
+      for (let j = center.j - 2; j < center.j + 2; j++) {
+        if (this.legit({i: i, j: j}))
+          this.fog[i][j].visible = false;
       }
     }
   }
@@ -174,11 +230,11 @@ export class TileGrid {
     return result;
   }
 
-  private createTile(tile: Tile, color: string): Phaser.GameObjects.Image {
+  private createTile(tile: Tile, color: string, fog: boolean = false): Phaser.GameObjects.Image {
     let img = new Phaser.GameObjects.Image(this.scene, 0, 0, null);
     img.scaleX = 2;
     img.scaleY = 2;
-    img.setTexture('grid_tile_' + color + '_16_a50');
+    img.setTexture(fog ? 'fog_tile_16_a70' : 'grid_tile_' + color + '_16_a50');
     img.depth = UI_DEPTH.EDITOR_GRID_TILE;
     var wc = this.gridToWorld(tile)
     img.x = wc.x + 16;

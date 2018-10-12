@@ -88,6 +88,7 @@ export class GameplayRootScene extends Phaser.Scene {
     });
     zoomPanel.show();
 
+    this.grid.toggleFog();
 
     let player = new HeroUnit(this, 0, 0, this.grid, Hero.makeHeroConf());
     let hero = new Hero();
@@ -291,6 +292,7 @@ export class GameplayRootScene extends Phaser.Scene {
     unit.destroy();
   }
 
+  private fogUpdateCnt:number = 60;
   update(): void {
     this.contextMenuModule.update();
     // dont handle touches if context window is shown
@@ -300,6 +302,11 @@ export class GameplayRootScene extends Phaser.Scene {
     }
 
     if (this.grid) {
+      this.fogUpdateCnt++
+      if (this.fogUpdateCnt > 60) {
+        this.fogUpdateCnt = 0;
+        this.grid.updateFog(this.player.tile);
+      }
       this.grid.update();
     }
 
