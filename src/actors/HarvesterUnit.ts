@@ -123,12 +123,20 @@ export class HarvesterUnit extends SquadUnit {
   }
 
   private performMining() {
-    this.showFloatyText(Math.floor(Math.random() * 10) + 1);
+    let volume = Math.floor(Math.random() * 10) + 1;
+    this.showFloatyText(volume);
+    if(this.grid.hasGrass(this.tile)) {
+      this.grid.consumeGrass(this.tile, volume);
+      (this.scene as GameplayRootScene).grass += volume;
+    } else {
+      this.stopMine();
+    }
   }
 
   private stopMine() {
     this.isMining = false;
     clearInterval(this.mineTimer);
+    this.playUnitAnim('idle', true);
   }
 
   update() {
@@ -140,7 +148,7 @@ export class HarvesterUnit extends SquadUnit {
     if (this.mover.speed.x < 0) this.flipX = true;
 
     this.targetScanUpdate();
-    if (this.grid.grassAt(this.tile) && !this.state.isMoving) {
+    if (this.grid.hasGrass(this.tile) && !this.state.isMoving) {
       this.startMine();
     }
   }

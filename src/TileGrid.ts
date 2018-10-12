@@ -13,6 +13,11 @@ import { SquadUnit } from "./actors/SquadUnit";
 import { UnitPerimeterModule } from "./modules/unit/UnitPerimeterModule";
 import { GameObjects } from "phaser";
 
+export declare type GrassData = {
+  object: GameObjects.Image;
+  volume: number
+}
+
 export class TileGrid {
 
   private grid: Phaser.GameObjects.Image[];
@@ -142,20 +147,37 @@ export class TileGrid {
 
   // Grass
   
-  public addGrass(object: any, tile: Tile) {
+  public addGrass(object: any, tile: Tile, volume: number) {
     let hashKey = tile.i + '_' + tile.j;
+    let grass = {object: object, volume: volume};
     if (!this.grasses[hashKey]) {
       console.log('created grass to new ' + hashKey);
-      this.grasses[hashKey] = [object];
+      this.grasses[hashKey] = [grass];
     } else {
       console.log('added grass to new ' + hashKey);
-      this.grasses[hashKey].push(object);
+      this.grasses[hashKey].push(grass);
     }
   }
 
-  public grassAt(tile: Tile): GameObjects.Image[] {
+  public hasGrass(tile: Tile): boolean {
+    return this.grassAt(tile) && this.grassAt(tile).length > 0;
+  }
+
+  public grassAt(tile: Tile): GrassData[] {
     let hashKey = tile.i + '_' + tile.j;
     return this.grasses[hashKey];
+  }
+
+  public consumeGrass(tile: Tile, volume: number) {
+    let hashKey = tile.i + '_' + tile.j;
+    let arr: GrassData[] = this.grasses[hashKey];
+    let grass = arr[0];
+    grass.volume -= volume;
+    if (grass.volume <= 0) {
+      grass.object.destroy();
+      arr.shift();
+    }
+    return ;
   }
 
   public getTileIJ(p: Point): any {

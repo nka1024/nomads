@@ -37,6 +37,7 @@ export class GameplayRootScene extends Phaser.Scene {
 
   // objects
   public player: HeroUnit;
+  public grass: number = 0;
   private unitsGrp: Phaser.GameObjects.Group;
   private deployedSquads: Array<SquadUnit> = [];
   private selectedUnit: BaseUnit;
@@ -118,7 +119,7 @@ export class GameplayRootScene extends Phaser.Scene {
 
     this.mapImporterModule.grassHandler = (o: GameObjects.Image, item: any) => {
       let tile = this.grid.worldToGrid({x: o.x, y: o.y - o.height/2});
-      this.grid.addGrass(o, tile);
+      this.grid.addGrass(o, tile, 100);
     };
     this.mapImporterModule.importMap(this.cache.json.get('map'));
 
