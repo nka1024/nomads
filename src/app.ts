@@ -60,7 +60,7 @@ window.onload = () => {
   reverse(document.body);
 };
 
-function reverse(n) {          // Reverse the order of the children of Node n
+function reverse(n) {        // Reverse the order of the children of Node n
   var kids = n.childNodes;   // Get the list of children
   var numkids = kids.length; // Figure out how many there are
   for(var i = numkids-1; i >= 0; i--) {  // Loop through them backwards

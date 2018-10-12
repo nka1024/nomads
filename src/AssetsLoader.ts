@@ -83,12 +83,25 @@ export class AssetsLoader {
       endFrame: 10
     });
 
-
     scene.load.spritesheet('explosion_anim_3_24x24', './assets/sprites/explosion_anim_3_24x24.png', {
       frameWidth: 24,
       frameHeight: 24,
       endFrame: 10
     });
+
+    scene.load.spritesheet('gatherer_gather_anim_48x48', './assets/sprites/gatherer_gather_anim_48x48.png', {
+      frameWidth: 48,
+      frameHeight: 48,
+      endFrame: 10
+    });
+
+    scene.load.spritesheet('gatherer_walk_anim_48x48', './assets/sprites/gatherer_walk_anim_48x48.png', {
+      frameWidth: 48,
+      frameHeight: 48,
+      endFrame: 5
+    });
+
+    
 
     for (let idx = 1; idx <= ASSETS.TERRAIN_MAX; idx++) {
       scene.load.image("terrain_" + idx, "./assets/tilemap/terrain_" + idx + ".png");

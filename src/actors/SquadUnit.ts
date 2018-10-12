@@ -49,42 +49,26 @@ export class SquadUnit extends BaseUnit implements IScoutable, ISelectable {
       SquadUnit.initialized = true;
       var idleAnim = {
         key: 'squad_idle',
-        frames: this.scene.anims.generateFrameNumbers('mothership_48x48', { start: 0, end: 7 }),
+        frames: this.scene.anims.generateFrameNumbers('gatherer_gather_anim_48x48', { start: 0, end: 0 }),
         frameRate: 5,
         repeat: -1,
         repeatDelay: 0
       };
       SquadUnit.idleAnim = this.scene.anims.create(idleAnim);
-      // for (let idx of [1, 2]) {
-      //   var idleAnim = {
-      //     key: 'unit_' + idx + '_idle',
-      //     frames: this.scene.anims.generateFrameNumbers('infantry_' + idx + '_idle_48x48', { start: 0, end: 3 }),
-      //     frameRate: 5,
-      //     repeat: -1,
-      //     repeatDelay: 0
-      //   };
-      //   SquadUnit.idleAnim = this.scene.anims.create(idleAnim);
-      //   var walkAnim = {
-      //     key: 'unit_' + idx + '_walk',
-      //     frames: this.scene.anims.generateFrameNumbers('infantry_' + idx + '_walk_48x48', { start: 0, end: 3 }),
-      //     frameRate: 10,
-      //     repeat: -1,
-      //     repeatDelay: 0
-      //   };
-      //   SquadUnit.walkAnim = this.scene.anims.create(walkAnim);
-      // }
+      
+      var walkAnim = {
+        key: 'squad_walk',
+        frames: this.scene.anims.generateFrameNumbers('gatherer_walk_anim_48x48', { start: 0, end: 4 }),
+        frameRate: 5,
+        repeat: -1,
+        repeatDelay: 0
+      };
+      SquadUnit.walkAnim = this.scene.anims.create(walkAnim);
     }
 
-    // var fightAnim = {
-    //   key: 'archers_fight',
-    //   frames: this.scene.anims.generateFrameNumbers('archers_fight_48x48', { start: 0, end: 8 }),
-    //   frameRate: 10,
-    //   repeat: -1,
-    //   repeatDelay: 0
-    // };
-    // this.scene.anims.create(fightAnim);
   }
 
+  // fight, walk, idle
   public playUnitAnim(key: string, ignoreIfPlaying: boolean) {
     // let anim = "";
     // if (key == 'fight' && this.conf.type == "archers") {
@@ -92,7 +76,8 @@ export class SquadUnit extends BaseUnit implements IScoutable, ISelectable {
     // } else {
     //   anim = 'unit_' + this.squadType + '_' + key;
     // }
-    // this.anims.play(anim, ignoreIfPlaying);
+
+    this.anims.play(key == 'walk' ? 'squad_walk' : 'squad_idle', ignoreIfPlaying);
   }
 
   update() {
@@ -103,14 +88,16 @@ export class SquadUnit extends BaseUnit implements IScoutable, ISelectable {
     let frames = SquadUnit.idleAnim.frames;
     let speed = this.mover.speed;
 
-    if (speed.x > 0 && speed.y == 0) this.anims.setCurrentFrame(frames[3])
-    if (speed.x > 0 && speed.y > 0) this.anims.setCurrentFrame(frames[2])
-    if (speed.x > 0 && speed.y < 0) this.anims.setCurrentFrame(frames[4])
-    if (speed.x < 0 && speed.y == 0) this.anims.setCurrentFrame(frames[7])
-    if (speed.x < 0 && speed.y < 0) this.anims.setCurrentFrame(frames[6])
-    if (speed.x < 0 && speed.y > 0) this.anims.setCurrentFrame(frames[0])
-    if (speed.x == 0 && speed.y > 0) this.anims.setCurrentFrame(frames[1])
-    if (speed.x == 0 && speed.y < 0) this.anims.setCurrentFrame(frames[5])
+    if (this.mover.speed.x > 0) this.flipX = false;
+    if (this.mover.speed.x < 0) this.flipX = true;
+    // if (speed.x > 0 && speed.y == 0) this.anims.setCurrentFrame(frames[3])
+    // if (speed.x > 0 && speed.y > 0) this.anims.setCurrentFrame(frames[2])
+    // if (speed.x > 0 && speed.y < 0) this.anims.setCurrentFrame(frames[4])
+    // if (speed.x < 0 && speed.y == 0) this.anims.setCurrentFrame(frames[7])
+    // if (speed.x < 0 && speed.y < 0) this.anims.setCurrentFrame(frames[6])
+    // if (speed.x < 0 && speed.y > 0) this.anims.setCurrentFrame(frames[0])
+    // if (speed.x == 0 && speed.y > 0) this.anims.setCurrentFrame(frames[1])
+    // if (speed.x == 0 && speed.y < 0) this.anims.setCurrentFrame(frames[5])
 
     this.targetScanUpdate();
   }
