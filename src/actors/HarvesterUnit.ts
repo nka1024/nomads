@@ -17,6 +17,7 @@ import { GameplayRootScene } from "../scenes/GameplayRootScene";
 import { SquadUnit } from "./SquadUnit";
 import { Animations } from "phaser";
 import { FloatingText } from "../FloatingText";
+import { Tile } from "../types/Position";
 
 export class HarvesterUnit extends SquadUnit {
 
@@ -129,8 +130,27 @@ export class HarvesterUnit extends SquadUnit {
       this.grid.consumeGrass(this.tile, volume);
       (this.scene as GameplayRootScene).grass += volume;
     } else {
-      this.stopMine();
+      let p = this.nearestGrassTile();
+      if (p) {
+        this.mover.moveTo(this.grid.gridToWorld(p), true);
+      } else {
+        this.stopMine();
+      }
     }
+  }
+
+  private nearestGrassTile(): Tile {
+    let work:Tile = {i: 0, j: 0};
+    for (let i = -2; i <= 2; i++){
+      for (let j = -2; j <= 2; j++){
+        work.i = this.tile.i + i;
+        work.j = this.tile.j + j;
+        if (this.grid.hasGrass(work)) {
+          return work;
+        }
+      }
+    }
+    return null
   }
 
   private stopMine() {

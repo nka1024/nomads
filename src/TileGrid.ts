@@ -118,7 +118,6 @@ export class TileGrid {
   }
 
   public updateFog(center: Tile) {
-    console.log(center.i + ' ' + center.j)
     for (let i = center.i - 3; i < center.i + 3; i++) {
       for (let j = center.j - 3; j < center.j + 3; j++) {
         if (this.legit({ i: i, j: j })) {
