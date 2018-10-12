@@ -27,6 +27,7 @@ import { TargetListPanel } from "../windows/TargetsListPanel";
 import { BaseUnit } from "../actors/BaseUnit";
 import { Hero, UnitData } from "../Hero";
 import { CONST } from "../const/const";
+import { HarvesterUnit } from "../actors/HarvesterUnit";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -182,7 +183,7 @@ export class GameplayRootScene extends Phaser.Scene {
       }
     });
 
-    this.createEnemy(8, 11);
+    // this.createEnemy(8, 11);
     // this.createEnemy(13, 18);
     // this.createEnemy(8, 19);
     // this.createEnemy(15, 10);
@@ -272,7 +273,11 @@ export class GameplayRootScene extends Phaser.Scene {
     }
     if (!squad) {
       let from = this.grid.snapToGrid(this.player);
-      squad = new SquadUnit(this, from.x + 16, from.y + 16, this.grid, conf);
+      if (conf.type == 'harvester') {
+        squad = new HarvesterUnit(this, from.x + 16, from.y + 16, this.grid, conf);
+      } else {
+        squad = new SquadUnit(this, from.x + 16, from.y + 16, this.grid, conf);
+      }
       squad.events.addListener('death', () => { this.handleUnitDeath(squad); });
     }
     return squad;

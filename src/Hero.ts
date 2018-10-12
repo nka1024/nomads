@@ -71,8 +71,8 @@ export class Hero {
     this.data.units.push({
       id: "type_1_unit_1",
       icon: "archers_1_icon",
-      name: "Archers",
-      type: "archers",
+      name: "Жнец",
+      type: "harvester",
       health: 1,
       energy: 1,
       range: 2,

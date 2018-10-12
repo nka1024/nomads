@@ -27,6 +27,8 @@ export class UnitCombatModule implements IUnitModule {
 
   public events: EventEmitter;
 
+  public pacifist: boolean;
+
   constructor(owner: BaseUnit, scene: Scene, mover: UnitMoverModule, state: UnitStateModule, grid: TileGrid) {
     this.owner = owner;
     this.mover = mover;
@@ -44,14 +46,15 @@ export class UnitCombatModule implements IUnitModule {
   }
 
 
-
   // Overrides
 
   update() {
-    // start fight if attacker and defender are in the same tile
-    // if (this.state.isChasing && !this.state.isFighting && !this.state.isMoving) {
-    if (!this.state.isFighting && !this.state.isMoving && !this.state.isPathfinding) {
-      this.findTargets();
+    if (!this.pacifist) {
+      // start fight if attacker and defender are in the same tile
+      // if (this.state.isChasing && !this.state.isFighting && !this.state.isMoving) {
+      if (!this.state.isFighting && !this.state.isMoving && !this.state.isPathfinding) {
+        this.findTargets();
+      }
     }
   }
 
@@ -71,13 +74,15 @@ export class UnitCombatModule implements IUnitModule {
   // public
 
   public sufferAttack(attack: { attacker: BaseUnit, damage: number }) {
-    if (!this.state.isFighting && !this.state.isMoving && !this.state.isPathfinding) {
-      if (this.isTargetInRange(attack.attacker)) {
-        this.startFight(attack.attacker);
-      }
-    } else {
-      if (this.owner.conf.health - attack.damage <= 0) {
-        this.stopFight("death");
+    if (!this.pacifist) {
+      if (!this.state.isFighting && !this.state.isMoving && !this.state.isPathfinding) {
+        if (this.isTargetInRange(attack.attacker)) {
+          this.startFight(attack.attacker);
+        }
+      } else {
+        if (this.owner.conf.health - attack.damage <= 0) {
+          this.stopFight("death");
+        }
       }
     }
 

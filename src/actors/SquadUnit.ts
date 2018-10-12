@@ -25,7 +25,7 @@ export class SquadUnit extends BaseUnit implements IScoutable, ISelectable {
   private static idleAnim: Phaser.Animations.Animation;
   private static walkAnim: Phaser.Animations.Animation;
 
-  private onFightEnd: () => void;
+  protected onFightEnd: () => void;
 
   constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData) {
 
@@ -44,9 +44,16 @@ export class SquadUnit extends BaseUnit implements IScoutable, ISelectable {
     this.playUnitAnim('idle', true);
   }
 
-  private initializeOnce() {
-    if (!SquadUnit.initialized) {
-      SquadUnit.initialized = true;
+  protected isInitialized():boolean {
+    return SquadUnit.initialized;
+  }
+  protected setInitialized(value: boolean) {
+    SquadUnit.initialized = value;
+  }
+
+  protected initializeOnce() {
+    if (!this.isInitialized()) {
+      this.setInitialized(true);
       var idleAnim = {
         key: 'squad_idle',
         frames: this.scene.anims.generateFrameNumbers('gatherer_gather_anim_48x48', { start: 0, end: 0 }),
@@ -85,8 +92,8 @@ export class SquadUnit extends BaseUnit implements IScoutable, ISelectable {
 
     super.update();
 
-    let frames = SquadUnit.idleAnim.frames;
-    let speed = this.mover.speed;
+    // let frames = SquadUnit.idleAnim.frames;
+    // let speed = this.mover.speed;
 
     if (this.mover.speed.x > 0) this.flipX = false;
     if (this.mover.speed.x < 0) this.flipX = true;
@@ -113,7 +120,7 @@ export class SquadUnit extends BaseUnit implements IScoutable, ISelectable {
   }
 
 
-  private targetScanUpdate() {
+  protected targetScanUpdate() {
     if (!this.state.isChasing && this.side == 'attack') {
       let player = (this.scene as GameplayRootScene).player;
       let distToPlayer = this.grid.distanceXY(player, this, true);
