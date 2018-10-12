@@ -20,13 +20,13 @@ export class FloatingText {
   private textShadow2: Phaser.GameObjects.BitmapText;
   private textShadow1: Phaser.GameObjects.BitmapText;
 
-  constructor(scene: Scene, x: number, y: number, text: string, white: boolean = true) {
+  constructor(scene: Scene, x: number, y: number, text: string, color: string) {
     this.scene = scene;
     this.text = text;
     this.x = x;
     this.y = y;
 
-    this.createText(white);
+    this.createText(color);
 
     let onUpdate = () => {
       this.textShadow1.y -= 0.3;
@@ -48,12 +48,12 @@ export class FloatingText {
   }
 
 
-  private createText(white: boolean) {
+  private createText(color: string) {
     let txt = this.text;
     let spacing = -1;
 
     if (!this.textShadow1 && !this.textShadow2) {
-      let offset = white ? 0 : 1
+      let offset = color != 'red' ? 1 : 0
       this.textShadow2 = this.scene.add.bitmapText(this.x + offset, this.y, 'pokemon-8-shadow', txt);
       this.textShadow1 = this.scene.add.bitmapText(this.x, this.y + offset, 'pokemon-8-shadow', txt);
       this.textShadow2.letterSpacing = spacing;
@@ -63,7 +63,7 @@ export class FloatingText {
     }
 
     if (!this.textMain) {
-      let font = white ? 'pokemon-8-red' : 'pokemon-8-white';
+      let font = 'pokemon-8-' + color;
       this.textMain = this.scene.add.bitmapText(this.x, this.y, font, txt);
       this.textMain.letterSpacing = spacing;
       this.textMain.depth = UI_DEPTH.FLOATING_TEXT;

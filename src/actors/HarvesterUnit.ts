@@ -5,14 +5,10 @@
 * @license      Apache 2.0
 */
 
-import { IScoutable } from "./IScouteable";
-
 import { TileGrid } from "../TileGrid";
 import { ScouteeModule } from "../modules/unit/ScouteeModule";
-import { ISelectable } from "./ISelectable";
 import { BaseUnit } from "./BaseUnit";
 import { UnitData } from "../Hero";
-import { CONST } from "../const/const";
 import { GameplayRootScene } from "../scenes/GameplayRootScene";
 import { SquadUnit } from "./SquadUnit";
 import { Animations } from "phaser";
@@ -24,8 +20,6 @@ export class HarvesterUnit extends SquadUnit {
   public scoutee: ScouteeModule;
 
   private static initializedGathger: boolean = false;
-  private static idleAnimGather: Phaser.Animations.Animation;
-  private static walkAnimGather: Phaser.Animations.Animation;
 
   constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData) {
 
@@ -58,7 +52,7 @@ export class HarvesterUnit extends SquadUnit {
         repeat: -1,
         repeatDelay: 0
       };
-      HarvesterUnit.idleAnimGather = this.scene.anims.create(idleAnim);
+      this.scene.anims.create(idleAnim);
       
       var walkAnim = {
         key: 'harvester_walk',
@@ -67,7 +61,7 @@ export class HarvesterUnit extends SquadUnit {
         repeat: -1,
         repeatDelay: 0
       };
-      HarvesterUnit.walkAnimGather = this.scene.anims.create(walkAnim);
+      this.scene.anims.create(walkAnim);
 
       var mineStartAnim = {
         key: 'harvester_mine_start',
@@ -111,6 +105,9 @@ export class HarvesterUnit extends SquadUnit {
       }
     }
   }
+
+
+  // Mining
 
   private mineTimer: any;
   private isMining: boolean;
@@ -159,6 +156,9 @@ export class HarvesterUnit extends SquadUnit {
     this.playUnitAnim('idle', true);
   }
 
+
+  // Overrides
+
   update() {
     this.depth = this.y - 4;
 
@@ -177,7 +177,7 @@ export class HarvesterUnit extends SquadUnit {
     let floatyX = this.x + Math.random() * 10 - 5;
     let floatyY = this.y - Math.random() * 10 - 10;
     
-    new FloatingText(this.scene, floatyX, floatyY, '+' + Math.floor(damage).toString(), false);
+    new FloatingText(this.scene, floatyX, floatyY, '+' + Math.floor(damage).toString(), 'yellow');
   }
 
   destroy() {

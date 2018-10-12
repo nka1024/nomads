@@ -160,8 +160,9 @@ export class UnitCombatModule implements IUnitModule {
   private showFloatyText(damage: number) {
     let floatyX = this.target.x + Math.random() * 10 - 5;
     let floatyY = this.target.y - Math.random() * 10 - 10;
-    let white = this.owner.conf.id.indexOf('enemy') != -1;
-    new FloatingText(this.scene, floatyX, floatyY, Math.floor(damage * 1000).toString(), white);
+    let color = this.owner.conf.id.indexOf('enemy') != -1 ? 'red' : 'white';
+
+    new FloatingText(this.scene, floatyX, floatyY, Math.floor(damage * 1000).toString(), color);
   }
 
   private findTargets() {
