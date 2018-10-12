@@ -74,6 +74,7 @@ export class GameplayRootScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(0x1f1f1f);
     this.cameras.main.zoom = 2;
 
+    this.cameras.main.setBounds(0,0, 768,768);
     this.events.on('resize', (h: number, w: number) => {
       this.cameras.main.setSize(h, w);
     });
@@ -88,7 +89,7 @@ export class GameplayRootScene extends Phaser.Scene {
     });
     zoomPanel.show();
 
-    this.grid.toggleFog();
+    this.grid.createFog();
 
     let player = new HeroUnit(this, 0, 0, this.grid, Hero.makeHeroConf());
     let hero = new Hero();

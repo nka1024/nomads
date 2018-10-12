@@ -97,22 +97,7 @@ export class TileGrid {
   }
 
 
-  public toggleFog() {
-    // hide grid if it exists
-    if (this.grid != null) {
-      for (let img of this.grid) {
-        img.destroy();
-      }
-      this.grid = null;
-
-      for (let i = 0; i < 24; i++) {
-        for (let j = 0; j < 24; j++) {
-          this.fog[i][j].destroy();
-          this.fog[i][j] = null;
-        }
-      }
-      return;
-    }
+  public createFog() {
 
     // grid tiles
     for (let i = 0; i < 24; i++) {
@@ -127,22 +112,25 @@ export class TileGrid {
     console.log(center.i + ' ' + center.j)
     for (let i = center.i - 3; i < center.i + 3; i++) {
       for (let j = center.j - 3; j < center.j + 3; j++) {
-        if (this.legit({i: i, j: j}))
+        if (this.legit({ i: i, j: j })) {
           this.fog[i][j].visible = false;
+        }
       }
     }
 
     for (let i = center.i - 2; i < center.i + 2; i++) {
       for (let j = center.j - 4; j < center.j + 4; j++) {
-        if (this.legit({i: i, j: j}))
+        if (this.legit({ i: i, j: j })) {
           this.fog[i][j].visible = false;
+        }
       }
     }
 
     for (let i = center.i - 4; i < center.i + 4; i++) {
       for (let j = center.j - 2; j < center.j + 2; j++) {
-        if (this.legit({i: i, j: j}))
+        if (this.legit({ i: i, j: j })) {
           this.fog[i][j].visible = false;
+        }
       }
     }
   }
@@ -174,8 +162,8 @@ export class TileGrid {
   }
 
   public legit(tile: Tile): boolean {
-    if (tile.i < 0 && tile.i >= this.data.length) return false;
-    if (tile.j < 0 && tile.j >= this.data.length) return false;
+    if (tile.i < 0 || tile.i >= this.data.length) return false;
+    if (tile.j < 0 || tile.j >= this.data.length) return false;
     return true;
   }
 
