@@ -28,6 +28,7 @@ import { BaseUnit } from "../actors/BaseUnit";
 import { Hero, UnitData } from "../Hero";
 import { CONST } from "../const/const";
 import { HarvesterUnit } from "../actors/HarvesterUnit";
+import { GameObjects } from "phaser";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -115,6 +116,10 @@ export class GameplayRootScene extends Phaser.Scene {
       }
     };
 
+    this.mapImporterModule.grassHandler = (o: GameObjects.Image, item: any) => {
+      let tile = this.grid.worldToGrid({x: o.x, y: o.y - o.height/2});
+      this.grid.addGrass(o, tile);
+    };
     this.mapImporterModule.importMap(this.cache.json.get('map'));
 
     this.unitsGrp = this.add.group();

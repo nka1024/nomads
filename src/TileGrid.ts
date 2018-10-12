@@ -11,6 +11,7 @@ import { Point, Tile } from "./types/Position";
 import { BaseUnit } from "./actors/BaseUnit";
 import { SquadUnit } from "./actors/SquadUnit";
 import { UnitPerimeterModule } from "./modules/unit/UnitPerimeterModule";
+import { GameObjects } from "phaser";
 
 export class TileGrid {
 
@@ -20,6 +21,7 @@ export class TileGrid {
   private claims: BaseUnit[][];
   private dests: number[][];
   private fog: Phaser.GameObjects.Image[][];
+  private grasses: any = {};
 
   private scene: Phaser.Scene;
   constructor(scene: Phaser.Scene) {
@@ -97,6 +99,8 @@ export class TileGrid {
   }
 
 
+  /// Fog
+
   public createFog() {
 
     // grid tiles
@@ -133,6 +137,25 @@ export class TileGrid {
         }
       }
     }
+  }
+
+
+  // Grass
+  
+  public addGrass(object: any, tile: Tile) {
+    let hashKey = tile.i + '_' + tile.j;
+    if (!this.grasses[hashKey]) {
+      console.log('created grass to new ' + hashKey);
+      this.grasses[hashKey] = [object];
+    } else {
+      console.log('added grass to new ' + hashKey);
+      this.grasses[hashKey].push(object);
+    }
+  }
+
+  public grassAt(tile: Tile): GameObjects.Image[] {
+    let hashKey = tile.i + '_' + tile.j;
+    return this.grasses[hashKey];
   }
 
   public getTileIJ(p: Point): any {

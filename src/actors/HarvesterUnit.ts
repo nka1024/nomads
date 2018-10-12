@@ -140,7 +140,7 @@ export class HarvesterUnit extends SquadUnit {
     if (this.mover.speed.x < 0) this.flipX = true;
 
     this.targetScanUpdate();
-    if (this.tile.i == 10 && this.tile.j == 10 && !this.state.isMoving) {
+    if (this.grid.grassAt(this.tile) && !this.state.isMoving) {
       this.startMine();
     }
   }
