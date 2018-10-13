@@ -77,9 +77,7 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
 
     this.setInteractive();
 
-    this.on('pointerdown', this.onPointerDownWrapper);
-    
-    this.input.hitArea = new Geom.Rectangle(0,0,48,48);
+    this.input.hitArea = new Geom.Rectangle(10, 10, 28, 28);
   }
 
   public playUnitAnim(key: string, ignoreIfPlaying: boolean) {
@@ -96,7 +94,6 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
 
   public destroy() {
     if (this.core) this.core.destroy();
-    this.off('pointerdown', this.onPointerDownWrapper, null, false);
 
     this.core = null;
     this.mover = null;
@@ -116,18 +113,5 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
   public get side():string {
     return this.conf.side;
   }
-
-
-  /// tile sprite may be more than 32x32, so wrap clicks to only trigger at 32x32 area
-  private onPointerDownWrapper = (pointer:any, localX: number, localY: number, camera: any) => {
-    console.log('click');
-    let clickSize = 28;
-    let offsetX = (this.width - clickSize)/2;
-    let offsetY = (this.height - clickSize)/2;
-    if ((localX > offsetX && localX < (offsetX + clickSize)) && 
-        (localY > offsetY && localY < (offsetY + clickSize))) 
-        {
-          this.emit('click_32');
-        }
-  }
+  
 }

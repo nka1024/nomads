@@ -20,14 +20,14 @@ export class GameobjectClicksModule extends Phaser.Events.EventEmitter{
   }
 
   private trackClicks(object: Phaser.GameObjects.GameObject) {
-    object.on('click_32', () => {
+    object.on('pointerdown', () => {
       this._objectClickedInThisTime = true      
       this.emit('click', object);
     })
   }
 
   private untrackClicks(object: Phaser.GameObjects.GameObject) {
-    object.off('click_32', null, null, false);
+    object.off('pointerdown', null, null, false);
   }
 
   public addObjectsGroup(group: Phaser.GameObjects.Group) {
