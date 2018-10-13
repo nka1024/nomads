@@ -153,7 +153,7 @@ export class UnitCombatModule implements IUnitModule {
   }
 
   private isTargetInRange(target: BaseUnit): boolean {
-    let distance = this.grid.distance(this.owner.tile, target.tile, true);
+    let distance = this.grid.distance(this.owner.tile, target.tile, 'abs');
     return distance.i <= this.owner.conf.range && distance.j <= this.owner.conf.range;
   }
 

@@ -10,6 +10,7 @@ export type UnitData = {
   id: string;
   icon: string;
   name: string;
+  side: string;
   health: number;
   energy: number;
   range: number;
@@ -33,6 +34,7 @@ export class Hero {
       name: "Hiro",
       icon: "infantry_1_icon",
       type: "hero",
+      side: 'defend',
       health: 1,
       energy: 1,
       range: 1,
@@ -45,6 +47,7 @@ export class Hero {
       id: "recon_squad",
       name: "Scouts",
       icon: "infantry_1_icon",
+      side: 'defend',
       type: "scout",
       health: 1,
       energy: 1,
@@ -58,6 +61,7 @@ export class Hero {
       id: "enemy_squad",
       icon: "infantry_2_icon",
       name: "Rogues",
+      side: 'attack',
       type: "infantry",
       health: 1,
       energy: 1,
@@ -73,6 +77,7 @@ export class Hero {
       icon: "archers_1_icon",
       name: "Жнец",
       type: "harvester",
+      side: 'defend',
       health: 1,
       energy: 1,
       range: 2,
@@ -83,6 +88,7 @@ export class Hero {
       this.data.units.push({
         id: 'type_' + (i + 2) + '_unit_1',
         icon: "infantry_2_icon",
+        side: 'defend',
         name: "Infantry",
         type: "infantry",
         range: 1,

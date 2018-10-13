@@ -123,9 +123,9 @@ export class SquadUnit extends BaseUnit implements IScoutable, ISelectable {
   protected targetScanUpdate() {
     if (!this.state.isChasing && this.side == 'attack') {
       let player = (this.scene as GameplayRootScene).player;
-      let distToPlayer = this.grid.distanceXY(player, this, true);
+      let distToPlayer = this.grid.distanceXY(player, this, 'abs');
       if (distToPlayer.i <= 2 && distToPlayer.j <= 2) {
-        this.chase.start(player, () => { });
+        this.chase.start(player, this.conf.range, () => { });
       }
     }
   }
@@ -144,7 +144,7 @@ export class SquadUnit extends BaseUnit implements IScoutable, ISelectable {
 
 
   public aggressedBy(who: BaseUnit) {
-    this.chase.start(who, () => { });
+    this.chase.start(who, this.conf.range, () => { });
   }
 
 }

@@ -18,6 +18,7 @@ export class UnitChaseModule implements IUnitModule {
   private mover: UnitMoverModule;
   private state: UnitStateModule;
   private grid: TileGrid;
+  private range: number;
 
   private onChaseComplete: () => void;
   private lastDest: { i: number, j: number };
@@ -60,27 +61,45 @@ export class UnitChaseModule implements IUnitModule {
   }
 
   public deployDefender(target: BaseUnit) {
-    this.start(target, null);
+    this.start(target, 1, null);
   }
 
 
-  public start(target: BaseUnit, onComplete: () => void) {
+  public start(target: BaseUnit, range: number, onComplete: () => void) {
+    this.range = range;
     this.unclaimDest();
     this.setTarget(target);
     
     this.lastDest = this.grid.worldToGrid(target);
     let tile = this.grid.findClosestFreeTile(target.tile, this.owner.tile);
 
+    // stops at current tile when target in range
+    let stopWhenInRange = () => {
+      if (this.targetInRange(range)) {
+        this.mover.stop();
+        this.unclaimDest();
+        this.claimDest(this.owner.tile);
+        return true;
+      } else {
+        return false;
+      }
+    };
+    if (stopWhenInRange()){
+     return;
+    }
     let onStepComplete = (stepsToGo: number, nextDest: Point) => {
+      if (stopWhenInRange()) {
+        return
+      }
       if (stepsToGo == 1) {
         if (!this.grid.isFree(this.grid.worldToGrid(nextDest))) {
-          this.start(target, onComplete);
+          this.start(target, range, onComplete);
         }
       }
     };
     let onPathComplete = () => {
       if (!this.mover.claimedTile) {
-        this.start(target, onComplete);
+        this.start(target, range, onComplete);
       } else {
 
       }
@@ -101,9 +120,9 @@ export class UnitChaseModule implements IUnitModule {
     this.onChaseComplete = null;
   }
 
-  private atMeleeToTarget(): boolean {
+  private targetInRange(range: number): boolean {
     let distance = this.gridDistanceToTarget();
-    return Math.abs(distance.i) <= 1 && Math.abs(distance.j) <= 1;
+    return Math.abs(distance.i) <= range && Math.abs(distance.j) <= range;
   }
 
   private gridDistanceToTarget(): Tile {
@@ -116,8 +135,8 @@ export class UnitChaseModule implements IUnitModule {
   update() {
     if (this.target) {
       if (this.lastDest.i != this.target.tile.i || this.lastDest.j != this.target.tile.j) {
-        if (!this.atMeleeToTarget()) {
-          this.start(this.target, this.onChaseComplete);
+        if (!this.targetInRange(this.range)) {
+          this.start(this.target, this.range, this.onChaseComplete);
         }
         else {
           this.lastDest.i = this.target.tile.i;

@@ -331,14 +331,14 @@ export class TileGrid {
     return this.grid != null;
   }
 
-  public distanceXY(a: Point, b: Point, abs: boolean = false): Tile {
+  public distanceXY(a: Point, b: Point, opt: string = null): Tile {
     let ap = this.worldToGrid(a);
     let bp = this.worldToGrid(b);
-    return this.distance(ap, bp, abs);
+    return this.distance(ap, bp, opt);
   }
 
-  public distance(a: Tile, b: Tile, abs: boolean = false): Tile {
-    if (abs)
+  public distance(a: Tile, b: Tile, opt: string = null): Tile {
+    if (opt == 'abs')
       return { i: Math.abs(a.i - b.i), j: Math.abs(a.j - b.j) };
     else
       return { i: a.i - b.i, j: a.j - b.j };

@@ -196,7 +196,7 @@ export class HarvesterUnit extends SquadUnit {
   }
 
   public aggressedBy(who: BaseUnit) {
-    this.chase.start(who, () => { });
+    // this.chase.start(who, this.conf.range, () => { });
   }
 
 }

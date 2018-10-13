@@ -88,6 +88,11 @@ export class UnitMoverModule implements IUnitModule {
     }
   }
 
+  public stop() {
+    this.destroyAllDots();
+    this.finishPath();
+  }
+
   public update() {
     if (this.updatesPaused) {
       return;
@@ -245,7 +250,7 @@ export class UnitMoverModule implements IUnitModule {
   }
 
   private destroyNextDot() {
-    if (this.path && this.pathDots.length > 0) {
+    if (this.path && this.pathDots && this.pathDots.length > 0) {
       this.pathDots.splice(0, 1)[0].destroy();
     }
   }
