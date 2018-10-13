@@ -312,6 +312,7 @@ export class GameplayRootScene extends Phaser.Scene {
       this.cursorModule.update();
       this.cameraDragModule.update();
     }
+    this.clicksTracker.update();
 
     if (this.grid) {
       this.fogUpdateCnt++

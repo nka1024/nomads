@@ -19,6 +19,7 @@ import { UnitStateModule } from "../modules/unit/UnitStateModule";
 import { UnitSelectionModule } from "../modules/unit/UnitSelectionModule";
 import { UnitShootModule } from "../modules/unit/UnitShootModule";
 import { UnitExplosionModule } from "../modules/unit/UnitExplosionModule";
+import { Geom } from "phaser";
 
 export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
 
@@ -47,6 +48,7 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
     this.conf = conf;
     this.grid = grid;
 
+    
     this.events = new Phaser.Events.EventEmitter();
     
     this.selection  = new UnitSelectionModule(this, scene);
@@ -76,6 +78,8 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
     this.setInteractive();
 
     this.on('pointerdown', this.onPointerDownWrapper);
+    
+    this.input.hitArea = new Geom.Rectangle(0,0,48,48);
   }
 
   public playUnitAnim(key: string, ignoreIfPlaying: boolean) {
@@ -116,6 +120,7 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
 
   /// tile sprite may be more than 32x32, so wrap clicks to only trigger at 32x32 area
   private onPointerDownWrapper = (pointer:any, localX: number, localY: number, camera: any) => {
+    console.log('click');
     let clickSize = 28;
     let offsetX = (this.width - clickSize)/2;
     let offsetY = (this.height - clickSize)/2;
