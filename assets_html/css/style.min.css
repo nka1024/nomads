@@ -15,7 +15,7 @@ textarea {
 }
 
 body {
-    background: #000 url(/login_assets/site-bg-v5.png) no-repeat center center fixed ;
+    background: #000 url(/assets_html/site-bg-v5.png) no-repeat center center fixed ;
     background-color: #0b1115;
 	font: 14px/1.231 "Shentox-Light", Arial;
 	line-height: 1.5;
@@ -23,11 +23,11 @@ body {
 	letter-spacing: 1.2px
 }
 
-@font-face {font-family: 'Shentox-Regular';src: url('/login_assets/fonts/33F95B_2_0.eot');src: url('/login_assets/fonts/33F95B_2_0.eot?#iefix') format('embedded-opentype'),url('/login_assets/fonts/33F95B_2_0.woff2') format('woff2'),url('/login_assets/fonts/33F95B_2_0.woff') format('woff'),url('/login_assets/fonts/33F95B_2_0.ttf') format('truetype');}
+@font-face {font-family: 'Shentox-Regular';src: url('/assets_html/fonts/33F95B_2_0.eot');src: url('/assets_html/fonts/33F95B_2_0.eot?#iefix') format('embedded-opentype'),url('/assets_html/fonts/33F95B_2_0.woff2') format('woff2'),url('/assets_html/fonts/33F95B_2_0.woff') format('woff'),url('/assets_html/fonts/33F95B_2_0.ttf') format('truetype');}
   
-@font-face {font-family: 'Shentox-Medium';src: url('/login_assets/fonts/33F95B_3_0.eot');src: url('/login_assets/fonts/33F95B_3_0.eot?#iefix') format('embedded-opentype'),url('/login_assets/fonts/33F95B_3_0.woff2') format('woff2'),url('/login_assets/fonts/33F95B_3_0.woff') format('woff'),url('/login_assets/fonts/33F95B_3_0.ttf') format('truetype');}
+@font-face {font-family: 'Shentox-Medium';src: url('/assets_html/fonts/33F95B_3_0.eot');src: url('/assets_html/fonts/33F95B_3_0.eot?#iefix') format('embedded-opentype'),url('/assets_html/fonts/33F95B_3_0.woff2') format('woff2'),url('/assets_html/fonts/33F95B_3_0.woff') format('woff'),url('/assets_html/fonts/33F95B_3_0.ttf') format('truetype');}
   
-@font-face {font-family: 'Shentox-Light';src: url('/login_assets/fonts/33F95B_4_0.eot');src: url('/login_assets/fonts/33F95B_4_0.eot?#iefix') format('embedded-opentype'),url('/login_assets/fonts/33F95B_4_0.woff2') format('woff2'),url('/login_assets/fonts/33F95B_4_0.woff') format('woff'),url('/login_assets/fonts/33F95B_4_0.ttf') format('truetype');}
+@font-face {font-family: 'Shentox-Light';src: url('/assets_html/fonts/33F95B_4_0.eot');src: url('/assets_html/fonts/33F95B_4_0.eot?#iefix') format('embedded-opentype'),url('/assets_html/fonts/33F95B_4_0.woff2') format('woff2'),url('/assets_html/fonts/33F95B_4_0.woff') format('woff'),url('/assets_html/fonts/33F95B_4_0.ttf') format('truetype');}
  
 
 section {
