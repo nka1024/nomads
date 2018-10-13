@@ -23,6 +23,7 @@ export type HeroData = {
 }
 
 export class Hero {
+  public resources: number = 0;
   public data: HeroData;
   constructor() {
     this.createTestData();

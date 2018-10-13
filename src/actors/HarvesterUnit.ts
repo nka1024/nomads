@@ -125,7 +125,7 @@ export class HarvesterUnit extends SquadUnit {
     this.showFloatyText(volume);
     if(this.grid.hasGrass(this.tile)) {
       this.grid.consumeGrass(this.tile, volume);
-      (this.scene as GameplayRootScene).grass += volume;
+      (this.scene as GameplayRootScene).hero.resources += volume;
     } else {
       let p = this.nearestGrassTile();
       if (p) {

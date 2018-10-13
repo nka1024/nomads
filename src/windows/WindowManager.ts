@@ -14,6 +14,7 @@ import { UnitsPanel } from "./UnitsPanel";
 import { ContextMenuWindow } from "./ContextMenuWindow";
 import { ZoomPanel } from "./ZoomPanel";
 import { TargetListPanel } from "./TargetsListPanel";
+import { ResourcesPanel } from "./ResourcesPanel";
 
 export class WindowManager {
 
@@ -28,6 +29,7 @@ export class WindowManager {
       ContextMenuWindow.initialize();
       ZoomPanel.initialize();
       TargetListPanel.initialize();
+      ResourcesPanel.initialize();
     } catch (e) {
       console.log('missing window')
     }

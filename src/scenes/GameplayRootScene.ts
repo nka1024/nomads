@@ -5,7 +5,6 @@
 * @license      Apache 2.0
 */
 
-import { IScoutable } from "../actors/IScouteable";
 
 import { WindowManager } from "../windows/WindowManager";
 import { AssetsLoader } from "../AssetsLoader";
@@ -14,21 +13,17 @@ import { UnitsPanel } from "../windows/UnitsPanel";
 
 import { HeroUnit } from "../actors/HeroUnit";
 import { SquadUnit } from "../actors/SquadUnit";
-import { ScoutUnit } from "../actors/ScoutUnit";
 
 import { CameraDragModule } from "../modules/scene/CameraDragModule";
 import { SceneCursorModule } from "../modules/scene/SceneCursorModule";
 import { MapImporterModule } from "../modules/scene/MapImporterModule";
 import { ContextMenuModule } from "../modules/scene/ContextMenuModule";
-import { ZoomPanel } from "../windows/ZoomPanel";
-import { ISelectable } from "../actors/ISelectable";
 import { GameobjectClicksModule } from "../modules/scene/GameobjectClicksModule";
-import { TargetListPanel } from "../windows/TargetsListPanel";
 import { BaseUnit } from "../actors/BaseUnit";
 import { Hero, UnitData } from "../Hero";
-import { CONST } from "../const/const";
 import { HarvesterUnit } from "../actors/HarvesterUnit";
 import { GameObjects } from "phaser";
+import { ResourcesPanel } from "../windows/ResourcesPanel";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -37,13 +32,12 @@ export class GameplayRootScene extends Phaser.Scene {
 
   // objects
   public player: HeroUnit;
-  public grass: number = 0;
+  public hero: Hero;
   private unitsGrp: Phaser.GameObjects.Group;
   private deployedSquads: Array<SquadUnit> = [];
   private selectedUnit: BaseUnit;
 
   // windows
-  private targetListPanel: TargetListPanel;
   private unitsPanel: UnitsPanel;
 
   // modules
@@ -79,25 +73,20 @@ export class GameplayRootScene extends Phaser.Scene {
 
     let mapsize = this.grid.gridSize * this.grid.tileSize;
     this.cameras.main.setBounds(0,0, mapsize, mapsize);
-    
+
     this.events.on('resize', (h: number, w: number) => {
       this.cameras.main.setSize(h, w);
     });
     WindowManager.initialize();
 
-    let zoomPanel = new ZoomPanel();
-    zoomPanel.zoomInButton.addEventListener('click', () => {
-      this.cameras.main.zoom += 1;
-    });
-    zoomPanel.zoomOutButton.addEventListener('click', () => {
-      this.cameras.main.zoom -= 1;
-    });
-    zoomPanel.show();
-
     this.grid.createFog();
 
     let player = new HeroUnit(this, 0, 0, this.grid, Hero.makeHeroConf());
-    let hero = new Hero();
+    this.hero = new Hero();
+
+    let resourcePanel = new ResourcesPanel();
+    resourcePanel.populate(this.hero);
+    resourcePanel.show();
 
     this.cursorModule.onClick = (cursor) => {
       if (!this.cameraDragModule.isDrag && !this.clicksTracker.objectClickedInThisFrame) {
@@ -140,7 +129,7 @@ export class GameplayRootScene extends Phaser.Scene {
     this.cameras.main.centerOn(player.x, player.y);
     this.unitsGrp.add(this.player);
     this.unitsPanel = new UnitsPanel();
-    this.unitsPanel.populate(hero.data.units);
+    this.unitsPanel.populate(this.hero.data.units);
     this.unitsPanel.show();
     this.unitsPanel.onUnitAttack = (conf: UnitData) => {
       let squad = this.findOrDeploySquad(conf);
@@ -158,20 +147,9 @@ export class GameplayRootScene extends Phaser.Scene {
       }
     }
 
-    this.targetListPanel = new TargetListPanel();
-    this.targetListPanel.show();
-    this.targetListPanel.onObjectSelectionChange = (object: any, selected: boolean) => {
-      if ("selection" in object) {
-        let obj = object as ISelectable;
-        if (selected) obj.selection.showHard();
-        else obj.selection.hideHard();
-      }
-    };
-    this.contextMenuModule.injectDependencies(this.targetListPanel);
-
+    
     this.clicksTracker.on('click', (object: BaseUnit) => {
       // deselect old
-      this.targetListPanel.deselectAll();
       let squad: SquadUnit = (object as SquadUnit)
       if (squad) {
         if (this.selectedUnit && this.selectedUnit.active) {
@@ -183,11 +161,6 @@ export class GameplayRootScene extends Phaser.Scene {
 
       if (object.conf.id.indexOf('enemy') == -1) {
         return;
-      }
-
-      // select new
-      if (this.targetListPanel.isTargeted(object)) {
-        this.targetListPanel.selectTarget(object);
       }
     });
 
@@ -204,38 +177,7 @@ export class GameplayRootScene extends Phaser.Scene {
     this.contextMenuModule.onMoveClicked = (object: BaseUnit) => {
       this.selectedUnit = object as SquadUnit;
     };
-    this.contextMenuModule.onReconClicked = (object: BaseUnit) => {
-      // Send scouts to that object
-      let from = this.grid.snapToGrid(player);
-      let to = this.grid.snapToGrid(object);
-      let scout = new ScoutUnit(this, from.x + 16, from.y + 16, this.grid, Hero.makeReconSquadConf());
 
-      object.aggressedBy(player);
-      // Start scouting when scouts arrive to object
-      scout.mover.onPathComplete = () => {
-
-        this.unitsGrp.remove(scout, true);
-        scout.destroy();
-        if ('scoutee' in object) {
-          (object as IScoutable).scoutee.beginScout(CONST.SCOUT_RATE, () => {
-            // Add object to target list 
-            this.targetListPanel.addTarget(object);
-
-            if (!this.targetListPanel.selectedTarget) {
-              this.targetListPanel.selectTarget(object);
-            }
-            // Show selection frame aroud object
-            if ("selection" in object) {
-              (object as ISelectable).selection.showSoft();
-            }
-          });
-        }
-      };
-      scout.mover.moveTo(to, true);
-
-      this.add.existing(scout);
-      this.unitsGrp.add(scout);
-    };
   }
 
   private recallSquad(squad: SquadUnit) {
@@ -302,7 +244,6 @@ export class GameplayRootScene extends Phaser.Scene {
     this.unitsPanel.deselect(unit);
 
     this.unitsGrp.remove(unit, true);
-    this.targetListPanel.removeTarget(unit);
     unit.destroy();
   }
 
