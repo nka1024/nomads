@@ -6,6 +6,7 @@
 */
 
 import { Point } from "../../types/Position";
+import { Input } from "phaser";
 
 export class CameraDragModule {
   private prevPointerX: number;
@@ -16,8 +17,13 @@ export class CameraDragModule {
 
   private dragStart: Point;
 
+  private cursorKeys: Input.Keyboard.CursorKeys;
+  private wasdKeys: Object;
+
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
+    this.cursorKeys = scene.input.keyboard.createCursorKeys();
+    this.wasdKeys = scene.input.keyboard.addKeys('W,A,S,D');
   }
 
 
@@ -25,6 +31,7 @@ export class CameraDragModule {
   
   public update() {
     this.cameraDrag();
+    this.cameraPan();
   }
 
   public get isDrag():boolean {
@@ -57,6 +64,22 @@ export class CameraDragModule {
 
     if (!ptr.isDown && !ptr.justUp) {
       this.distance = 0;
+    }
+  }
+
+  private cameraPan() {
+    let speed = 8;
+    if(this.cursorKeys.left.isDown || this.wasdKeys['A'].isDown) {
+      this.scene.cameras.main.scrollX -= speed;
+    }
+    if(this.cursorKeys.right.isDown || this.wasdKeys['D'].isDown) {
+      this.scene.cameras.main.scrollX += speed;
+    }
+    if(this.cursorKeys.up.isDown || this.wasdKeys['W'].isDown) {
+      this.scene.cameras.main.scrollY -= speed;
+    }
+    if(this.cursorKeys.down.isDown || this.wasdKeys['S'].isDown) {
+      this.scene.cameras.main.scrollY += speed;
     }
   }
 }
