@@ -1,5 +1,5 @@
 /**
-* @author       Kirill Nepomnyaschiy <nka1024@gmail.com>
+* @author       Kirill Nepomnyaschiy <nka1024e@gmail.com>
 * @copyright    nka1024
 * @description  nomads
 * @license      Apache 2.0
@@ -20,6 +20,9 @@ export declare type GrassData = {
 
 export class TileGrid {
 
+  public gridSize: number = 24;
+  public tileSize: number = 32;
+  
   private grid: Phaser.GameObjects.Image[];
   private tiles: Phaser.GameObjects.Image[][];
   private data: number[][];
@@ -37,13 +40,13 @@ export class TileGrid {
     this.claims = [];
     this.dests = [];
     this.fog = [];
-    for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < this.gridSize; i++) {
       this.data[i] = [];
       this.tiles[i] = [];
       this.claims[i] = [];
       this.dests[i] = [];
       this.fog[i] = [];
-      for (let j = 0; j < 24; j++) {
+      for (let j = 0; j < this.gridSize; j++) {
         this.data[i][j] = 0;
         this.tiles[i][j] = null;
         this.claims[i][j] = null;
@@ -64,8 +67,8 @@ export class TileGrid {
       }
       this.grid = null;
 
-      for (let i = 0; i < 24; i++) {
-        for (let j = 0; j < 24; j++) {
+      for (let i = 0; i < this.gridSize; i++) {
+        for (let j = 0; j < this.gridSize; j++) {
           this.tiles[i][j].destroy();
           this.tiles[i][j] = null;
         }
@@ -94,8 +97,8 @@ export class TileGrid {
     this.grid = grid;
 
     // grid tiles
-    for (let i = 0; i < 24; i++) {
-      for (let j = 0; j < 24; j++) {
+    for (let i = 0; i < this.gridSize; i++) {
+      for (let j = 0; j < this.gridSize; j++) {
         let n = this.data[i][j];
         let color = n == 0 ? "green" : "red";
         this.tiles[i][j] = this.createTile({ i: i, j: j }, color);
@@ -109,8 +112,8 @@ export class TileGrid {
   public createFog() {
 
     // grid tiles
-    for (let i = 0; i < 24; i++) {
-      for (let j = 0; j < 24; j++) {
+    for (let i = 0; i < this.gridSize; i++) {
+      for (let j = 0; j < this.gridSize; j++) {
         let n = this.data[i][j];
         this.fog[i][j] = this.createTile({ i: i, j: j }, '', true);
       }
@@ -311,14 +314,14 @@ export class TileGrid {
 
   public gridToWorld(tile: Tile): Point {
     return {
-      x: tile.j * 32,
-      y: tile.i * 32
+      x: tile.j * this.tileSize,
+      y: tile.i * this.tileSize
     };
   }
   public worldToGrid(p: Point): Tile {
     return {
-      i: Math.floor(p.y / 32),
-      j: Math.floor(p.x / 32)
+      i: Math.floor(p.y / this.tileSize),
+      j: Math.floor(p.x / this.tileSize)
     };
   }
 

@@ -77,7 +77,9 @@ export class GameplayRootScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(0x1f1f1f);
     this.cameras.main.zoom = 2;
 
-    this.cameras.main.setBounds(0,0, 768,768);
+    let mapsize = this.grid.gridSize * this.grid.tileSize;
+    this.cameras.main.setBounds(0,0, mapsize, mapsize);
+    
     this.events.on('resize', (h: number, w: number) => {
       this.cameras.main.setSize(h, w);
     });
