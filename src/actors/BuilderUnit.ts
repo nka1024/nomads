@@ -9,16 +9,20 @@ import { TileGrid } from "../TileGrid";
 import { BaseUnit } from "./BaseUnit";
 import { UnitData } from "../Hero";
 import { SquadUnit } from "./SquadUnit";
-import { Animations } from "phaser";
+import { Animations, GameObjects } from "phaser";
 import { FloatingText } from "../FloatingText";
+import { GameplayRootScene } from "../scenes/GameplayRootScene";
+import { SentryUnit } from "./SentryUnit";
 
 export class BuilderUnit extends SquadUnit {
 
   private static initializedBuilder: boolean = false;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData) {
+  private unitsGroup: GameObjects.Group;
 
+  constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData, unitsGroup: GameObjects.Group) {
     super(scene, x, y, grid, conf);
+    this.unitsGroup = unitsGroup;
 
     this.core.addModules([this.selection]);
 
@@ -121,7 +125,27 @@ export class BuilderUnit extends SquadUnit {
     if(this.buildProgress < 1) {
 
     } else {
-        this.stopBuild();
+      let conf = {
+        id: 'type_3_unit_1',
+        icon: "infantry_3_icon",
+        name: "Турель",
+        type: "sentry",
+        side: 'defend',
+        range: 2,
+        health: 1,
+        energy: 1,
+        quantity: 3
+      };
+      let from = this.grid.gridToWorld(this.tile);
+      let squad = new SentryUnit(this.scene, from.x + 16, from.y + 16, this.grid, conf);
+      this.scene.add.existing(squad);
+      this.unitsGroup.add(squad);
+      this.stopBuild();
+
+      let tile1 = this.tile;
+      let tile2 = this.grid.findClosestFreeTile(this.tile, this.tile);
+      this.mover.placeToTile(tile2);
+      squad.mover.placeToTile(tile1);
     }
   }
 

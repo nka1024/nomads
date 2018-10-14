@@ -27,7 +27,8 @@ export class SentryUnit extends SquadUnit {
     super(scene, x, y, grid, conf);
 
     this.playUnitAnim('idle', true);
-    this.combat.pacifist = true;
+
+    this.anims.setCurrentFrame(SentryUnit.idleAnim.frames[0]);
     this.spinTimer = setInterval(() => { this.spinTower() }, 1000);
   }
 
@@ -74,9 +75,11 @@ export class SentryUnit extends SquadUnit {
 
     this.flipX = false;
 
-    if (this.state.isMoving) {
+    if (this.state.isFighting) {
       let frames = SentryUnit.idleAnim.frames;
-      let speed = this.mover.speed;
+      let t1 = this.tile;
+      let t2 = this.state.fightTarget.tile;
+      let speed = {x: t2.j - t1.j, y: t2.i - t1.i}
 
       if (speed.x > 0 && speed.y == 0) this.anims.setCurrentFrame(frames[2])
       if (speed.x > 0 && speed.y > 0) this.anims.setCurrentFrame(frames[1])

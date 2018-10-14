@@ -37,9 +37,9 @@ export class UnitShootModule implements IUnitModule {
     let a = this.owner;
     let b = this.state.fightTarget;
     var angle = Math.atan2(b.y - a.y, b.x - a.x) * (180 / Math.PI);
-    
-    let p1 = this.rotate({x: 0, y: -3}, -angle);
-    let p2 = this.rotate({x: 0, y: 3}, -angle);
+
+    let p1 = this.rotate({ x: 0, y: -3 }, -angle);
+    let p2 = this.rotate({ x: 0, y: 3 }, -angle);
     this.makeBullet(p1);
     this.makeBullet(p2);
   }
@@ -79,6 +79,10 @@ export class UnitShootModule implements IUnitModule {
 
 
   private synchronizeShooting() {
+    if (this.owner.conf.type == "sentry") {
+      console.log('sentry fires gun');
+    }
+    
     if (this.state.isFighting && !this.isShooting) {
       this.startShooting();
     } else if (!this.state.isFighting && this.isShooting) {

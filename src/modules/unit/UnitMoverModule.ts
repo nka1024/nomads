@@ -54,6 +54,7 @@ export class UnitMoverModule implements IUnitModule {
   }
   /// moves unit instantly
   public placeToPoint(dest: Point) {
+    this.unclaimTile();
     this.unit.x = dest.x + 16;
     this.unit.y = dest.y + 16;
     this.claimTile(this.unit.tile);

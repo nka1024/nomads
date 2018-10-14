@@ -25,6 +25,7 @@ import { HarvesterUnit } from "../actors/HarvesterUnit";
 import { GameObjects } from "phaser";
 import { ResourcesPanel } from "../windows/ResourcesPanel";
 import { BuilderUnit } from "../actors/BuilderUnit";
+import { SentryUnit } from "../actors/SentryUnit";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -165,7 +166,7 @@ export class GameplayRootScene extends Phaser.Scene {
       }
     });
 
-    // this.createEnemy(8, 11);
+    this.createEnemy(4, 11);
     // this.createEnemy(13, 18);
     // this.createEnemy(8, 19);
     // this.createEnemy(15, 10);
@@ -213,7 +214,7 @@ export class GameplayRootScene extends Phaser.Scene {
     enemyUnit.events.addListener('death', () => { this.handleUnitDeath(enemyUnit); });
   }
 
-  private findOrDeploySquad(conf: UnitData) {
+  public findOrDeploySquad(conf: UnitData) {
     let squad: SquadUnit = null;
     for (let s of this.deployedSquads) {
       if (s.conf.id == conf.id) {
@@ -227,7 +228,9 @@ export class GameplayRootScene extends Phaser.Scene {
       if (conf.type == 'harvester') {
         squad = new HarvesterUnit(this, from.x + 16, from.y + 16, this.grid, conf);
       } else if (conf.type == 'builder') {
-        squad = new BuilderUnit(this, from.x + 16, from.y + 16, this.grid, conf);
+        squad = new BuilderUnit(this, from.x + 16, from.y + 16, this.grid, conf, this.unitsGrp);
+      } else if (conf.type == 'sentry') {
+        squad = new SentryUnit(this, from.x + 16, from.y + 16, this.grid, conf);
       } else {
         squad = new SquadUnit(this, from.x + 16, from.y + 16, this.grid, conf);
       }
