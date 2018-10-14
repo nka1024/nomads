@@ -28,11 +28,6 @@ export class HarvesterUnit extends SquadUnit {
     this.scoutee = new ScouteeModule(this.progress);
     this.core.addModules([this.scoutee, this.selection]);
 
-    this.onFightEnd = () => {
-      // this.chase.restartIfHasTarget();
-    };
-    this.combat.events.on('fight_end', this.onFightEnd);
-
     this.playUnitAnim('idle', true);
     this.combat.pacifist = true;
   }
@@ -151,9 +146,11 @@ export class HarvesterUnit extends SquadUnit {
   }
 
   private stopMine() {
-    this.isMining = false;
-    clearInterval(this.mineTimer);
-    this.playUnitAnim('idle', true);
+    if (this.isMining) {
+      this.isMining = false;
+      clearInterval(this.mineTimer);
+      this.playUnitAnim('idle', true);
+    }
   }
 
 
@@ -181,8 +178,7 @@ export class HarvesterUnit extends SquadUnit {
   }
 
   destroy() {
-    if (this.combat) this.combat.events.removeListener('fight_end', this.onFightEnd);
-
+    this.stopMine();
     this.combat = null;
     this.scoutee = null;
     this.progress = null;

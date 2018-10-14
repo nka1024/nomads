@@ -126,10 +126,12 @@ export class BuilderUnit extends SquadUnit {
   }
 
   private stopBuild() {
-    this.progress.hide();
-    this.isBuilding = false;
-    clearInterval(this.buildTimer);
-    this.playUnitAnim('idle', true);
+    if (this.isBuilding) {
+      this.progress.hide();
+      this.isBuilding = false;
+      clearInterval(this.buildTimer);
+      this.playUnitAnim('idle', true);
+    }
   }
 
 
@@ -154,6 +156,7 @@ export class BuilderUnit extends SquadUnit {
   }
 
   destroy() {
+    this.stopBuild();
     this.combat = null;
     this.progress = null;
     this.selection = null;

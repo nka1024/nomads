@@ -33,6 +33,7 @@ export class SquadUnit extends BaseUnit implements ISelectable {
       // this.chase.restartIfHasTarget();
     };
     this.combat.events.on('fight_end', this.onFightEnd);
+    if()
     this.initializeOnce();
 
     this.playUnitAnim('idle', true);
