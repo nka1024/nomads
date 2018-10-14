@@ -118,7 +118,7 @@ export class AssetsLoader {
       endFrame: 7
     });
 
-    scene.load.spritesheet('canon_idle_anim_48x48', './assets/sprites/canon_idle_anim_48x48.png', {
+    scene.load.spritesheet('sentry_idle_anim_48x48', './assets/sprites/sentry_idle_anim_48x48.png', {
       frameWidth: 48,
       frameHeight: 48,
       endFrame: 8 

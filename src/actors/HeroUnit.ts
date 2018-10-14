@@ -59,9 +59,7 @@ export class HeroUnit extends BaseUnit implements IUnit, IScoutable {
   }
 
   public playUnitAnim(key: string, ignoreIfPlaying: boolean) {
-    let anim = 'player_' + key;
-    // this.anims.play(anim, ignoreIfPlaying);
-    // this.anims.setCurrentFrame(this.idleAnim.frames[0]);
+    
   }
 
   update() {

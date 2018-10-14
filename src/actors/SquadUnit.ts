@@ -17,8 +17,6 @@ export class SquadUnit extends BaseUnit implements ISelectable {
   private squadType: number = 1;
 
   private static initialized: boolean = false;
-  private static idleAnim: Phaser.Animations.Animation;
-  private static walkAnim: Phaser.Animations.Animation;
 
   protected onFightEnd: () => void;
 
@@ -50,27 +48,23 @@ export class SquadUnit extends BaseUnit implements ISelectable {
   }
 
   protected initializeOnce() {
-    if (!this.isInitialized()) {
-      this.setInitialized(true);
-      var idleAnim = {
-        key: 'squad_idle',
-        frames: this.scene.anims.generateFrameNumbers('gatherer_gather_anim_48x48', { start: 0, end: 0 }),
-        frameRate: 5,
-        repeat: -1,
-        repeatDelay: 0
-      };
-      SquadUnit.idleAnim = this.scene.anims.create(idleAnim);
-      
-      var walkAnim = {
-        key: 'squad_walk',
-        frames: this.scene.anims.generateFrameNumbers('gatherer_walk_anim_48x48', { start: 0, end: 4 }),
-        frameRate: 5,
-        repeat: -1,
-        repeatDelay: 0
-      };
-      SquadUnit.walkAnim = this.scene.anims.create(walkAnim);
-    }
-
+    var idleAnim = {
+      key: 'squad_idle',
+      frames: this.scene.anims.generateFrameNumbers('gatherer_gather_anim_48x48', { start: 0, end: 0 }),
+      frameRate: 5,
+      repeat: -1,
+      repeatDelay: 0
+    };
+    this.scene.anims.create(idleAnim);
+    
+    var walkAnim = {
+      key: 'squad_walk',
+      frames: this.scene.anims.generateFrameNumbers('gatherer_walk_anim_48x48', { start: 0, end: 4 }),
+      frameRate: 5,
+      repeat: -1,
+      repeatDelay: 0
+    };
+    this.scene.anims.create(walkAnim);
   }
 
   // fight, walk, idle
@@ -90,20 +84,9 @@ export class SquadUnit extends BaseUnit implements ISelectable {
 
     super.update();
 
-    // let frames = SquadUnit.idleAnim.frames;
-    // let speed = this.mover.speed;
-
     if (this.mover.speed.x > 0) this.flipX = false;
     if (this.mover.speed.x < 0) this.flipX = true;
-    // if (speed.x > 0 && speed.y == 0) this.anims.setCurrentFrame(frames[3])
-    // if (speed.x > 0 && speed.y > 0) this.anims.setCurrentFrame(frames[2])
-    // if (speed.x > 0 && speed.y < 0) this.anims.setCurrentFrame(frames[4])
-    // if (speed.x < 0 && speed.y == 0) this.anims.setCurrentFrame(frames[7])
-    // if (speed.x < 0 && speed.y < 0) this.anims.setCurrentFrame(frames[6])
-    // if (speed.x < 0 && speed.y > 0) this.anims.setCurrentFrame(frames[0])
-    // if (speed.x == 0 && speed.y > 0) this.anims.setCurrentFrame(frames[1])
-    // if (speed.x == 0 && speed.y < 0) this.anims.setCurrentFrame(frames[5])
-
+  
     this.targetScanUpdate();
   }
 
