@@ -14,14 +14,7 @@ import { Point } from "../../types/Position";
 export class ProgressModule implements IUnitModule {
 
   // Public
-  private _progress: number = 0;
-  public get progress():number {
-    return this._progress;
-  }
-  public set progress(value: number) {
-    this._progress = value;
-  }
-
+  public progress: number = 0;
   
   public text: string;
 
@@ -154,9 +147,6 @@ export class ProgressModule implements IUnitModule {
   }
 
   private updateLine(progress: number) {
-    if (this.unit.conf.type == 'builder' && this.lineFgTexture == 'progress_yellow_50x2') {
-      console.log('progress', this.progress);
-    }
     if (this.lineBg && this.lineFg) {
       this.lineBg.x = this.unit.x + this.lineBgOffset.x;
       this.lineBg.y = this.unit.y + this.lineBgOffset.y;
