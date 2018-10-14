@@ -232,6 +232,9 @@ export class GameplayRootScene extends Phaser.Scene {
         squad = new SquadUnit(this, from.x + 16, from.y + 16, this.grid, conf);
       }
       squad.events.addListener('death', () => { this.handleUnitDeath(squad); });
+      let tile = this.grid.findClosestFreeTile(this.player.tile, this.player.tile);
+      let pt = this.grid.gridToWorld(tile);
+      squad.mover.moveTo(pt, true);
     }
     return squad;
   }
