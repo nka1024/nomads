@@ -10,6 +10,7 @@ import { GameobjectClicksModule } from "./GameobjectClicksModule";
 import { TargetListPanel } from "../../windows/TargetsListPanel";
 import { BaseUnit } from "../../actors/BaseUnit";
 import { Point } from "../../types/Position";
+import { BuilderUnit } from "../../actors/BuilderUnit";
 
 export class ContextMenuModule {
 
@@ -80,7 +81,9 @@ export class ContextMenuModule {
   private showContextWindowForObject(object: BaseUnit) {
     this.destroyContextWindow();
 
-    if (object.conf.id.indexOf('type') != -1) {
+    if (object.conf.type == 'builder') { 
+      this.contextWindow = this.makeBuilderSquadWindow(object);
+    } else if (object.conf.id.indexOf('type') != -1) {
       this.contextWindow = this.makeHeroSquadWindow(object);
     } else {
       this.contextWindow = this.makeEnemySquadWindow(object);
@@ -95,7 +98,7 @@ export class ContextMenuModule {
 
   private makeHeroSquadWindow(object: BaseUnit): ContextMenuWindow {
     let p = this.worldToScreen(object);
-    let buttons = ["Move", "Return"];
+    let buttons = ["Move", "Вернуть"];
     let window = new ContextMenuWindow(p.x - ContextMenuWindow.defaultWidth / 2, p.y + 16, buttons);
     window.buttons[0].addEventListener('click', () => {
       this.onMoveClicked(object);
@@ -117,6 +120,24 @@ export class ContextMenuModule {
     });
     return window;
   }
+
+  private makeBuilderSquadWindow(object: BaseUnit): ContextMenuWindow {
+    let builder = object as BuilderUnit;
+    let p = this.worldToScreen(object);
+    let buttons = ["Строить", "Ремонт", "Вернуть"];
+    let window = new ContextMenuWindow(p.x - ContextMenuWindow.defaultWidth / 2, p.y + 16, buttons);
+    window.buttons[0].addEventListener('click', () => {
+      builder.startBuild();
+    });
+    window.buttons[1].addEventListener('click', () => {
+      this.onMoveClicked(object);
+    });
+    window.buttons[2].addEventListener('click', () => {
+      this.onReturnClicked(object);
+    });
+    return window
+  }
+
 
   private destroyContextWindow() {
     if (this.contextWindow != null) {

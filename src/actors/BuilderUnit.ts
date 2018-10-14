@@ -6,13 +6,10 @@
 */
 
 import { TileGrid } from "../TileGrid";
-import { ScouteeModule } from "../modules/unit/ScouteeModule";
 import { BaseUnit } from "./BaseUnit";
 import { UnitData } from "../Hero";
-import { GameplayRootScene } from "../scenes/GameplayRootScene";
 import { SquadUnit } from "./SquadUnit";
 import { Animations } from "phaser";
-import { Tile } from "../types/Position";
 import { FloatingText } from "../FloatingText";
 
 export class BuilderUnit extends SquadUnit {
@@ -23,8 +20,7 @@ export class BuilderUnit extends SquadUnit {
 
     super(scene, x, y, grid, conf);
 
-    this.scoutee = new ScouteeModule(this.progress);
-    this.core.addModules([this.scoutee, this.selection]);
+    this.core.addModules([this.selection]);
 
     this.playUnitAnim('idle', true);
     this.combat.pacifist = true;
@@ -67,7 +63,7 @@ export class BuilderUnit extends SquadUnit {
 
       var buildAnim = {
         key: 'builder_build',
-        frames: this.scene.anims.generateFrameNumbers('builder_build_anim_48x48', { start: 5, end: 9 }),
+        frames: this.scene.anims.generateFrameNumbers('builder_build_anim_48x48', { start: 2, end: 6 }),
         frameRate: 5,
         repeat: -1,
         repeatDelay: 0
@@ -76,8 +72,8 @@ export class BuilderUnit extends SquadUnit {
       this.scene.anims.create(buildAnim);
 
       this.on('animationcomplete', (anim: Animations.Animation, frame: Animations.AnimationFrame) => {
-        if (anim.key == 'harvester_mine_start') {
-          this.anims.play('harvester_mine', true);
+        if (anim.key == 'builder_build_start') {
+          this.anims.play('builder_build', true);
         }
       });
     }
@@ -111,6 +107,7 @@ export class BuilderUnit extends SquadUnit {
       this.isBuilding = true;
       this.playUnitAnim('build', true);
 
+      this.progress.show();
       this.buildTimer = setInterval(() => { this.performBuilding() }, 1000);
     }
   }
@@ -119,8 +116,9 @@ export class BuilderUnit extends SquadUnit {
     let progress = Math.floor(Math.random() * 10) + 1;
 
     this.showFloatyText(progress);
-    this.buildProgress += progress / 10;
-    if(this.buildProgress >= 1) {
+    this.buildProgress += progress / 100;
+    this.progress.progress = this.buildProgress;
+    if(this.buildProgress < 1) {
 
     } else {
         this.stopBuild();
@@ -128,6 +126,7 @@ export class BuilderUnit extends SquadUnit {
   }
 
   private stopBuild() {
+    this.progress.hide();
     this.isBuilding = false;
     clearInterval(this.buildTimer);
     this.playUnitAnim('idle', true);
@@ -151,12 +150,11 @@ export class BuilderUnit extends SquadUnit {
     let floatyX = this.x + Math.random() * 10 - 5;
     let floatyY = this.y - Math.random() * 10 - 10;
     
-    new FloatingText(this.scene, floatyX, floatyY, '+' + Math.floor(damage).toString(), 'yellow');
+    new FloatingText(this.scene, floatyX, floatyY, '.', 'yellow');
   }
 
   destroy() {
     this.combat = null;
-    this.scoutee = null;
     this.progress = null;
     this.selection = null;
     super.destroy()

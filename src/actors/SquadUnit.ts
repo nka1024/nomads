@@ -5,19 +5,14 @@
 * @license      Apache 2.0
 */
 
-import { IScoutable } from "./IScouteable";
-
 import { TileGrid } from "../TileGrid";
-import { ScouteeModule } from "../modules/unit/ScouteeModule";
 import { ISelectable } from "./ISelectable";
 import { BaseUnit } from "./BaseUnit";
 import { UnitData } from "../Hero";
 import { CONST } from "../const/const";
 import { GameplayRootScene } from "../scenes/GameplayRootScene";
 
-export class SquadUnit extends BaseUnit implements IScoutable, ISelectable {
-
-  public scoutee: ScouteeModule;
+export class SquadUnit extends BaseUnit implements ISelectable {
 
   private squadType: number = 1;
 
@@ -32,8 +27,7 @@ export class SquadUnit extends BaseUnit implements IScoutable, ISelectable {
     super(scene, x, y, CONST.SQUAD_SPEED, grid, conf, 'infantry_1_idle_48x48');
 
     this.squadType = this.side == "attack" ? 2 : 1;
-    this.scoutee = new ScouteeModule(this.progress);
-    this.core.addModules([this.scoutee, this.selection]);
+    this.core.addModules([this.selection]);
 
     this.onFightEnd = () => {
       // this.chase.restartIfHasTarget();
@@ -113,7 +107,6 @@ export class SquadUnit extends BaseUnit implements IScoutable, ISelectable {
     if (this.combat) this.combat.events.removeListener('fight_end', this.onFightEnd);
 
     this.combat = null;
-    this.scoutee = null;
     this.progress = null;
     this.selection = null;
     super.destroy()
