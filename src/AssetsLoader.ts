@@ -106,7 +106,23 @@ export class AssetsLoader {
       endFrame: 5
     });
 
+    scene.load.spritesheet('builder_walk_anim_48x48', './assets/sprites/builder_walk_anim_48x48.png', {
+      frameWidth: 48,
+      frameHeight: 48,
+      endFrame: 5
+    });
     
+    scene.load.spritesheet('builder_build_anim_48x48', './assets/sprites/builder_build_anim_48x48.png', {
+      frameWidth: 48,
+      frameHeight: 48,
+      endFrame: 7
+    });
+
+    scene.load.spritesheet('canon_idle_anim_48x48', './assets/sprites/canon_idle_anim_48x48.png', {
+      frameWidth: 48,
+      frameHeight: 48,
+      endFrame: 8 
+    });
 
     for (let idx = 1; idx <= ASSETS.TERRAIN_MAX; idx++) {
       scene.load.image("terrain_" + idx, "./assets/tilemap/terrain_" + idx + ".png");

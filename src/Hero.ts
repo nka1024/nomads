@@ -82,22 +82,19 @@ export class Hero {
       health: 1,
       energy: 1,
       range: 2,
-      quantity: 99
+      quantity: 1
     });
 
-    for (let i in [0, 1,2,3,4]) {
-      this.data.units.push({
-        id: 'type_' + (i + 2) + '_unit_1',
-        icon: "infantry_2_icon",
-        side: 'defend',
-        name: "Infantry",
-        type: "infantry",
-        range: 1,
-        health: Math.random(),
-        energy: Math.random(),
-        quantity: Math.floor(Math.random() * 10) * 10
-      });
-    }
-
+    this.data.units.push({
+      id: 'type_2_unit_1',
+      icon: "infantry_2_icon",
+      name: "Infantry",
+      type: "builder",
+      side: 'defend',
+      range: 1,
+      health: 1,
+      energy: 1,
+      quantity: 2
+    });
   }
 }

@@ -24,6 +24,7 @@ import { Hero, UnitData } from "../Hero";
 import { HarvesterUnit } from "../actors/HarvesterUnit";
 import { GameObjects } from "phaser";
 import { ResourcesPanel } from "../windows/ResourcesPanel";
+import { BuilderUnit } from "../actors/BuilderUnit";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -225,6 +226,8 @@ export class GameplayRootScene extends Phaser.Scene {
       let from = this.grid.snapToGrid(this.player);
       if (conf.type == 'harvester') {
         squad = new HarvesterUnit(this, from.x + 16, from.y + 16, this.grid, conf);
+      } else if (conf.type == 'builder') {
+        squad = new BuilderUnit(this, from.x + 16, from.y + 16, this.grid, conf);
       } else {
         squad = new SquadUnit(this, from.x + 16, from.y + 16, this.grid, conf);
       }
