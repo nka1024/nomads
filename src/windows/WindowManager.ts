@@ -15,6 +15,7 @@ import { ContextMenuWindow } from "./ContextMenuWindow";
 import { ZoomPanel } from "./ZoomPanel";
 import { TargetListPanel } from "./TargetsListPanel";
 import { ResourcesPanel } from "./ResourcesPanel";
+import { MessageWindow } from "./MessageWindow";
 
 export class WindowManager {
 
@@ -28,6 +29,7 @@ export class WindowManager {
       UnitsPanel.initialize();
       ContextMenuWindow.initialize();
       ZoomPanel.initialize();
+      MessageWindow.initialize();
       TargetListPanel.initialize();
       ResourcesPanel.initialize();
     } catch (e) {

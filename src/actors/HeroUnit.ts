@@ -55,7 +55,7 @@ export class HeroUnit extends BaseUnit implements IUnit, IScoutable {
     };
     this.walkAnim = scene.anims.create(walkAnim);
 
-    this.playUnitAnim('idle', true);
+    this.anims.setCurrentFrame(this.idleAnim.frames[4]);
   }
 
   public playUnitAnim(key: string, ignoreIfPlaying: boolean) {

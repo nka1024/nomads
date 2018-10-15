@@ -11,6 +11,8 @@ import { TargetListPanel } from "../../windows/TargetsListPanel";
 import { BaseUnit } from "../../actors/BaseUnit";
 import { Point } from "../../types/Position";
 import { BuilderUnit } from "../../actors/BuilderUnit";
+import { OkPopup } from "../../windows/OkPopup";
+import { MessageWindow } from "../../windows/MessageWindow";
 
 export class ContextMenuModule {
 
@@ -130,14 +132,17 @@ export class ContextMenuModule {
       builder.startBuild();
     });
     window.buttons[1].addEventListener('click', () => {
-      this.onMoveClicked(object);
+      let popup = new MessageWindow('', 'Выберите цель ремонта');
+      popup.image = "builder_fullsize";
+      popup.left = 0;
+      popup.addButton('отмена', () => {popup.destroy()});
+      popup.show();
     });
     window.buttons[2].addEventListener('click', () => {
       this.onReturnClicked(object);
     });
     return window
   }
-
 
   private destroyContextWindow() {
     if (this.contextWindow != null) {

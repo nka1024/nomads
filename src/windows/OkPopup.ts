@@ -1,11 +1,11 @@
-import { BaseWindow } from "./BaseWindow";
-
 /**
 * @author       Kirill Nepomnyaschiy <nka1024@gmail.com>
 * @copyright    nka1024
 * @description  nomads
 * @license      Apache 2.0
 */
+
+import { BaseWindow } from "./BaseWindow";
 
 export class OkPopup extends BaseWindow {
     // static

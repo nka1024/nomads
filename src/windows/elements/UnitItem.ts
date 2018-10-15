@@ -25,6 +25,7 @@ export class UnitItem {
     this.quantity = unit.querySelector(".unit_type_item_quantity");
     this.health = unit.querySelector(".unit_type_item_health");
     this.energy = unit.querySelector(".unit_type_item_energy");
+    this.energy.style.display = 'none';
     this.setSelected(false);
   }
 
