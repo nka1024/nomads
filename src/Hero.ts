@@ -75,7 +75,7 @@ export class Hero {
     this.data = { units: [] };
     this.data.units.push({
       id: "type_1_unit_1",
-      icon: "archers_1_icon",
+      icon: "icon_harvester",
       name: "Жнец",
       type: "harvester",
       side: 'defend',
@@ -87,7 +87,7 @@ export class Hero {
 
     this.data.units.push({
       id: 'type_2_unit_1',
-      icon: "infantry_2_icon",
+      icon: "icon_builder",
       name: "Билдер",
       type: "builder",
       side: 'defend',
