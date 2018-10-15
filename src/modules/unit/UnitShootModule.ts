@@ -34,6 +34,10 @@ export class UnitShootModule implements IUnitModule {
   // private
 
   private fire() {
+    if (!this.owner || !this.state.fightTarget) {
+      console.log('shoot module didnt fire because there was no target');
+      return;
+    }
     let a = this.owner;
     let b = this.state.fightTarget;
     var angle = Math.atan2(b.y - a.y, b.x - a.x) * (180 / Math.PI);
@@ -79,10 +83,6 @@ export class UnitShootModule implements IUnitModule {
 
 
   private synchronizeShooting() {
-    if (this.owner.conf.type == "sentry") {
-      console.log('sentry fires gun');
-    }
-    
     if (this.state.isFighting && !this.isShooting) {
       this.startShooting();
     } else if (!this.state.isFighting && this.isShooting) {

@@ -59,6 +59,7 @@ export class UnitCombatModule implements IUnitModule {
   }
 
   destroy() {
+    this.stopFight('cleanup');
     this.state.fightTarget = null;
     this.state.isFighting = false;
     this.owner = null;
@@ -112,7 +113,7 @@ export class UnitCombatModule implements IUnitModule {
     this.attackTimer = setInterval(() => { this.performAttack() }, 1000);
   }
 
-  /// reason: 'death', 'dead_target', 'no_target', 'return', 'command', 'target_too_far'
+  /// reason: 'death', 'dead_target', 'no_target', 'return', 'command', 'target_too_far', 'cleanup'
   public stopFight(reason: string) {
     console.log('stop fight: ' + this.owner.conf.id + ' (reason: ' + reason + ')');
     if (this.mover) {
@@ -172,6 +173,7 @@ export class UnitCombatModule implements IUnitModule {
       // if (!squad.state.isMoving) {
         console.log('wanna attack ' + squad.conf.id);
         this.startFight(squad);
+        break;
       // }
     }
   }
