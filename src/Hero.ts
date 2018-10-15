@@ -11,6 +11,9 @@ export type UnitData = {
   icon: string;
   name: string;
   side: string;
+  armor: number;
+  attack: number;
+  defense: number;
   health: number;
   energy: number;
   range: number;
@@ -36,6 +39,9 @@ export class Hero {
       icon: "infantry_1_icon",
       type: "hero",
       side: 'defend',
+      armor: 50,
+      attack: 4,
+      defense: 2,
       health: 1,
       energy: 1,
       range: 1,
@@ -43,6 +49,22 @@ export class Hero {
     };
   }
 
+  public static makeSentryConf(): UnitData {
+    return {
+      id: 'type_3_unit_1',
+      icon: "infantry_3_icon",
+      name: "Турель",
+      type: "sentry",
+      side: 'defend',
+      armor: 20,
+      attack: 3,
+      defense: 1,
+      range: 2,
+      health: 1,
+      energy: 1,
+      quantity: 3
+    };
+  }
   public static makeReconSquadConf(): UnitData {
     return {
       id: "recon_squad",
@@ -50,6 +72,9 @@ export class Hero {
       icon: "infantry_1_icon",
       side: 'defend',
       type: "scout",
+      armor: 1,
+      attack: 0,
+      defense: 0,
       health: 1,
       energy: 1,
       range: 1,
@@ -64,6 +89,9 @@ export class Hero {
       name: "Rogues",
       side: 'attack',
       type: "infantry",
+      armor: 30,
+      attack: 2,
+      defense: 1,
       health: 1,
       energy: 1,
       range: 2,
@@ -79,6 +107,9 @@ export class Hero {
       name: "Жнец",
       type: "harvester",
       side: 'defend',
+      armor: 30,
+      attack: 0,
+      defense: 0,
       health: 1,
       energy: 1,
       range: 2,
@@ -91,6 +122,9 @@ export class Hero {
       name: "Билдер",
       type: "builder",
       side: 'defend',
+      armor: 40,
+      attack: 0,
+      defense: 1,
       range: 1,
       health: 1,
       energy: 1,

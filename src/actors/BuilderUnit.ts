@@ -7,11 +7,10 @@
 
 import { TileGrid } from "../TileGrid";
 import { BaseUnit } from "./BaseUnit";
-import { UnitData } from "../Hero";
+import { UnitData, Hero } from "../Hero";
 import { SquadUnit } from "./SquadUnit";
 import { Animations, GameObjects } from "phaser";
 import { FloatingText } from "../FloatingText";
-import { GameplayRootScene } from "../scenes/GameplayRootScene";
 import { SentryUnit } from "./SentryUnit";
 
 export class BuilderUnit extends SquadUnit {
@@ -117,7 +116,7 @@ export class BuilderUnit extends SquadUnit {
   }
 
   private performBuilding() {
-    let progress = Math.floor(Math.random() * 10) + 1;
+    let progress = Math.floor(Math.random() * 10) + 100;
 
     this.showFloatyText(progress);
     this.buildProgress += progress / 100;
@@ -125,17 +124,7 @@ export class BuilderUnit extends SquadUnit {
     if(this.buildProgress < 1) {
 
     } else {
-      let conf = {
-        id: 'type_3_unit_1',
-        icon: "infantry_3_icon",
-        name: "Турель",
-        type: "sentry",
-        side: 'defend',
-        range: 2,
-        health: 1,
-        energy: 1,
-        quantity: 3
-      };
+      let conf = Hero.makeSentryConf()
       let from = this.grid.gridToWorld(this.tile);
       let squad = new SentryUnit(this.scene, from.x + 16, from.y + 16, this.grid, conf);
       this.scene.add.existing(squad);

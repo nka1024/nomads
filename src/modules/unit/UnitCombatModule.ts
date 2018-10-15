@@ -81,14 +81,14 @@ export class UnitCombatModule implements IUnitModule {
           this.startFight(attack.attacker);
         }
       } else {
-        if (this.owner.conf.health - attack.damage <= 0) {
+        if ((this.owner.conf.health - (attack.damage/this.owner.conf.armor)) <= 0) {
           this.stopFight("death");
         }
       }
     }
 
     // only destroy after all logic
-    this.owner.conf.health -= attack.damage;
+    this.owner.conf.health -= attack.damage/this.owner.conf.armor;
 
     this.events.emit("damage_taken");
     if (this.owner.conf.health <= 0) {
@@ -146,7 +146,8 @@ export class UnitCombatModule implements IUnitModule {
       console.log('stopping attack: target is dead');
       this.stopFight("dead_target")
     } else {
-      let damage = (Math.random() / 100 + Math.random() / 50) * 2;
+      // let damage = (Math.random() / 100 + Math.random() / 50) * 2;
+      let damage = this.owner.conf.attack - this.owner.conf.defense;
       this.target.combat.sufferAttack({ attacker: this.owner, damage: damage });
 
       this.showFloatyText(damage);
@@ -163,7 +164,7 @@ export class UnitCombatModule implements IUnitModule {
     let floatyY = this.target.y - Math.random() * 10 - 10;
     let color = this.owner.conf.id.indexOf('enemy') != -1 ? 'red' : 'white';
 
-    new FloatingText(this.scene, floatyX, floatyY, Math.floor(damage * 1000).toString(), color);
+    new FloatingText(this.scene, floatyX, floatyY, Math.floor(damage).toString(), color);
   }
 
   private findTargets() {

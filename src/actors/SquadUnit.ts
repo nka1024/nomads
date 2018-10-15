@@ -109,18 +109,6 @@ export class SquadUnit extends BaseUnit implements ISelectable {
       }
     }
   }
-  // Fighting
-
-
-  // private flipOriginByDirection(direction: Tile, flip: boolean) {
-  //   if (direction.j == 1) this.originX = 0.5
-  //   else if (direction.j == 0) this.originX = flip ? 0.25 : 0.75;
-  //   else if (direction.j == 2) this.originX = flip ? 0.75 : 0.25;
-
-  //   if (direction.i == 1) this.originY = 0.5;
-  //     else if (direction.i == 0) this.originY = flip ? 0.25 : 0.75;
-  //      else if (direction.i == 2) this.originY = flip ? 0.75 : 0.25;
-  // }
 
 
   public aggressedBy(who: BaseUnit) {

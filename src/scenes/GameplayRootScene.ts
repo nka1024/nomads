@@ -26,6 +26,7 @@ import { GameObjects } from "phaser";
 import { ResourcesPanel } from "../windows/ResourcesPanel";
 import { BuilderUnit } from "../actors/BuilderUnit";
 import { SentryUnit } from "../actors/SentryUnit";
+import { K10Unit } from "../actors/K10Unit";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -167,6 +168,7 @@ export class GameplayRootScene extends Phaser.Scene {
     });
 
     this.createEnemy(4, 11);
+    this.createEnemy(6, 1);
     // this.createEnemy(13, 18);
     // this.createEnemy(8, 19);
     // this.createEnemy(15, 10);
@@ -207,7 +209,7 @@ export class GameplayRootScene extends Phaser.Scene {
 
   private createEnemy(i: number, j: number) {
     let worldPos = this.grid.gridToWorld({ i: i, j: j });
-    let enemyUnit = new SquadUnit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeRogueSquadConf());
+    let enemyUnit = new K10Unit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeRogueSquadConf());
     enemyUnit.mover.placeToTile(enemyUnit.tile);
     this.add.existing(enemyUnit);
     this.unitsGrp.add(enemyUnit);
