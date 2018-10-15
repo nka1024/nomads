@@ -75,7 +75,7 @@ export class GameplayRootScene extends Phaser.Scene {
     this.cameras.main.zoom = 2;
 
     let mapsize = this.grid.gridSize * this.grid.tileSize;
-    this.cameras.main.setBounds(0,0, mapsize, mapsize);
+    this.cameras.main.setBounds(0, 0, mapsize, mapsize);
 
     this.events.on('resize', (h: number, w: number) => {
       this.cameras.main.setSize(h, w);
@@ -95,13 +95,15 @@ export class GameplayRootScene extends Phaser.Scene {
       if (!this.cameraDragModule.isDrag && !this.clicksTracker.objectClickedInThisFrame) {
         let squad = this.selectedUnit;
         if (squad) {
-          if (squad.state.isFighting) {
-            squad.combat.stopFight('command');
+          if (this.canBeMovedByPlayer(squad)) {
+            if (squad.state.isFighting) {
+              squad.combat.stopFight('command');
+            }
+            if (squad.state.isChasing) {
+              squad.chase.stop();
+            }
+            squad.mover.moveTo(cursor);
           }
-          if (squad.state.isChasing) {
-            squad.chase.stop();
-          }
-          squad.mover.moveTo(cursor);
         } else {
           if (player.state.isFighting) {
             player.combat.stopFight('command');
@@ -112,7 +114,7 @@ export class GameplayRootScene extends Phaser.Scene {
     };
 
     this.mapImporterModule.grassHandler = (o: GameObjects.Image, item: any) => {
-      let tile = this.grid.worldToGrid({x: o.x, y: o.y - o.height/2});
+      let tile = this.grid.worldToGrid({ x: o.x, y: o.y - o.height / 2 });
       this.grid.addGrass(o, tile, 100);
     };
     this.mapImporterModule.importMap(this.cache.json.get('map'));
@@ -150,7 +152,7 @@ export class GameplayRootScene extends Phaser.Scene {
       }
     }
 
-    
+
     this.clicksTracker.on('click', (object: BaseUnit) => {
       // deselect old
       let squad: SquadUnit = (object as SquadUnit)
@@ -245,8 +247,8 @@ export class GameplayRootScene extends Phaser.Scene {
   }
 
   private handleUnitDeath(unit: BaseUnit) {
-     // deselect tile
-     if (this.selectedUnit == unit) {
+    // deselect tile
+    if (this.selectedUnit == unit) {
       unit.selection.hideHard();
       this.selectedUnit = this.player;
       this.player.selection.showHard();
@@ -258,7 +260,13 @@ export class GameplayRootScene extends Phaser.Scene {
     unit.destroy();
   }
 
-  private fogUpdateCnt:number = 60;
+  private canBeMovedByPlayer(squad: BaseUnit): boolean {
+    if (squad.conf.type == 'sentry') return false;
+    if (squad.conf.side == 'attack') return false;
+    return true;
+  }
+
+  private fogUpdateCnt: number = 60;
   update(): void {
     this.contextMenuModule.update();
     // dont handle touches if context window is shown
