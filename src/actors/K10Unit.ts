@@ -29,16 +29,7 @@ export class K10Unit extends SquadUnit {
     this.playUnitAnim('idle', true);
 
     this.anims.setCurrentFrame(K10Unit.idleAnim.frames[Math.floor((Math.random()*8))]);
-    // this.spinTimer = setInterval(() => { this.spinTower() }, 1000);
   }
-
-  // private spinTower() {
-  //   if (!this.state.isFighting) {
-  //     let idx = this.anims.currentFrame.index;
-  //     if (idx == 8) idx = 0;
-  //     this.anims.setCurrentFrame(K10Unit.idleAnim.frames[idx]);
-  //   }
-  // }
 
   protected isInitialized(): boolean {
     return K10Unit.initializedSentry;
@@ -100,7 +91,6 @@ export class K10Unit extends SquadUnit {
 
 
   destroy() {
-    // clearInterval(this.spinTimer);
     super.destroy()
   }
 

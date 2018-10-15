@@ -110,7 +110,6 @@ export class TileGrid {
   /// Fog
 
   public createFog() {
-
     // grid tiles
     for (let i = 0; i < this.gridSize; i++) {
       for (let j = 0; j < this.gridSize; j++) {
@@ -121,24 +120,24 @@ export class TileGrid {
   }
 
   public updateFog(center: Tile) {
-    for (let i = center.i - 3; i < center.i + 3; i++) {
-      for (let j = center.j - 3; j < center.j + 3; j++) {
+    for (let i = center.i - 2; i < center.i + 3; i++) {
+      for (let j = center.j - 2; j < center.j + 3; j++) {
         if (this.legit({ i: i, j: j })) {
           this.fog[i][j].visible = false;
         }
       }
     }
 
-    for (let i = center.i - 2; i < center.i + 2; i++) {
-      for (let j = center.j - 4; j < center.j + 4; j++) {
+    for (let i = center.i - 1; i < center.i + 2; i++) {
+      for (let j = center.j - 3; j < center.j + 4; j++) {
         if (this.legit({ i: i, j: j })) {
           this.fog[i][j].visible = false;
         }
       }
     }
 
-    for (let i = center.i - 4; i < center.i + 4; i++) {
-      for (let j = center.j - 2; j < center.j + 2; j++) {
+    for (let i = center.i - 3; i < center.i + 4; i++) {
+      for (let j = center.j - 1; j < center.j + 2; j++) {
         if (this.legit({ i: i, j: j })) {
           this.fog[i][j].visible = false;
         }
@@ -146,6 +145,9 @@ export class TileGrid {
     }
   }
 
+  public isFog(tile: Tile): boolean{
+    return this.fog[tile.i][tile.j].visible;
+  }
 
   // Grass
   

@@ -116,7 +116,7 @@ export class BuilderUnit extends SquadUnit {
   }
 
   private performBuilding() {
-    let progress = Math.floor(Math.random() * 10) + 100;
+    let progress = Math.floor(Math.random() * 10) + 1;
 
     this.showFloatyText(progress);
     this.buildProgress += progress / 100;

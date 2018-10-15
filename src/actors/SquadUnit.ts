@@ -80,6 +80,8 @@ export class SquadUnit extends BaseUnit implements ISelectable {
   }
 
   update() {
+    this.visible = !this.grid.isFog(this.tile);
+
     this.depth = this.y - 4;
 
     super.update();
