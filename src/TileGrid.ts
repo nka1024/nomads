@@ -155,10 +155,8 @@ export class TileGrid {
     let hashKey = tile.i + '_' + tile.j;
     let grass = {object: object, volume: volume};
     if (!this.grasses[hashKey]) {
-      console.log('created grass to new ' + hashKey);
       this.grasses[hashKey] = [grass];
     } else {
-      console.log('added grass to new ' + hashKey);
       this.grasses[hashKey].push(grass);
     }
   }

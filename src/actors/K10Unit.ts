@@ -6,29 +6,20 @@
 */
 
 import { TileGrid } from "../TileGrid";
-import { ScouteeModule } from "../modules/unit/ScouteeModule";
-import { BaseUnit } from "./BaseUnit";
 import { UnitData } from "../Hero";
-import { GameplayRootScene } from "../scenes/GameplayRootScene";
 import { SquadUnit } from "./SquadUnit";
-import { Animations } from "phaser";
-import { FloatingText } from "../FloatingText";
-import { Tile } from "../types/Position";
 
 export class K10Unit extends SquadUnit {
 
   private static idleAnim: Phaser.Animations.Animation;
   private static initializedSentry: boolean = false;
 
-  private spinTimer: any;
-
   constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData) {
-
     super(scene, x, y, grid, conf);
 
     this.playUnitAnim('idle', true);
 
-    this.anims.setCurrentFrame(K10Unit.idleAnim.frames[Math.floor((Math.random()*8))]);
+    this.anims.setCurrentFrame(K10Unit.idleAnim.frames[Math.floor((Math.random() * 8))]);
   }
 
   protected isInitialized(): boolean {
@@ -50,11 +41,15 @@ export class K10Unit extends SquadUnit {
     K10Unit.idleAnim = this.scene.anims.create(idleAnim);
   }
 
-
   public playUnitAnim(key: string, ignoreIfPlaying: boolean) {
 
   }
 
+  protected targetScanUpdate() {
+    if (this.state.isFighting && !this.state.isChasing) {
+      this.chase.start(this.state.fightTarget, this.conf.range, () => { });
+    }
+  }
 
   // Overrides
 
@@ -63,6 +58,7 @@ export class K10Unit extends SquadUnit {
     this.depth = this.y - 4;
 
     super.update();
+    this.targetScanUpdate();
 
     this.flipX = false;
 
@@ -74,9 +70,9 @@ export class K10Unit extends SquadUnit {
     else if (this.state.isFighting) {
       let t1 = this.tile;
       let t2 = this.state.fightTarget.tile;
-      speed = {x: t2.j - t1.j, y: t2.i - t1.i}
+      speed = { x: t2.j - t1.j, y: t2.i - t1.i }
     }
-    
+
     if (this.state.isFighting || this.state.isMoving) {
       if (speed.x > 0 && speed.y == 0) this.anims.setCurrentFrame(frames[2])
       if (speed.x > 0 && speed.y > 0) this.anims.setCurrentFrame(frames[1])
@@ -89,14 +85,12 @@ export class K10Unit extends SquadUnit {
     }
   }
 
-
   destroy() {
     super.destroy()
   }
 
-
   // public aggressedBy(who: BaseUnit) {
-    // this.chase.start(who, this.conf.range, () => { });
+  // this.chase.start(who, this.conf.range, () => { });
   // }
 
 }

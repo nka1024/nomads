@@ -22,7 +22,6 @@ export class HarvesterUnit extends SquadUnit {
   private static initializedGathger: boolean = false;
 
   constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData) {
-
     super(scene, x, y, grid, conf);
 
     this.scoutee = new ScouteeModule(this.progress);
@@ -164,7 +163,6 @@ export class HarvesterUnit extends SquadUnit {
     if (this.mover.speed.x > 0) this.flipX = false;
     if (this.mover.speed.x < 0) this.flipX = true;
 
-    this.targetScanUpdate();
     if (this.grid.hasGrass(this.tile) && !this.state.isMoving) {
       this.startMine();
     }
@@ -184,11 +182,6 @@ export class HarvesterUnit extends SquadUnit {
     this.progress = null;
     this.selection = null;
     super.destroy()
-  }
-
-
-  targetScanUpdate() {
-   super.targetScanUpdate();
   }
 
   public aggressedBy(who: BaseUnit) {

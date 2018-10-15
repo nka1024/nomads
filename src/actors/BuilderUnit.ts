@@ -157,8 +157,6 @@ export class BuilderUnit extends SquadUnit {
 
     if (this.mover.speed.x > 0) this.flipX = false;
     if (this.mover.speed.x < 0) this.flipX = true;
-
-    this.targetScanUpdate();
   }
 
   private showFloatyText(damage: number) {
@@ -174,11 +172,6 @@ export class BuilderUnit extends SquadUnit {
     this.progress = null;
     this.selection = null;
     super.destroy()
-  }
-
-
-  targetScanUpdate() {
-   super.targetScanUpdate();
   }
 
   public aggressedBy(who: BaseUnit) {
