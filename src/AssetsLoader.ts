@@ -62,6 +62,10 @@ export class AssetsLoader {
       './assets/fonts/pokemon/pokemon-8-yellow.png',
       './assets/fonts/pokemon/pokemon-8.fnt');
 
+      scene.load.bitmapFont('pokemon-8-green',
+      './assets/fonts/pokemon/pokemon-8-green.png',
+      './assets/fonts/pokemon/pokemon-8.fnt');
+
     scene.load.spritesheet('mothership_48x48', './assets/sprites/mothership_48x48.png', {
       frameWidth: 48,
       frameHeight: 48,

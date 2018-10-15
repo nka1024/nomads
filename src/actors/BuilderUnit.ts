@@ -28,8 +28,8 @@ export class BuilderUnit extends SquadUnit {
     this.playUnitAnim('idle', true);
     this.combat.pacifist = true;
   }
-  
-  protected isInitialized():boolean {
+
+  protected isInitialized(): boolean {
     return BuilderUnit.initializedBuilder;
   }
   protected setInitialized(value: boolean) {
@@ -37,75 +37,141 @@ export class BuilderUnit extends SquadUnit {
   }
 
   protected initializeOnce() {
-      var idleAnim = {
-        key: 'builder_idle',
-        frames: this.scene.anims.generateFrameNumbers('builder_walk_anim_48x48', { start: 0, end: 0 }),
-        frameRate: 5,
-        repeat: -1,
-        repeatDelay: 0
-      };
-      this.scene.anims.create(idleAnim);
-      
-      var walkAnim = {
-        key: 'builder_walk',
-        frames: this.scene.anims.generateFrameNumbers('builder_walk_anim_48x48', { start: 0, end: 4 }),
-        frameRate: 5,
-        repeat: -1,
-        repeatDelay: 0
-      };
-      this.scene.anims.create(walkAnim);
+    var idleAnim = {
+      key: 'builder_idle',
+      frames: this.scene.anims.generateFrameNumbers('builder_walk_anim_48x48', { start: 0, end: 0 }),
+      frameRate: 5,
+      repeat: -1,
+      repeatDelay: 0
+    };
+    this.scene.anims.create(idleAnim);
 
-      var startAnim = {
-        key: 'builder_build_start',
-        frames: this.scene.anims.generateFrameNumbers('builder_build_anim_48x48', { start: 0, end: 2 }),
-        frameRate: 5,
-        repeat: 0,
-        repeatDelay: 0
-      };
-      this.scene.anims.create(startAnim);
+    var walkAnim = {
+      key: 'builder_walk',
+      frames: this.scene.anims.generateFrameNumbers('builder_walk_anim_48x48', { start: 0, end: 4 }),
+      frameRate: 5,
+      repeat: -1,
+      repeatDelay: 0
+    };
+    this.scene.anims.create(walkAnim);
 
-      var buildAnim = {
-        key: 'builder_build',
-        frames: this.scene.anims.generateFrameNumbers('builder_build_anim_48x48', { start: 2, end: 6 }),
-        frameRate: 5,
-        repeat: -1,
-        repeatDelay: 0
-      };
+    var startAnim = {
+      key: 'builder_build_start',
+      frames: this.scene.anims.generateFrameNumbers('builder_build_anim_48x48', { start: 0, end: 2 }),
+      frameRate: 5,
+      repeat: 0,
+      repeatDelay: 0
+    };
+    this.scene.anims.create(startAnim);
 
-      this.scene.anims.create(buildAnim);
+    var buildAnim = {
+      key: 'builder_build',
+      frames: this.scene.anims.generateFrameNumbers('builder_build_anim_48x48', { start: 2, end: 6 }),
+      frameRate: 5,
+      repeat: -1,
+      repeatDelay: 0
+    };
 
-      this.on('animationcomplete', (anim: Animations.Animation, frame: Animations.AnimationFrame) => {
-        if (anim.key == 'builder_build_start') {
-          this.anims.play('builder_build', true);
-        }
-      });
-    }
+    this.scene.anims.create(buildAnim);
 
+    this.on('animationcomplete', (anim: Animations.Animation, frame: Animations.AnimationFrame) => {
+      if (anim.key == 'builder_build_start') {
+        this.anims.play('builder_build', true);
+      }
+    });
+  }
 
   // fight, walk, idle
   public playUnitAnim(key: string, ignoreIfPlaying: boolean) {
     if (key == "build") {
       this.anims.play('builder_build_start', ignoreIfPlaying);
-    } else if (key == "walk"){
+    } else if (key == "walk") {
       if (this.isBuilding) {
         this.stopBuild();
       }
+
       this.anims.play('builder_walk', ignoreIfPlaying);
     } else {
-      if (!this.isBuilding) {
+      if (!this.isBuilding && !this.isRepairing) {
         this.anims.play('builder_idle', ignoreIfPlaying);
       }
     }
   }
 
 
-  // Mining
+  // Repairs
+
+  public startRepair(target: BaseUnit) {
+    if (!this.isRepairing) {
+      this.isRepairing = true;
+      this.repairTarget = target;
+      let startRep = () => {
+        console.log('shalala');
+        this.playUnitAnim('build', true);
+        clearInterval(this.repairTimer);
+        this.repairTimer = setInterval(() => { this.performRepair() }, 1000);
+      };
+      this.chase.start(target, 1, startRep);
+      let distance = this.grid.distance(this.tile, target.tile, 'abs');
+      if (distance.i <= 1 && distance.j <= 1) {
+        startRep();
+      }
+    } else {
+      if (this.repairTarget != target) {
+        this.stopRepair();
+        this.startRepair(target);
+      }
+    }
+  }
+
+  private stopRepair() {
+    if (this.isRepairing) {
+      this.chase.stop();
+      this.isRepairing = false;
+      this.repairTimer = false;
+      this.repairTarget = null;
+      clearInterval(this.repairTimer);
+      this.playUnitAnim('idle', true);
+    }
+  }
+
+  private repairTarget: BaseUnit;
+  private repairTimer: any;
+  private isRepairing: boolean;
+  private repPower: number = 1;
+  private performRepair() {
+
+    if (this.state.isMoving) {
+      return
+    }
+
+    if (this.anims.currentAnim.key != 'builder_build_start' && this.anims.currentAnim.key != 'builder_build') {
+      this.playUnitAnim('build', true);
+    }
+    if (this.repairTarget) {
+      let target = this.repairTarget;
+      if (target.conf.health < 1) {
+        this.showFloatyText('+' + this.repPower, 'green');
+        target.conf.health += this.repPower / target.conf.armor;
+        if (target.conf.health > 1) {
+          target.conf.health = 1;
+          this.stopRepair();
+        }
+      } else {
+        this.stopRepair();
+      }
+    } else {
+      this.stopRepair();
+    }
+  }
+
+  // Building
 
   private buildTimer: any;
   private isBuilding: boolean;
   private buildProgress: number = 0;
   public startBuild() {
-    if (!this.isBuilding){
+    if (!this.isBuilding) {
       this.buildProgress = 0;
       this.isBuilding = true;
       this.playUnitAnim('build', true);
@@ -118,10 +184,10 @@ export class BuilderUnit extends SquadUnit {
   private performBuilding() {
     let progress = Math.floor(Math.random() * 10) + 1;
 
-    this.showFloatyText(progress);
+    this.showFloatyText('.', 'green');
     this.buildProgress += progress / 100;
     this.progress.progress = this.buildProgress;
-    if(this.buildProgress < 1) {
+    if (this.buildProgress < 1) {
 
     } else {
       let conf = Hero.makeSentryConf()
@@ -155,18 +221,28 @@ export class BuilderUnit extends SquadUnit {
 
     super.update();
 
-    if (this.mover.speed.x > 0) this.flipX = false;
-    if (this.mover.speed.x < 0) this.flipX = true;
+    if (this.isRepairing && this.repairTarget) {
+      this.flipX = this.repairTarget.tile.j < this.tile.j;
+    } else {
+      if (this.mover.speed.x > 0) this.flipX = false;
+      if (this.mover.speed.x < 0) this.flipX = true;
+    }
+
+    if (this.repairTarget && this.state.isMoving && !this.state.isChasing) {
+      this.stopRepair();
+    }
   }
 
-  private showFloatyText(damage: number) {
+  private showFloatyText(text: string, color: string) {
     let floatyX = this.x + Math.random() * 10 - 5;
     let floatyY = this.y - Math.random() * 10 - 10;
-    
-    new FloatingText(this.scene, floatyX, floatyY, '.', 'yellow');
+
+    new FloatingText(this.scene, floatyX, floatyY, text, color);
   }
 
   destroy() {
+    this.chase.stop();
+    this.stopRepair();
     this.stopBuild();
     this.combat = null;
     this.progress = null;

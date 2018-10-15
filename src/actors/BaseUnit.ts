@@ -87,6 +87,8 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
   public update() {
     if (this.conf.health < 1) {
       this.hp.show();
+    } else {
+      this.hp.hide();
     }
     this.hp.progress = this.conf.health
     this.core.update();

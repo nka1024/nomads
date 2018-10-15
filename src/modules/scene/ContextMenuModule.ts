@@ -21,6 +21,8 @@ export class ContextMenuModule {
   public onReturnClicked: (object: BaseUnit) => void;
   public onMoveClicked: (object: BaseUnit) => void;
 
+  public repairWindow: MessageWindow;
+
   // Private
   private contextWindow: ContextMenuWindow;
 
@@ -67,6 +69,13 @@ export class ContextMenuModule {
 
     if (object.selection.isHard && object != currentObj) {
       this.showContextWindowForObject(object);
+    }
+    if (this.repairWindow) {
+      let builder: BuilderUnit = this.repairWindow.owner;
+      builder.startRepair(object);
+
+      this.repairWindow.destroy();
+      this.repairWindow = null;
     }
   }
 
@@ -132,11 +141,15 @@ export class ContextMenuModule {
       builder.startBuild();
     });
     window.buttons[1].addEventListener('click', () => {
-      let popup = new MessageWindow('', 'Выберите цель ремонта');
-      popup.image = "builder_fullsize";
-      popup.left = 0;
-      popup.addButton('отмена', () => {popup.destroy()});
-      popup.show();
+      this.repairWindow = new MessageWindow('', 'Выберите цель ремонта');
+      this.repairWindow.owner = object;
+      this.repairWindow.image = "builder_fullsize";
+      this.repairWindow.left = 0;
+      this.repairWindow.addButton('отмена', () => {
+        this.repairWindow.destroy()
+        this.repairWindow = null;
+      });
+      this.repairWindow.show();
     });
     window.buttons[2].addEventListener('click', () => {
       this.onReturnClicked(object);

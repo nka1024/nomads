@@ -12,6 +12,8 @@ export class MessageWindow extends BaseWindow {
   static innerHtml: string;
 
   // public
+  public owner: any;
+  
   public okButton: HTMLElement;
   public titleText: HTMLElement;
   public messageText: HTMLElement;
@@ -49,7 +51,13 @@ export class MessageWindow extends BaseWindow {
   }
 
   public set image(value: string) {
-    this.imageElement.style.background = "url('/assets/" + value + ".png') center center no-repeat rgb(49, 51, 53)"
+    if (value == null) {
+      this.imageElement.style.background = "";
+      this.imageElement.style.display = "none";
+    } else {
+      this.imageElement.style.background = "url('/assets/"+ value +".png') center center no-repeat rgb(49, 51, 53)"
+      this.imageElement.style.display = "block";
+    }
   }
 
   public set top(value: number) {
