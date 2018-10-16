@@ -151,7 +151,7 @@ export class BuilderUnit extends SquadUnit {
     if (this.repairTarget) {
       let target = this.repairTarget;
       if (target.conf.health < 1) {
-        this.showFloatyText('+' + this.repPower, 'green');
+        this.showFloatyText('+' + this.repPower, 'green', true);
         target.conf.health += this.repPower / target.conf.armor;
         if (target.conf.health > 1) {
           target.conf.health = 1;
@@ -233,9 +233,11 @@ export class BuilderUnit extends SquadUnit {
     }
   }
 
-  private showFloatyText(text: string, color: string) {
-    let floatyX = this.x + Math.random() * 10 - 5;
-    let floatyY = this.y - Math.random() * 10 - 10;
+  private showFloatyText(text: string, color: string, repair: boolean = false) {
+    let x = repair ? this.repairTarget.x : this.x;
+    let y = repair ? this.repairTarget.y : this.y; 
+    let floatyX = x + Math.random() * 10 - 5;
+    let floatyY = y - Math.random() * 10 - 10;
 
     new FloatingText(this.scene, floatyX, floatyY, text, color);
   }
