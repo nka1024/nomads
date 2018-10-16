@@ -22,7 +22,7 @@ export class UnitCombatModule implements IUnitModule {
   private state: UnitStateModule;
   private mover: UnitMoverModule;
 
-  private attackTimer: any;
+  private attackTimer: Phaser.Time.TimerEvent;
   private target: BaseUnit;
 
   public events: EventEmitter;
@@ -37,6 +37,12 @@ export class UnitCombatModule implements IUnitModule {
     this.scene = scene;
 
     this.events = new EventEmitter();
+    this.attackTimer = this.scene.time.addEvent({
+      delay: 1000,
+      callback: this.performAttack,
+      callbackScope: this,
+      loop: true
+    });
   }
 
   private setTarget(target: BaseUnit) {
@@ -60,6 +66,8 @@ export class UnitCombatModule implements IUnitModule {
 
   destroy() {
     this.stopFight('cleanup');
+    if (this.attackTimer) this.attackTimer.destroy();
+    this.attackTimer = null;
     this.state.fightTarget = null;
     this.state.isFighting = false;
     this.owner = null;
@@ -67,8 +75,6 @@ export class UnitCombatModule implements IUnitModule {
     this.grid = null;
     this.mover = null;
     this.state = null;
-
-    clearInterval(this.attackTimer);
   }
 
 
@@ -110,7 +116,7 @@ export class UnitCombatModule implements IUnitModule {
 
     // this.flipOriginByDirection(direction, false);
     // same tile
-    this.attackTimer = setInterval(() => { this.performAttack() }, 1000);
+    this.attackTimer.paused = false;
   }
 
   /// reason: 'death', 'dead_target', 'no_target', 'return', 'command', 'target_too_far', 'cleanup'
@@ -120,7 +126,7 @@ export class UnitCombatModule implements IUnitModule {
       this.mover.pauseUpdates(false);
     }
     this.setTarget(null);
-    clearInterval(this.attackTimer);
+    this.attackTimer.paused = true;
 
     if (reason != 'death' && reason != 'return') {
       this.events.emit('fight_end');

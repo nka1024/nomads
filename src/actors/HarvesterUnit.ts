@@ -30,6 +30,14 @@ export class HarvesterUnit extends SquadUnit {
     this.playUnitAnim('idle', true);
     this.combat.pacifist = true;
 
+    this.mineTimer = this.scene.time.addEvent({
+      delay: 1000,
+      callback: this.performMining,
+      callbackScope: this,
+      loop: true
+    });
+    this.mineTimer.paused = true;
+
     this.on('animationcomplete', (anim: Animations.Animation, frame: Animations.AnimationFrame) => {
       if (anim.key == 'harvester_mine_start') {
         this.anims.play('harvester_mine', true);
@@ -103,14 +111,14 @@ export class HarvesterUnit extends SquadUnit {
 
   // Mining
 
-  private mineTimer: any;
+  private mineTimer: Phaser.Time.TimerEvent;
   private isMining: boolean;
   private startMine() {
     if (!this.isMining){
       this.isMining = true;
       this.playUnitAnim('mine', true);
 
-      this.mineTimer = setInterval(() => { this.performMining() }, 1000);
+      this.mineTimer.paused = false;
     }
   }
 
@@ -147,7 +155,7 @@ export class HarvesterUnit extends SquadUnit {
   private stopMine() {
     if (this.isMining) {
       this.isMining = false;
-      clearInterval(this.mineTimer);
+      this.mineTimer.paused = true;
       this.playUnitAnim('idle', true);
     }
   }
@@ -177,6 +185,8 @@ export class HarvesterUnit extends SquadUnit {
 
   destroy() {
     this.stopMine();
+    if (this.mineTimer) this.mineTimer.destroy();
+    this.mineTimer = null;
     this.combat = null;
     this.scoutee = null;
     this.progress = null;

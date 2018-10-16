@@ -15,7 +15,7 @@ export class SentryUnit extends SquadUnit {
   private static idleAnim: Phaser.Animations.Animation;
   private static initializedSentry: boolean = false;
 
-  private spinTimer: any;
+  private spinTimer: Phaser.Time.TimerEvent;;
 
   constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData) {
     super(scene, x, y, grid, conf);
@@ -23,7 +23,12 @@ export class SentryUnit extends SquadUnit {
     this.playUnitAnim('idle', true);
 
     this.anims.setCurrentFrame(SentryUnit.idleAnim.frames[0]);
-    this.spinTimer = setInterval(() => { this.spinTower() }, 1000);
+    this.spinTimer = this.scene.time.addEvent({
+      delay: 1000,
+      callback: this.spinTower,
+      callbackScope: this,
+      loop: true
+    });
   }
 
   private spinTower() {
@@ -87,7 +92,8 @@ export class SentryUnit extends SquadUnit {
   }
 
   destroy() {
-    clearInterval(this.spinTimer);
+    if(this.spinTimer) this.spinTimer.destroy();
+    this.spinTimer = null;
     super.destroy()
   }
 

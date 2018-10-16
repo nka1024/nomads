@@ -22,13 +22,20 @@ export class UnitShootModule implements IUnitModule {
   private baseDistance: number = 5;
   private tmpSpeed: Phaser.Math.Vector2 = new Phaser.Math.Vector2(0, 0);
   private bullets: { object: GameObjects.Image, speed: Point, dest: Point, travel: number }[] = [];
-  private shootTimer: any;
+  private shootTimer: Phaser.Time.TimerEvent;
   private isShooting: boolean;
 
   constructor(owner: BaseUnit, scene: Scene, state: UnitStateModule) {
     this.owner = owner;
     this.scene = scene;
     this.state = state;
+
+    this.shootTimer = this.scene.time.addEvent({
+      delay: 250,
+      callback: this.fire,
+      callbackScope: this,
+      loop: true
+    });
   }
 
   // private
@@ -92,12 +99,12 @@ export class UnitShootModule implements IUnitModule {
 
   private startShooting() {
     this.isShooting = true;
-    this.shootTimer = setInterval(() => { this.fire(); }, 250);
+    this.shootTimer.paused = false;
   }
 
   private stopShooting() {
     this.isShooting = false;
-    clearInterval(this.shootTimer);
+    this.shootTimer.paused = true;
   }
 
   private stepTowards(bullet: GameObjects.Image, speed: Point, dest: Point, travel: number): boolean {
@@ -156,6 +163,8 @@ export class UnitShootModule implements IUnitModule {
 
   destroy() {
     this.stopShooting();
+    if (this.shootTimer) this.shootTimer.destroy();
+    this.shootTimer = null;
     this.owner = null;
     this.scene = null;
     this.state = null;

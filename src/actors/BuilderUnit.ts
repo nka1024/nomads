@@ -33,16 +33,15 @@ export class BuilderUnit extends SquadUnit {
 
     
     this.repairTimer = this.scene.time.addEvent({
-      delay: 1000,                // ms
+      delay: 1000,
       callback: this.performRepair,
       callbackScope: this,
       loop: true
     });
     this.repairTimer.paused = true;
-
     
     this.buildTimer = this.scene.time.addEvent({
-      delay: 1000,                // ms
+      delay: 1000, 
       callback: this.performBuilding,
       callbackScope: this,
       loop: true
@@ -257,9 +256,13 @@ export class BuilderUnit extends SquadUnit {
   }
 
   destroy() {
-    this.chase.stop();
     this.stopRepair();
     this.stopBuild();
+    if (this.buildTimer) this.buildTimer.destroy()
+    if (this.repairTimer) this.repairTimer.destroy();
+    this.buildTimer = null;
+    this.repairTimer = null;
+    this.chase.stop();
     this.combat = null;
     this.progress = null;
     this.selection = null;
