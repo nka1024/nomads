@@ -120,24 +120,25 @@ export class TileGrid {
   }
 
   public updateFog(center: Tile) {
-    for (let i = center.i - 2; i < center.i + 3; i++) {
-      for (let j = center.j - 2; j < center.j + 3; j++) {
+    let size: number = 4;
+    for (let i = center.i - (size - 1); i < center.i + size; i++) {
+      for (let j = center.j - (size - 1); j < center.j + size; j++) {
         if (this.legit({ i: i, j: j })) {
           this.fog[i][j].visible = false;
         }
       }
     }
 
-    for (let i = center.i - 1; i < center.i + 2; i++) {
-      for (let j = center.j - 3; j < center.j + 4; j++) {
+    for (let i = center.i - (size - 2); i < center.i + (size - 1); i++) {
+      for (let j = center.j - size; j < center.j + (size + 1); j++) {
         if (this.legit({ i: i, j: j })) {
           this.fog[i][j].visible = false;
         }
       }
     }
 
-    for (let i = center.i - 3; i < center.i + 4; i++) {
-      for (let j = center.j - 1; j < center.j + 2; j++) {
+    for (let i = center.i - size; i < center.i + (size + 1); i++) {
+      for (let j = center.j - (size - 2); j < center.j + (size - 1); j++) {
         if (this.legit({ i: i, j: j })) {
           this.fog[i][j].visible = false;
         }
