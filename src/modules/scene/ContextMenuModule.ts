@@ -142,9 +142,9 @@ export class ContextMenuModule {
     });
     window.buttons[1].addEventListener('click', () => {
       this.repairWindow = new MessageWindow('', 'Выберите цель ремонта');
+      this.repairWindow.top = 0
       this.repairWindow.owner = object;
-      this.repairWindow.image = "builder_fullsize";
-      this.repairWindow.left = 0;
+      // this.repairWindow.left = 0;
       this.repairWindow.addButton('отмена', () => {
         this.repairWindow.destroy()
         this.repairWindow = null;

@@ -18,8 +18,6 @@ export class GuardianUnit extends SquadUnit {
     super(scene, x, y, grid, conf);
 
     this.playUnitAnim('idle', true);
-
-    this.anims.setCurrentFrame(GuardianUnit.idleAnim.frames[Math.floor((Math.random() * 8))]);
   }
 
   protected isInitialized(): boolean {

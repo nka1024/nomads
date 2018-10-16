@@ -13,7 +13,7 @@ export class MessageWindow extends BaseWindow {
 
   // public
   public owner: any;
-  
+
   public okButton: HTMLElement;
   public titleText: HTMLElement;
   public messageText: HTMLElement;
@@ -32,6 +32,7 @@ export class MessageWindow extends BaseWindow {
     this.imageElement = this.element.querySelector(".message_image");
     this.objList = this.element.querySelector(".obj_list");
 
+    this.image = null;
     this.top = 150;
     this.left = -1;
     this.titleText.innerHTML = title;
