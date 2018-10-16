@@ -34,7 +34,8 @@ export class UnitShootModule implements IUnitModule {
       delay: 250,
       callback: this.fire,
       callbackScope: this,
-      loop: true
+      loop: true,
+      paused: true
     });
   }
 

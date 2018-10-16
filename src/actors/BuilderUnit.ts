@@ -31,22 +31,21 @@ export class BuilderUnit extends SquadUnit {
     this.playUnitAnim('idle', true);
     this.combat.pacifist = true;
 
-    
     this.repairTimer = this.scene.time.addEvent({
       delay: 1000,
       callback: this.performRepair,
       callbackScope: this,
-      loop: true
+      loop: true,
+      paused: true
     });
-    this.repairTimer.paused = true;
     
     this.buildTimer = this.scene.time.addEvent({
       delay: 1000, 
       callback: this.performBuilding,
       callbackScope: this,
-      loop: true
+      loop: true,
+      paused: true
     });
-    this.buildTimer.paused = true;
 
     this.on('animationcomplete', (anim: Animations.Animation, frame: Animations.AnimationFrame) => {
       if (anim.key == 'builder_build_start') {
@@ -125,7 +124,9 @@ export class BuilderUnit extends SquadUnit {
       this.isRepairing = true;
       this.repairTarget = target;
     
-      this.chase.start(target, 1, () => {this.repairTimer.paused = false;});
+      this.chase.start(target, 1, () => {
+        this.repairTimer.paused = false;
+      });
       let distance = this.grid.distance(this.tile, target.tile, 'abs');
       if (distance.i <= 1 && distance.j <= 1) {
         this.repairTimer.paused = false;

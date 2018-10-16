@@ -41,7 +41,8 @@ export class UnitCombatModule implements IUnitModule {
       delay: 1000,
       callback: this.performAttack,
       callbackScope: this,
-      loop: true
+      loop: true,
+      paused: true
     });
   }
 

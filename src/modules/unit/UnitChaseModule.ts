@@ -101,7 +101,7 @@ export class UnitChaseModule implements IUnitModule {
       if (!this.mover.claimedTile) {
         this.start(target, range, onComplete);
       } else {
-
+        if (onComplete) onComplete();
       }
     };
     

@@ -34,9 +34,9 @@ export class HarvesterUnit extends SquadUnit {
       delay: 1000,
       callback: this.performMining,
       callbackScope: this,
-      loop: true
+      loop: true,
+      paused: true
     });
-    this.mineTimer.paused = true;
 
     this.on('animationcomplete', (anim: Animations.Animation, frame: Animations.AnimationFrame) => {
       if (anim.key == 'harvester_mine_start') {
