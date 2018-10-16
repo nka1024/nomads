@@ -42,7 +42,7 @@ export class Hero {
       armor: 50,
       attack: 4,
       defense: 2,
-      health: 1,
+      health: 0.2,
       energy: 1,
       range: 1,
       quantity: 1,
@@ -98,6 +98,25 @@ export class Hero {
       quantity: 99
     };
   }
+
+
+  public static makeBossSquadConf(): UnitData {
+    return {
+      id: "enemy_squad",
+      icon: "infantry_2_icon",
+      name: "Rogues",
+      side: 'attack',
+      type: "infantry",
+      armor: 100,
+      attack: 3,
+      defense: 1,
+      health: 1,
+      energy: 1,
+      range: 1,
+      quantity: 99
+    };
+  }
+
 
   private createTestData() {
     this.data = { units: [] };

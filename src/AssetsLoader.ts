@@ -138,6 +138,18 @@ export class AssetsLoader {
       endFrame: 5
     });
 
+    scene.load.spritesheet('tower_anim_90x90', './assets/sprites/tower_anim_90x90.png', {
+      frameWidth: 48,
+      frameHeight: 48,
+      endFrame: 5
+    });
+
+    scene.load.spritesheet('boss_anim_100x100', './assets/sprites/boss_anim_100x100.png', {
+      frameWidth: 100,
+      frameHeight: 100,
+      endFrame: 7
+    });
+
     for (let idx = 1; idx <= ASSETS.TERRAIN_MAX; idx++) {
       scene.load.image("terrain_" + idx, "./assets/tilemap/terrain_" + idx + ".png");
     }
