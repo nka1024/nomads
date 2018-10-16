@@ -20,7 +20,7 @@ export class BossUnit extends SquadUnit {
 
     this.playUnitAnim('idle', true);
 
-    this.input.hitArea = new Geom.Rectangle(34, 34, 28, 28);
+    this.input.hitArea = new Geom.Rectangle(34, 68, 28, 28);
     this.originY = 0.75
   }
 

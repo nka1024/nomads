@@ -29,6 +29,12 @@ export class HarvesterUnit extends SquadUnit {
 
     this.playUnitAnim('idle', true);
     this.combat.pacifist = true;
+
+    this.on('animationcomplete', (anim: Animations.Animation, frame: Animations.AnimationFrame) => {
+      if (anim.key == 'harvester_mine_start') {
+        this.anims.play('harvester_mine', true);
+      }
+    });
   }
   
   protected isInitialized():boolean {
@@ -75,12 +81,6 @@ export class HarvesterUnit extends SquadUnit {
       };
 
       this.scene.anims.create(mineAnim);
-
-      this.on('animationcomplete', (anim: Animations.Animation, frame: Animations.AnimationFrame) => {
-        if (anim.key == 'harvester_mine_start') {
-          this.anims.play('harvester_mine', true);
-        }
-      });
     }
 
 

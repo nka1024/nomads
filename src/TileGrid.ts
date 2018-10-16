@@ -199,6 +199,11 @@ export class TileGrid {
     return null;
   }
 
+  public isWalkable(tile: Tile): boolean {
+    if (!this.legit(tile)) return false;
+    return this.data[tile.i][tile.j] == 0;
+  }
+
   public isFree(tile: Tile): boolean {
     return this.legit(tile) &&
       this.data[tile.i][tile.j] == 0 &&

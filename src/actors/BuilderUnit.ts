@@ -19,6 +19,9 @@ export class BuilderUnit extends SquadUnit {
 
   private unitsGroup: GameObjects.Group;
 
+  private repairTimer: Phaser.Time.TimerEvent;
+  private buildTimer: Phaser.Time.TimerEvent;
+
   constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData, unitsGroup: GameObjects.Group) {
     super(scene, x, y, grid, conf);
     this.unitsGroup = unitsGroup;
@@ -27,6 +30,30 @@ export class BuilderUnit extends SquadUnit {
 
     this.playUnitAnim('idle', true);
     this.combat.pacifist = true;
+
+    
+    this.repairTimer = this.scene.time.addEvent({
+      delay: 1000,                // ms
+      callback: this.performRepair,
+      callbackScope: this,
+      loop: true
+    });
+    this.repairTimer.paused = true;
+
+    
+    this.buildTimer = this.scene.time.addEvent({
+      delay: 1000,                // ms
+      callback: this.performBuilding,
+      callbackScope: this,
+      loop: true
+    });
+    this.buildTimer.paused = true;
+
+    this.on('animationcomplete', (anim: Animations.Animation, frame: Animations.AnimationFrame) => {
+      if (anim.key == 'builder_build_start') {
+        this.anims.play('builder_build', true);
+      }
+    });
   }
 
   protected isInitialized(): boolean {
@@ -73,12 +100,6 @@ export class BuilderUnit extends SquadUnit {
     };
 
     this.scene.anims.create(buildAnim);
-
-    this.on('animationcomplete', (anim: Animations.Animation, frame: Animations.AnimationFrame) => {
-      if (anim.key == 'builder_build_start') {
-        this.anims.play('builder_build', true);
-      }
-    });
   }
 
   // fight, walk, idle
@@ -98,23 +119,17 @@ export class BuilderUnit extends SquadUnit {
     }
   }
 
-
   // Repairs
-
   public startRepair(target: BaseUnit) {
+    this.stopBuild();
     if (!this.isRepairing) {
       this.isRepairing = true;
       this.repairTarget = target;
-      let startRep = () => {
-        console.log('shalala');
-        this.playUnitAnim('build', true);
-        clearInterval(this.repairTimer);
-        this.repairTimer = setInterval(() => { this.performRepair() }, 1000);
-      };
-      this.chase.start(target, 1, startRep);
+    
+      this.chase.start(target, 1, () => {this.repairTimer.paused = false;});
       let distance = this.grid.distance(this.tile, target.tile, 'abs');
       if (distance.i <= 1 && distance.j <= 1) {
-        startRep();
+        this.repairTimer.paused = false;
       }
     } else {
       if (this.repairTarget != target) {
@@ -128,15 +143,14 @@ export class BuilderUnit extends SquadUnit {
     if (this.isRepairing) {
       this.chase.stop();
       this.isRepairing = false;
-      this.repairTimer = false;
+      this.repairTimer.paused = true;
       this.repairTarget = null;
-      clearInterval(this.repairTimer);
+      console.log('clear interval from stopRep: ' + this.repairTimer);
       this.playUnitAnim('idle', true);
     }
   }
 
   private repairTarget: BaseUnit;
-  private repairTimer: any;
   private isRepairing: boolean;
   private repPower: number = 1;
   private performRepair() {
@@ -167,17 +181,17 @@ export class BuilderUnit extends SquadUnit {
 
   // Building
 
-  private buildTimer: any;
   private isBuilding: boolean;
   private buildProgress: number = 0;
   public startBuild() {
+    this.stopRepair();
     if (!this.isBuilding) {
       this.buildProgress = 0;
       this.isBuilding = true;
       this.playUnitAnim('build', true);
 
       this.progress.show();
-      this.buildTimer = setInterval(() => { this.performBuilding() }, 1000);
+      this.buildTimer.paused = false;
     }
   }
 
@@ -208,7 +222,7 @@ export class BuilderUnit extends SquadUnit {
     if (this.isBuilding) {
       this.progress.hide();
       this.isBuilding = false;
-      clearInterval(this.buildTimer);
+      this.buildTimer.paused = true;
       this.playUnitAnim('idle', true);
     }
   }
