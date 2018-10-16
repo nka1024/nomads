@@ -80,8 +80,18 @@ export class GameplayRootScene extends Phaser.Scene {
     let mapsize = this.grid.gridSize * this.grid.tileSize;
     this.cameras.main.setBounds(0, 0, mapsize, mapsize);
 
-    this.events.on('resize', (h: number, w: number) => {
-      this.cameras.main.setSize(h, w);
+    this.events.on('resize', (w: number, h: number) => {
+      this.cameras.main.setSize(w, h);
+      if (w < 500) {
+        console.log('w < 500');
+        this.cameras.main.zoom = 1;
+      } else if (w < 1043) {
+        console.log('w < 1043');
+        this.cameras.main.zoom = 2;
+      } else  {
+        console.log('else');
+        this.cameras.main.zoom = 3;
+      }
     });
     WindowManager.initialize();
 
