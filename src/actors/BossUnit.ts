@@ -8,6 +8,7 @@
 import { TileGrid } from "../TileGrid";
 import { UnitData } from "../Hero";
 import { SquadUnit } from "./SquadUnit";
+import { Geom } from "phaser";
 
 export class BossUnit extends SquadUnit {
 
@@ -18,8 +19,8 @@ export class BossUnit extends SquadUnit {
     super(scene, x, y, grid, conf);
 
     this.playUnitAnim('idle', true);
-this.originX = 0.5;
-this.originY = 0.5;
+
+    this.input.hitArea = new Geom.Rectangle(34, 34, 28, 28);
   }
 
   protected isInitialized(): boolean {
