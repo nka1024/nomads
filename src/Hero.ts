@@ -108,7 +108,24 @@ export class Hero {
       side: 'attack',
       type: "infantry",
       armor: 100,
-      attack: 3,
+      attack: 2,
+      defense: 1,
+      health: 1,
+      energy: 1,
+      range: 1,
+      quantity: 99
+    };
+  }
+
+  public static makeTowerConf(): UnitData {
+    return {
+      id: "enemy_squad",
+      icon: "infantry_2_icon",
+      name: "Rogues",
+      side: 'attack',
+      type: "infantry",
+      armor: 100,
+      attack: 1,
       defense: 1,
       health: 1,
       energy: 1,
@@ -163,6 +180,21 @@ export class Hero {
       health: 1,
       energy: 1,
       quantity: 3
+    });
+
+    this.data.units.push({
+      id: 'type_3_unit_2',
+      icon: "icon_guardian",
+      name: "Страж",
+      type: "guardian",
+      side: 'defend',
+      armor: 40,
+      attack: 3,
+      defense: 1,
+      range: 2,
+      health: 1,
+      energy: 1,
+      quantity: 4
     });
   }
 }

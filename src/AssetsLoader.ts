@@ -139,8 +139,8 @@ export class AssetsLoader {
     });
 
     scene.load.spritesheet('tower_anim_90x90', './assets/sprites/tower_anim_90x90.png', {
-      frameWidth: 48,
-      frameHeight: 48,
+      frameWidth: 90,
+      frameHeight: 90,
       endFrame: 5
     });
 

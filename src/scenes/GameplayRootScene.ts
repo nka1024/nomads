@@ -29,6 +29,7 @@ import { SentryUnit } from "../actors/SentryUnit";
 import { K10Unit } from "../actors/K10Unit";
 import { GuardianUnit } from "../actors/GuardianUnit";
 import { BossUnit } from "../actors/BossUnit";
+import { TowerUnit } from "../actors/TowerUnit";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -171,8 +172,13 @@ export class GameplayRootScene extends Phaser.Scene {
       }
     });
 
-    this.createEnemy(4, 11, true);
-    // this.createEnemy(4, 11);
+    this.createEnemy(4, 16, 'tower');
+
+    this.createEnemy(4, 11, 'boss');
+    this.createEnemy(4, 12);
+    this.createEnemy(4, 10);
+    this.createEnemy(3, 11);
+    this.createEnemy(5, 11);
     this.createEnemy(6, 1);
     // this.createEnemy(13, 18);
     // this.createEnemy(8, 19);
@@ -212,12 +218,14 @@ export class GameplayRootScene extends Phaser.Scene {
     // });
   }
 
-  private createEnemy(i: number, j: number, boss: boolean = false) {
+  private createEnemy(i: number, j: number, opt: string = null) {
     let worldPos = this.grid.gridToWorld({ i: i, j: j });
     let enemyUnit: BaseUnit;
-    if (boss) {
+    if (opt == 'boss') {
       enemyUnit = new BossUnit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeBossSquadConf());
-    }else {
+    } else if (opt == 'tower') {
+      enemyUnit = new TowerUnit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeTowerConf());
+    } else {
       enemyUnit = new K10Unit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeRogueSquadConf());
     }
     enemyUnit.mover.placeToTile(enemyUnit.tile);
