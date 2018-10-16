@@ -72,27 +72,26 @@ export class GameplayRootScene extends Phaser.Scene {
     this.mapImporterModule = new MapImporterModule(this, this.grid);
   }
 
+  private onWindowResize(w: number, h: number) {
+    this.cameras.main.setSize(w, h);
+    if (w < 500) {
+      this.cameras.main.zoom = 1;
+    } else if (w < 1043) {
+      this.cameras.main.zoom = 2;
+    } else  {
+      this.cameras.main.zoom = 3;
+    }
+  }
+
   create(data): void {
     this.injectDependencies();
     this.cameras.main.setBackgroundColor(0x1f1f1f);
-    this.cameras.main.zoom = 2;
+    this.onWindowResize(window.innerWidth, window.innerHeight);
 
     let mapsize = this.grid.gridSize * this.grid.tileSize;
     this.cameras.main.setBounds(0, 0, mapsize, mapsize);
 
-    this.events.on('resize', (w: number, h: number) => {
-      this.cameras.main.setSize(w, h);
-      if (w < 500) {
-        console.log('w < 500');
-        this.cameras.main.zoom = 1;
-      } else if (w < 1043) {
-        console.log('w < 1043');
-        this.cameras.main.zoom = 2;
-      } else  {
-        console.log('else');
-        this.cameras.main.zoom = 3;
-      }
-    });
+    this.events.on('resize', (w: number, h: number) => this.onWindowResize(w, h));
     WindowManager.initialize();
 
     this.grid.createFog();
