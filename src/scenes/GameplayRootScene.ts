@@ -27,6 +27,7 @@ import { ResourcesPanel } from "../windows/ResourcesPanel";
 import { BuilderUnit } from "../actors/BuilderUnit";
 import { SentryUnit } from "../actors/SentryUnit";
 import { K10Unit } from "../actors/K10Unit";
+import { GuardianUnit } from "../actors/GuardianUnit";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -235,6 +236,8 @@ export class GameplayRootScene extends Phaser.Scene {
         squad = new BuilderUnit(this, from.x + 16, from.y + 16, this.grid, conf, this.unitsGrp);
       } else if (conf.type == 'sentry') {
         squad = new SentryUnit(this, from.x + 16, from.y + 16, this.grid, conf);
+      } else if (conf.type == 'guardian') {
+        squad = new GuardianUnit(this, from.x + 16, from.y + 16, this.grid, conf);
       } else {
         squad = new SquadUnit(this, from.x + 16, from.y + 16, this.grid, conf);
       }

@@ -130,5 +130,20 @@ export class Hero {
       energy: 1,
       quantity: 2
     });
+
+    this.data.units.push({
+      id: 'type_3_unit_1',
+      icon: "icon_guardian",
+      name: "Страж",
+      type: "guardian",
+      side: 'defend',
+      armor: 40,
+      attack: 3,
+      defense: 1,
+      range: 2,
+      health: 1,
+      energy: 1,
+      quantity: 3
+    });
   }
 }
