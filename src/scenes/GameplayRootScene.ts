@@ -107,7 +107,7 @@ export class GameplayRootScene extends Phaser.Scene {
     this.cursorModule.onClick = (cursor) => {
       if (!this.cameraDragModule.isDrag && !this.clicksTracker.objectClickedInThisFrame) {
         let squad = this.selectedUnit;
-        if (squad && this.canBeMovedByPlayer(squad)) {
+        if (squad) {
           if (this.canBeMovedByPlayer(squad)) {
             if (squad.state.isFighting) {
               squad.combat.stopFight('command');
