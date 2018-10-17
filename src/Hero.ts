@@ -134,6 +134,23 @@ export class Hero {
     };
   }
 
+  public static makeReactorConf(): UnitData {
+    return {
+      id: "type_0_reactor",
+      icon: "infantry_2_icon",
+      name: "Реактор",
+      side: 'defense',
+      type: "reactor",
+      armor: 100000,
+      attack: 0,
+      defense: 100,
+      health: 1,
+      energy: 1,
+      range: 0,
+      quantity: 99
+    };
+  }
+
 
   private createTestData() {
     this.data = { units: [] };
@@ -166,24 +183,13 @@ export class Hero {
       energy: 1,
       quantity: 2
     });
+    this.data.units.push(Hero.makeGuardianConf());
+  }
 
-    this.data.units.push({
-      id: 'type_3_unit_1',
-      icon: "icon_guardian",
-      name: "Страж",
-      type: "guardian",
-      side: 'defend',
-      armor: 40,
-      attack: 3,
-      defense: 1,
-      range: 2,
-      health: 1,
-      energy: 1,
-      quantity: 3
-    });
-
-    this.data.units.push({
-      id: 'type_3_unit_2',
+  private static guardianIdx: number = 0;
+  public static makeGuardianConf() {
+    return {
+      id: 'type_3_unit_' + this.guardianIdx++,
       icon: "icon_guardian",
       name: "Страж",
       type: "guardian",
@@ -195,6 +201,6 @@ export class Hero {
       health: 1,
       energy: 1,
       quantity: 4
-    });
-  }
+    }
+  };
 }

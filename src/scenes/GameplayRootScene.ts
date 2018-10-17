@@ -30,6 +30,7 @@ import { K10Unit } from "../actors/K10Unit";
 import { GuardianUnit } from "../actors/GuardianUnit";
 import { BossUnit } from "../actors/BossUnit";
 import { TowerUnit } from "../actors/TowerUnit";
+import { ReactorUnit } from "../actors/ReactorUnit";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -106,7 +107,7 @@ export class GameplayRootScene extends Phaser.Scene {
     this.cursorModule.onClick = (cursor) => {
       if (!this.cameraDragModule.isDrag && !this.clicksTracker.objectClickedInThisFrame) {
         let squad = this.selectedUnit;
-        if (squad) {
+        if (squad && this.canBeMovedByPlayer(squad)) {
           if (this.canBeMovedByPlayer(squad)) {
             if (squad.state.isFighting) {
               squad.combat.stopFight('command');
@@ -164,6 +165,10 @@ export class GameplayRootScene extends Phaser.Scene {
       }
     }
 
+    let reactor =  new ReactorUnit(this, 0,0, this.grid, Hero.makeReactorConf());
+    reactor.mover.placeToTile({i: 8, j:13});
+    this.unitsGrp.add(reactor);
+    this.add.existing(reactor);
 
     this.clicksTracker.on('click', (object: BaseUnit) => {
       // deselect old
@@ -194,6 +199,13 @@ export class GameplayRootScene extends Phaser.Scene {
     // this.createEnemy(15, 10);
     // this.createEnemy(20, 9);
     // this.createEnemy(14, 1);
+
+    this.contextMenuModule.onSummonClicked = (source: BaseUnit, conf: UnitData) => {
+      
+      this.hero.data.units.push(conf);
+      this.unitsPanel.populate(this.hero.data.units);
+      this.findOrDeploySquad(conf);
+    };
 
     this.contextMenuModule.onReturnClicked = (object: BaseUnit) => {
       this.recallSquad(object as SquadUnit);
@@ -288,6 +300,7 @@ export class GameplayRootScene extends Phaser.Scene {
   }
 
   private canBeMovedByPlayer(squad: BaseUnit): boolean {
+    if (squad.conf.type == 'reactor') return false;
     if (squad.conf.type == 'sentry') return false;
     if (squad.conf.side == 'attack') return false;
     return true;

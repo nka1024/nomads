@@ -149,6 +149,11 @@ export class AssetsLoader {
       frameHeight: 100,
       endFrame: 7
     });
+    scene.load.spritesheet('reactor_anim_48x48', './assets/sprites/reactor_anim_48x48.png', {
+      frameWidth: 48,
+      frameHeight: 48,
+      endFrame: 4
+    });
 
     for (let idx = 1; idx <= ASSETS.TERRAIN_MAX; idx++) {
       scene.load.image("terrain_" + idx, "./assets/tilemap/terrain_" + idx + ".png");

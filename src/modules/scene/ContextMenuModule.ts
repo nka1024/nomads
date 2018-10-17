@@ -13,15 +13,18 @@ import { Point } from "../../types/Position";
 import { BuilderUnit } from "../../actors/BuilderUnit";
 import { OkPopup } from "../../windows/OkPopup";
 import { MessageWindow } from "../../windows/MessageWindow";
+import { UnitData, Hero } from "../../Hero";
 
 export class ContextMenuModule {
 
   // Public
+  public onSummonClicked: (source: BaseUnit, conf: UnitData) => void;
   public onReconClicked: (object: BaseUnit) => void;
   public onReturnClicked: (object: BaseUnit) => void;
   public onMoveClicked: (object: BaseUnit) => void;
 
   public repairWindow: MessageWindow;
+  public reactorWindow: MessageWindow;
 
   // Private
   private contextWindow: ContextMenuWindow;
@@ -92,7 +95,9 @@ export class ContextMenuModule {
   private showContextWindowForObject(object: BaseUnit) {
     this.destroyContextWindow();
 
-    if (object.conf.type == 'builder') { 
+    if (object.conf.type == 'reactor') { 
+      this.contextWindow = this.makeReactorWindow(object);
+    } else if (object.conf.type == 'builder') { 
       this.contextWindow = this.makeBuilderSquadWindow(object);
     } else if (object.conf.id.indexOf('type') != -1) {
       this.contextWindow = this.makeHeroSquadWindow(object);
@@ -156,6 +161,40 @@ export class ContextMenuModule {
     });
     return window
   }
+
+
+  private makeReactorWindow(object: BaseUnit): ContextMenuWindow {
+    let p = this.worldToScreen(object);
+    let buttons = ["Призыв"];
+    let menu = new ContextMenuWindow(p.x - ContextMenuWindow.defaultWidth / 2, p.y + 16, buttons);
+    menu.buttons[0].addEventListener('click', () => {
+      this.reactorWindow = new MessageWindow('', 'Реактор переработки протоэнергии');
+      // this.reactorWindow.top = 0
+      this.reactorWindow.owner = object;
+      this.reactorWindow.image = "portrait_reactor";
+      this.reactorWindow.addButton('Жнец [200]', () => {
+        this.reactorWindow.destroy();
+        this.reactorWindow = null;
+      });
+      this.reactorWindow.addButton('Строитель [400]', () => {
+        this.reactorWindow.destroy()
+        this.reactorWindow = null;
+      });
+      this.reactorWindow.addButton('Страж [1000]', () => {
+        this.reactorWindow.destroy()
+        this.reactorWindow = null;
+        this.onSummonClicked(object, Hero.makeGuardianConf());
+      });
+      this.reactorWindow.addButton('Отмена', () => {
+        this.reactorWindow.destroy()
+        this.reactorWindow = null;
+      });
+
+      this.reactorWindow.show();
+    });
+    return menu;
+  }
+
 
   private destroyContextWindow() {
     if (this.contextWindow != null) {

@@ -155,6 +155,7 @@ export class UnitCombatModule implements IUnitModule {
     } else {
       // let damage = (Math.random() / 100 + Math.random() / 50) * 2;
       let damage = this.owner.conf.attack - this.owner.conf.defense;
+      if (damage < 0) damage = 0;
       this.target.combat.sufferAttack({ attacker: this.owner, damage: damage });
 
       this.showFloatyText(damage);
