@@ -65,10 +65,11 @@ export class GameplayRootScene extends Phaser.Scene {
   }
 
   injectDependencies() {
+    this.hero = new Hero();
     this.grid = new TileGrid(this);
     this.cameraDragModule = new CameraDragModule(this);
     this.clicksTracker = new GameobjectClicksModule(this);
-    this.contextMenuModule = new ContextMenuModule(this, this.clicksTracker);
+    this.contextMenuModule = new ContextMenuModule(this, this.hero, this.clicksTracker);
     this.cursorModule = new SceneCursorModule(this, this.grid);
     this.mapImporterModule = new MapImporterModule(this, this.grid);
   }
@@ -77,7 +78,7 @@ export class GameplayRootScene extends Phaser.Scene {
     this.cameras.main.setSize(w, h);
     if (w < 500) {
       this.cameras.main.zoom = 1;
-    } else if (w < 1043) {
+    } else if (w <= 1280) {
       this.cameras.main.zoom = 2;
     } else  {
       this.cameras.main.zoom = 3;
@@ -98,7 +99,6 @@ export class GameplayRootScene extends Phaser.Scene {
     this.grid.createFog();
 
     let player = new HeroUnit(this, 0, 0, this.grid, Hero.makeHeroConf());
-    this.hero = new Hero();
 
     let resourcePanel = new ResourcesPanel();
     resourcePanel.populate(this.hero);

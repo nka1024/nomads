@@ -17,7 +17,8 @@ export type UnitData = {
   health: number;
   energy: number;
   range: number;
-  quantity: number;
+  level: number;
+  experience: number;
   type: string // archers, infantry, hero, scout
 }
 
@@ -45,7 +46,8 @@ export class Hero {
       health: 0.2,
       energy: 1,
       range: 1,
-      quantity: 1,
+      experience: 0,
+      level: 1,
     };
   }
 
@@ -62,7 +64,8 @@ export class Hero {
       range: 2,
       health: 1,
       energy: 1,
-      quantity: 3
+      experience: 0,
+      level: 3
     };
   }
   public static makeReconSquadConf(): UnitData {
@@ -78,7 +81,8 @@ export class Hero {
       health: 1,
       energy: 1,
       range: 1,
-      quantity: 1
+      experience: 0,
+      level: 1
     };
   }
 
@@ -95,7 +99,8 @@ export class Hero {
       health: 1,
       energy: 1,
       range: 2,
-      quantity: 99
+      experience: 0,
+      level: 99
     };
   }
 
@@ -113,7 +118,8 @@ export class Hero {
       health: 1,
       energy: 1,
       range: 1,
-      quantity: 99
+      experience: 0,
+      level: 99
     };
   }
 
@@ -130,7 +136,8 @@ export class Hero {
       health: 1,
       energy: 1,
       range: 1,
-      quantity: 99
+      experience: 0,
+      level: 99
     };
   }
 
@@ -147,47 +154,21 @@ export class Hero {
       health: 1,
       energy: 1,
       range: 0,
-      quantity: 99
+      experience: 0,
+      level: 99
     };
   }
 
 
   private createTestData() {
     this.data = { units: [] };
-    this.data.units.push({
-      id: "type_1_unit_1",
-      icon: "icon_harvester",
-      name: "Жнец",
-      type: "harvester",
-      side: 'defend',
-      armor: 30,
-      attack: 0,
-      defense: 0,
-      health: 1,
-      energy: 1,
-      range: 2,
-      quantity: 1
-    });
-
-    this.data.units.push({
-      id: 'type_2_unit_1',
-      icon: "icon_builder",
-      name: "Билдер",
-      type: "builder",
-      side: 'defend',
-      armor: 40,
-      attack: 0,
-      defense: 1,
-      range: 1,
-      health: 1,
-      energy: 1,
-      quantity: 2
-    });
-    this.data.units.push(Hero.makeGuardianConf());
+    this.data.units.push(Hero.makeHarvesterConf());
+    this.data.units.push(Hero.makeBuilderConf());
+    // this.data.units.push(Hero.makeGuardianConf());
   }
 
   private static guardianIdx: number = 0;
-  public static makeGuardianConf() {
+  public static makeGuardianConf(): UnitData {
     return {
       id: 'type_3_unit_' + this.guardianIdx++,
       icon: "icon_guardian",
@@ -200,7 +181,48 @@ export class Hero {
       range: 2,
       health: 1,
       energy: 1,
-      quantity: 4
+      experience: 0,
+      level: 1
     }
   };
+
+  private static harvesterIdx: number = 0;
+  public static makeHarvesterConf(): UnitData {
+    return {
+      id: "type_1_unit_" + Hero.harvesterIdx,
+      icon: "icon_harvester",
+      name: "Жнец",
+      type: "harvester",
+      side: 'defend',
+      armor: 30,
+      attack: 0,
+      defense: 0,
+      health: 1,
+      energy: 1,
+      range: 2,
+      experience: 0,
+      level: 1
+    }
+  };
+
+  private static builderIdx: number = 0;
+  public static makeBuilderConf(): UnitData {
+    return {
+      id: 'type_2_unit_'+this.builderIdx,
+      icon: "icon_builder",
+      name: "Билдер",
+      type: "builder",
+      side: 'defend',
+      armor: 40,
+      attack: 0,
+      defense: 1,
+      range: 1,
+      health: 1,
+      energy: 1,
+      experience: 0,
+      level: 1
+    }
+  };
+
+  
 }

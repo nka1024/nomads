@@ -18,25 +18,36 @@ export class MessageWindow extends BaseWindow {
   public titleText: HTMLElement;
   public messageText: HTMLElement;
   public container: HTMLElement;
+  public container2: HTMLElement;
   public imageElement: HTMLElement;
   private objList: HTMLElement;
 
   public buttons: HTMLInputElement[] = [];
 
-  constructor(title: string, message: string, image: string = null) {
+  constructor(title: string, message: string, shadow: boolean = false, image: string = null) {
     super();
 
     this.titleText = this.element.querySelector(".text_title");
     this.messageText = this.element.querySelector(".text_message");
     this.container = this.element.querySelector(".empty_container");
+    this.container2 = this.element.querySelector(".empty_container2");
     this.imageElement = this.element.querySelector(".message_image");
     this.objList = this.element.querySelector(".obj_list");
 
     this.image = null;
-    this.top = 150;
+    // this.top = 150;
     this.left = -1;
     this.titleText.innerHTML = title;
     this.messageText.innerHTML = message;
+
+    this.element.style.position = 'absolute';
+    this.element.style.width = '100%';
+    this.element.style.height = '100%';
+    this.element.style.margin = 'auto';
+
+    if (!shadow) {
+      this.container.style.backgroundColor = "";
+    }
   }
 
   public addButton(value: string, callback: () => void) {
@@ -63,11 +74,15 @@ export class MessageWindow extends BaseWindow {
 
   public set top(value: number) {
     if (value != -1) {
-      this.container.style.top = value + 'px';
-      this.container.style.bottom = 'auto';
+      this.container2.style.top = value + 'px';
+      this.container2.style.bottom = 'auto';
+      this.element.style.position = '';
+      this.element.style.width = '';
+      this.element.style.height = '';
+      this.element.style.margin = '';
     } else {
-      this.container.style.top = '0px';
-      this.container.style.bottom = '0px';
+      this.container2.style.top = '0px';
+      this.container2.style.bottom = '0px';
     }
   }
 

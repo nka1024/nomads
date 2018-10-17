@@ -14,6 +14,7 @@ import { BuilderUnit } from "../../actors/BuilderUnit";
 import { OkPopup } from "../../windows/OkPopup";
 import { MessageWindow } from "../../windows/MessageWindow";
 import { UnitData, Hero } from "../../Hero";
+import { CONST } from "../../const/const";
 
 export class ContextMenuModule {
 
@@ -31,11 +32,12 @@ export class ContextMenuModule {
 
   // Dependencies 
   private scene: Phaser.Scene;
-  private targetList: TargetListPanel;
+  private hero: Hero;
   private clicksTracker: GameobjectClicksModule;
 
-  constructor(scene: Phaser.Scene, clicksTracker: GameobjectClicksModule) {
+  constructor(scene: Phaser.Scene, hero: Hero, clicksTracker: GameobjectClicksModule) {
     this.scene = scene;
+    this.hero = hero;
     this.clicksTracker = clicksTracker;
     this.clicksTracker.on('click', (object: BaseUnit) => {
       this.handleClick(object);
@@ -44,10 +46,6 @@ export class ContextMenuModule {
 
 
   // Public
-
-  public injectDependencies(targetList: TargetListPanel) {
-    this.targetList = targetList;
-  }
 
   public update() {
     // close context window if clicked outside of it
@@ -164,27 +162,34 @@ export class ContextMenuModule {
 
 
   private makeReactorWindow(object: BaseUnit): ContextMenuWindow {
+    let addButton = (name1: string, name2: string, conf: UnitData, cost: number ) => {
+      this.reactorWindow.addButton(name1 +' [' + cost + ']', () => {
+        if (this.hero.resources >= cost) {
+          this.hero.resources -= cost;
+          this.reactorWindow.destroy()
+          this.reactorWindow = null;
+          this.onSummonClicked(object, conf);
+        } else {
+          let popup = new MessageWindow(
+            "Недостаточно ресурсов", 
+            'Для призыва ' + name2 + ' требуется ' + cost + ' едениц протоэнергии', 
+            true);
+          popup.addButton('Ok',() => {popup.destroy();});
+          popup.show();
+        }
+      });
+    }
     let p = this.worldToScreen(object);
     let buttons = ["Призыв"];
     let menu = new ContextMenuWindow(p.x - ContextMenuWindow.defaultWidth / 2, p.y + 16, buttons);
     menu.buttons[0].addEventListener('click', () => {
       this.reactorWindow = new MessageWindow('', 'Реактор переработки протоэнергии');
-      // this.reactorWindow.top = 0
       this.reactorWindow.owner = object;
       this.reactorWindow.image = "portrait_reactor";
-      this.reactorWindow.addButton('Жнец [200]', () => {
-        this.reactorWindow.destroy();
-        this.reactorWindow = null;
-      });
-      this.reactorWindow.addButton('Строитель [400]', () => {
-        this.reactorWindow.destroy()
-        this.reactorWindow = null;
-      });
-      this.reactorWindow.addButton('Страж [1000]', () => {
-        this.reactorWindow.destroy()
-        this.reactorWindow = null;
-        this.onSummonClicked(object, Hero.makeGuardianConf());
-      });
+      addButton('Жнец', 'Жнеца', Hero.makeHarvesterConf(), CONST.HARVESTER_COST);
+      addButton('Строитель', 'Строителя', Hero.makeHarvesterConf(), CONST.BUILDER_COST);
+      addButton('Страж', 'Стража', Hero.makeGuardianConf(), CONST.GUARDIAN_COST);
+      
       this.reactorWindow.addButton('Отмена', () => {
         this.reactorWindow.destroy()
         this.reactorWindow = null;

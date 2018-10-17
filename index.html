@@ -276,19 +276,37 @@
 
   <!-- DIALOG_POPUP prefab-->
   <div class="message_window_prefab" hidden=true>
-    <div id="container" class="empty_container centered" style="position: absolute; top: 150px; width: 320px">
-      <section id="main" style="padding: 10px">
-        <div id="loginForm" class="obj_list">
-          <input class="message_image" style="border-radius: 3px; image-rendering: pixelated; width: 300px; height: 200px;  outline: none; border-width: 0px; border-style: none; border-color: white;"
-            type="button">
+    <div id="container" class="empty_container " style="
+      position: relative;
+        background-color: #151615e0; 
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        left: 0;
+        right: 0;
+        ">
 
-          <h1 class="text_title" style="text-align: center;"></h1>
-          <h2 class="text_message" style="text-align: center;"></h2>
-          <br />
-            
-        </div>
-        </form>
-      </section>
+      <div id="container" class="empty_container2 centered" style="
+        position: absolute;
+        margin: auto; 
+        overflow: auto; 
+        width: 320px; 
+        display: inline-table;
+        top:0; left: 0; right: 0; bottom: 0;">
+        <section id="main" style="padding: 10px">
+          <div id="loginForm" class="obj_list">
+            <input class="message_image" style="border-radius: 3px; image-rendering: pixelated; width: 300px; height: 200px;  outline: none; border-width: 0px; border-style: none; border-color: white;"
+              type="button">
+
+            <h1 class="text_title" style="text-align: center;"></h1>
+            <h2 class="text_message" style="text-align: center;"></h2>
+            <br />
+
+          </div>
+          </form>
+        </section>
+      </div>
     </div>
   </div>
 
