@@ -44,6 +44,7 @@ export class LogoScene extends Phaser.Scene {
     this.load.image("cutscene_2", "./assets/cutscene_2.png");
     this.load.image("cutscene_3", "./assets/cutscene_3.png");
     this.load.image("cutscene_4", "./assets/cutscene_4.png");
+    this.load.image("cutscene_5", "./assets/cutscene_5.png");
     this.load.image("cutscene_frame", "./assets/cutscene_frame.png");
   }
 
@@ -52,21 +53,21 @@ export class LogoScene extends Phaser.Scene {
     if (w < 500) {
       this.cameras.main.zoom = 1;
     } else if (w <= 1280) {
-      this.cameras.main.zoom = 2;
+      this.cameras.main.zoom = 1;
     } else  {
-      this.cameras.main.zoom = 3;
+      this.cameras.main.zoom = 2;
     }
   }
 
   private nextSlide() {
-    this.timer1.destroy();
-
+    
     this.currentImage.alpha = 1;
     if (!this.logoFinished) {
       if (this.logo2.alpha < 1 ) {
         this.currentImage = this.logo2
       } else if(this.logo3.alpha < 1) {
-        this.currentImage = this.logo3
+        this.currentImage = this.logo3;
+        this.timer1.destroy();
       } else {
         this.logo1.destroy();
         this.logo2.destroy();
@@ -85,9 +86,11 @@ export class LogoScene extends Phaser.Scene {
       if (this.cutsceneBackground) this.cutsceneBackground.destroy();
       if (this.cutsceneText) this.cutsceneText.destroy();
 
-      if (this.storyIdx <= 4) {
-        this.cutsceneText = this.makeCenteredImage('cutscene_' + this.storyIdx + '_text');
-        this.cutsceneText.depth = 2
+      if (this.storyIdx <= 5) {
+        if (this.storyIdx != 5) {
+          this.cutsceneText = this.makeCenteredImage('cutscene_' + this.storyIdx + '_text');
+          this.cutsceneText.depth = 2
+        }
 
         if (this.storyIdx != 1) {
           this.cutsceneBackground = this.makeCenteredImage('cutscene_' + this.storyIdx);
@@ -102,10 +105,16 @@ export class LogoScene extends Phaser.Scene {
           } else if (this.storyIdx == 4) {
             this.cutsceneBackground.y -= 60
             this.desiredBgScroll = this.cutsceneBackground.x - 50;
+          } else if (this.storyIdx == 5) {
+            this.currentImage = this.cutsceneBackground;   
+            // this.cutsceneBackground.y -= 40
+            this.cutsceneFrame.alpha = 0;
           }
         }
-
-        this.currentImage = this.cutsceneText;
+        
+        if (this.storyIdx != 5) {
+         this.currentImage = this.cutsceneText;
+        }
       } else {
         this.scene.start("GameplayRootScene");
       }
@@ -129,7 +138,7 @@ export class LogoScene extends Phaser.Scene {
     
     this.spaceKey = this.input.keyboard.addKey(Input.Keyboard.KeyCodes.SPACE);
     this.timer1 = this.time.addEvent({
-      delay: 5000,
+      delay: 2000,
       callback: this.nextSlide,
       callbackScope: this,
       loop: true,
