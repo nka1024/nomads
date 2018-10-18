@@ -31,6 +31,7 @@ import { GuardianUnit } from "../actors/GuardianUnit";
 import { BossUnit } from "../actors/BossUnit";
 import { TowerUnit } from "../actors/TowerUnit";
 import { ReactorUnit } from "../actors/ReactorUnit";
+import { DialogWindow } from "../windows/DialogWindow";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -98,6 +99,12 @@ export class GameplayRootScene extends Phaser.Scene {
 
     this.grid.createFog();
 
+    let dialog1 = new DialogWindow('Миги', 'Я думал основная фишка игра зельды в непредсказуемости и чувстве открытия новых механик и их клмбинирования', false, 'portrait_migi');
+    dialog1.onComplete = () => {
+        let dialog2 = new DialogWindow('Сэйширо', 'Не знаю, я не играл ни в асасинов, ни в новых зельд', false, 'portrait_seyshiro');
+        dialog2.show();
+    };
+    dialog1.show();
     let player = new HeroUnit(this, 0, 0, this.grid, Hero.makeHeroConf());
 
     let resourcePanel = new ResourcesPanel();
