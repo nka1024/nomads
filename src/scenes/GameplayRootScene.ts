@@ -99,10 +99,21 @@ export class GameplayRootScene extends Phaser.Scene {
 
     this.grid.createFog();
 
-    let dialog1 = new DialogWindow('Миги', 'Я думал основная фишка игра зельды в непредсказуемости и чувстве открытия новых механик и их клмбинирования', false, 'portrait_migi');
+    let dialog1 = new DialogWindow('Миги', 'Сэйширо, кажется мы нашли ее. Сканеры обнаружили слабое излучение к северу от твоей текущей позиции.', false, 'portrait_migi');
     dialog1.onComplete = () => {
-        let dialog2 = new DialogWindow('Сэйширо', 'Не знаю, я не играл ни в асасинов, ни в новых зельд', false, 'portrait_seyshiro');
+        let dialog2 = new DialogWindow('Сэйширо', 'Думаешь это протомох?', false, 'portrait_seyshiro');
         dialog2.show();
+
+        dialog2.onComplete = () => {
+          let dialog3 = new DialogWindow('Миги', '...', false, 'portrait_migi');
+          dialog3.show();
+
+          dialog3.onComplete = () => {
+            let dialog4 = new DialogWindow('Миги', 'Нужно проверить. Направляйся туда и начинай сбор, я дам знать если замечу следы Ка-Тэн.', false, 'portrait_migi');
+            dialog4.show();
+          };
+
+        };
     };
     dialog1.show();
     let player = new HeroUnit(this, 0, 0, this.grid, Hero.makeHeroConf());
