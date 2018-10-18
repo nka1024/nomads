@@ -108,6 +108,7 @@ export class ContextMenuModule {
       this.contextWindow = null
     };
     this.contextWindow.show();
+    this.scene.input.activePointer.isDown = false;
   }
 
   private makeHeroSquadWindow(object: BaseUnit): ContextMenuWindow {
