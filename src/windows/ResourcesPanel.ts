@@ -23,7 +23,7 @@ export class ResourcesPanel extends BaseWindow {
 
     this.titleText = this.element.querySelector(".text_title");
     this.volumeText = this.element.querySelector(".text_volume");
-
+    
     this.startDataSyncLoop();
   }
 

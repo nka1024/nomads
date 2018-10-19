@@ -48,12 +48,13 @@ export class LogoScene extends Phaser.Scene {
     this.load.image("cutscene_frame", "./assets/cutscene_frame.png");
   }
 
+  
   private onWindowResize(w: number, h: number) {
     this.cameras.main.setSize(w, h);
     if (w < 500) {
       this.cameras.main.zoom = 1;
     } else if (w <= 1280) {
-      this.cameras.main.zoom = 1;
+      this.cameras.main.zoom = 2;
     } else  {
       this.cameras.main.zoom = 2;
     }
@@ -116,6 +117,7 @@ export class LogoScene extends Phaser.Scene {
          this.currentImage = this.cutsceneText;
         }
       } else {
+        this.events.off('resize',null,null,false);
         this.scene.start("GameplayRootScene");
       }
         

@@ -49,6 +49,10 @@ export abstract class BaseWindow {
     this.element.style.display = "none";
   }
 
+  public set zoom(value: number) {
+    this.element.style.zoom = value.toString();
+  }
+
   protected abstract getWindowName(): string;
   protected abstract getInnerHTML(): string;
 

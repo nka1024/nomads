@@ -47,6 +47,7 @@ export class GameplayRootScene extends Phaser.Scene {
 
   // windows
   private unitsPanel: UnitsPanel;
+  private resourcesPanel: ResourcesPanel;
 
   // modules
   private cameraDragModule: CameraDragModule;
@@ -84,12 +85,13 @@ export class GameplayRootScene extends Phaser.Scene {
     } else  {
       this.cameras.main.zoom = 3;
     }
+    // this.unitsPanel.zoom = this.cameras.main.zoom;
+    this.resourcesPanel.zoom = this.cameras.main.zoom;
   }
 
   create(data): void {
     this.injectDependencies();
     this.cameras.main.setBackgroundColor(0x1f1f1f);
-    this.onWindowResize(window.innerWidth, window.innerHeight);
 
     let mapsize = this.grid.gridSize * this.grid.tileSize;
     this.cameras.main.setBounds(0, 0, mapsize, mapsize);
@@ -118,9 +120,9 @@ export class GameplayRootScene extends Phaser.Scene {
     dialog1.show();
     let player = new HeroUnit(this, 0, 0, this.grid, Hero.makeHeroConf());
 
-    let resourcePanel = new ResourcesPanel();
-    resourcePanel.populate(this.hero);
-    resourcePanel.show();
+    this.resourcesPanel = new ResourcesPanel();
+    this.resourcesPanel.populate(this.hero);
+    this.resourcesPanel.show();
 
     this.cursorModule.onClick = (cursor) => {
       if (!this.cameraDragModule.isDrag && !this.clicksTracker.objectClickedInThisFrame) {
@@ -231,6 +233,8 @@ export class GameplayRootScene extends Phaser.Scene {
     this.contextMenuModule.onMoveClicked = (object: BaseUnit) => {
       this.selectedUnit = object as SquadUnit;
     };
+
+    this.onWindowResize(window.innerWidth, window.innerHeight);
 
   }
 
