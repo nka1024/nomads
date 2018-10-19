@@ -29,6 +29,8 @@ export class SentryUnit extends SquadUnit {
       callbackScope: this,
       loop: true
     });
+
+    this.events.on('death', () => {this.destroy()});
   }
 
   private spinTower() {
