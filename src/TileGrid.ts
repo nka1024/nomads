@@ -6,7 +6,7 @@
 */
 
 import { js as easystar } from "easystarjs";
-import { UI_DEPTH } from "./const/const";
+import { UI_DEPTH, CONST } from "./const/const";
 import { Point, Tile } from "./types/Position";
 import { BaseUnit } from "./actors/BaseUnit";
 import { SquadUnit } from "./actors/SquadUnit";
@@ -20,7 +20,7 @@ export declare type GrassData = {
 
 export class TileGrid {
 
-  public gridSize: number = 24;
+  public gridSize: number = 200;
   public tileSize: number = 32;
   
   private grid: Phaser.GameObjects.Image[];
@@ -30,6 +30,7 @@ export class TileGrid {
   private dests: number[][];
   private fog: Phaser.GameObjects.Image[][];
   private grasses: any = {};
+  public fogLayer: Phaser.Tilemaps.DynamicTilemapLayer;
 
   private scene: Phaser.Scene;
   constructor(scene: Phaser.Scene) {
@@ -110,13 +111,25 @@ export class TileGrid {
   /// Fog
 
   public createFog() {
-    // grid tiles
+    let fog: integer[][] = []
     for (let i = 0; i < this.gridSize; i++) {
+      fog [i] = []
       for (let j = 0; j < this.gridSize; j++) {
-        let n = this.data[i][j];
-        this.fog[i][j] = this.createTile({ i: i, j: j }, '', true);
+        fog[i][j] = 0;
       }
     }
+
+    let config:TilemapConfig = {
+      data: fog,
+      tileWidth: 32,
+      tileHeight: 32,
+      insertNull: true
+    }
+
+    let tilemap = this.scene.make.tilemap(config);
+    var tileset = tilemap.addTilesetImage('fog_tilemap');
+    this.fogLayer = tilemap.createDynamicLayer(0, tileset, 0, 0);
+    this.fogLayer.depth = UI_DEPTH.EDITOR_GRID_TILE;
   }
 
   public updateFog(center: Tile) {
@@ -124,7 +137,7 @@ export class TileGrid {
     for (let i = center.i - (size - 1); i < center.i + size; i++) {
       for (let j = center.j - (size - 1); j < center.j + size; j++) {
         if (this.legit({ i: i, j: j })) {
-          this.fog[i][j].visible = false;
+          this.fogLayer.removeTileAt(j, i, true, false);
         }
       }
     }
@@ -132,7 +145,7 @@ export class TileGrid {
     for (let i = center.i - (size - 2); i < center.i + (size - 1); i++) {
       for (let j = center.j - size; j < center.j + (size + 1); j++) {
         if (this.legit({ i: i, j: j })) {
-          this.fog[i][j].visible = false;
+          this.fogLayer.removeTileAt(j, i, true, false);
         }
       }
     }
@@ -140,14 +153,14 @@ export class TileGrid {
     for (let i = center.i - size; i < center.i + (size + 1); i++) {
       for (let j = center.j - (size - 2); j < center.j + (size - 1); j++) {
         if (this.legit({ i: i, j: j })) {
-          this.fog[i][j].visible = false;
+          this.fogLayer.removeTileAt(j, i, true, false);
         }
       }
     }
   }
 
   public isFog(tile: Tile): boolean{
-    return this.fog[tile.i][tile.j].visible;
+    return this.fogLayer.hasTileAt(tile.j, tile.i);
   }
 
   // Grass

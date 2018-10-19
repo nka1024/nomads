@@ -21,7 +21,7 @@ export class AssetsLoader {
     scene.load.image("grid_128_30", "./assets/grid_128_a50.png");
     scene.load.image("path_end_14x14", "./assets/path_end_14x14.png");
     scene.load.image("path_mid_14x14", "./assets/path_mid_14x14.png");
-    scene.load.image("fog_tile_16_a70", "./assets/fog_tile_16_a70.png");
+    scene.load.spritesheet('fog_tilemap', './assets/fog_tile_32_a70.png', {frameWidth: 32, frameHeight: 32});
     scene.load.image("grid_tile_green_16_a50", "./assets/grid_tile_green_16_a50.png");
     scene.load.image("grid_tile_yellow_16_a50", "./assets/grid_tile_yellow_16_a50.png");
     scene.load.image("grid_tile_red_16_a50", "./assets/grid_tile_red_16_a50.png");
