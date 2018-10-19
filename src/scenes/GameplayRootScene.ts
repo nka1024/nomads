@@ -32,6 +32,7 @@ import { BossUnit } from "../actors/BossUnit";
 import { TowerUnit } from "../actors/TowerUnit";
 import { ReactorUnit } from "../actors/ReactorUnit";
 import { DialogWindow } from "../windows/DialogWindow";
+import { DebugPanel } from "../windows/DebugPanel";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -86,7 +87,7 @@ export class GameplayRootScene extends Phaser.Scene {
       this.cameras.main.zoom = 3;
     }
     // this.unitsPanel.zoom = this.cameras.main.zoom;
-    this.resourcesPanel.zoom = this.cameras.main.zoom;
+    this.resourcesPanel.zoom = w <= 1280 ? 1 : 2;
   }
 
   create(data): void {
@@ -114,7 +115,6 @@ export class GameplayRootScene extends Phaser.Scene {
             let dialog4 = new DialogWindow('Миги', 'Нужно проверить. Направляйся туда и начинай сбор, я дам знать если замечу следы Ка-Тэн.', false, 'portrait_migi');
             dialog4.show();
           };
-
         };
     };
     dialog1.show();
@@ -123,6 +123,9 @@ export class GameplayRootScene extends Phaser.Scene {
     this.resourcesPanel = new ResourcesPanel();
     this.resourcesPanel.populate(this.hero);
     this.resourcesPanel.show();
+
+    let fpsPanel = new DebugPanel(this, this.grid, this.cursorModule);
+    fpsPanel.show();
 
     this.cursorModule.onClick = (cursor) => {
       if (!this.cameraDragModule.isDrag && !this.clicksTracker.objectClickedInThisFrame) {
