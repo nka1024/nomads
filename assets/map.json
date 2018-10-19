@@ -1,41 +1,13 @@
 {
   "objects": [
     {
-      "texture": "terrain_1",
+      "texture": "terrain_12",
       "depth": -1.7976931348623157e+308,
-      "x": 128,
-      "y": 256
+      "x": 0,
+      "y": 0
     },
-    {
-      "texture": "terrain_2",
-      "depth": -1.7976931348623157e+308,
-      "x": 384,
-      "y": 256
-    },
-    {
-      "texture": "terrain_3",
-      "depth": -1.7976931348623157e+308,
-      "x": 640,
-      "y": 256
-    },
-    {
-      "texture": "terrain_4",
-      "depth": -1.7976931348623157e+308,
-      "x": 128,
-      "y": 512
-    },
-    {
-      "texture": "terrain_5",
-      "depth": -1.7976931348623157e+308,
-      "x": 384,
-      "y": 512
-    },
-    {
-      "texture": "terrain_6",
-      "depth": -1.7976931348623157e+308,
-      "x": 640,
-      "y": 512
-    },
+    
+
     {
       "texture": "house_5",
       "depth": 225,

@@ -84,8 +84,8 @@ export class StoryModule {
     let window = new DialogWindow(actor.name, message.text, false, actor.portrait);
     window.show();
     window.onComplete = () => {
-      window.destroy();
-      if (arc.messages.length > idx) {
+      // window.destroy();
+      if (idx < arc.messages.length - 1) {
         this.showStoryMessage(arc, idx + 1);
       }
     };

@@ -54,8 +54,14 @@ export class MapImporterModule {
     let obj = new GameObjects.Image(this.scene, data.x, data.y, null);
     obj.scaleX = 1;
     obj.scaleY = 1;
-    obj.originX = 0.5;
-    obj.originY = 1;
+    console.log(data.texture);
+    if (data.texture.startsWith('terrain')) {
+      obj.originX = 0;
+      obj.originY = 0;
+    } else {
+      obj.originX = 0.5;
+      obj.originY = 1;
+    }
     obj.setTexture(data.texture);
     // obj.x = data.x;
     // obj.y = data.y + 32;

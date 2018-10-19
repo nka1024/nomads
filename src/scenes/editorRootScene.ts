@@ -226,9 +226,17 @@ export class EditorRootScene extends Phaser.Scene {
     let obj = new Phaser.GameObjects.Image(this, 0, 0, null);
     obj.scaleX = this.MAP_SCALE;
     obj.scaleY = this.MAP_SCALE;
-    obj.originX = 0.5;
-    obj.originY = 1;
+    
+    if (data.texture.startsWith('terrain')) {
+      console.log('wow');
+      obj.originX = 0;
+      obj.originY = 0;
+    } else {
+      obj.originX = 0.5;
+      obj.originY = 1;
+    }
     obj.setTexture(data.texture);
+
     obj.x = data.x;
     obj.y = data.y;
     obj.depth = data.depth;
@@ -244,8 +252,11 @@ export class EditorRootScene extends Phaser.Scene {
     obj.setTexture(this.cursor.texture.key);
     obj.x = this.cursor.x;
     obj.y = this.cursor.y;
+
+    
     // put terrain underneath everything
     if (this.objectsListPanel.filenamePrefix.startsWith("terrain")) {
+      
       obj.depth = -Number.MAX_VALUE;
     } else {
       obj.depth = obj.y;

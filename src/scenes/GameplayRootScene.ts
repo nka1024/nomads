@@ -155,7 +155,9 @@ export class GameplayRootScene extends Phaser.Scene {
     this.selectedUnit = player;
 
 
-    player.mover.placeToTile({ i: 8, j: 12 });
+    // player.mover.placeToTile({ i: 8, j: 12 });
+    player.mover.placeToTile({i:63, j :58});
+
     this.cameras.main.centerOn(player.x, player.y);
     this.unitsGrp.add(this.player);
     this.unitsPanel = new UnitsPanel();

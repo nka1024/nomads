@@ -8,7 +8,7 @@
 import { CONST } from "./const/const";
 
 export let ASSETS = {
-  TERRAIN_MAX: 6,
+  TERRAIN_MAX: 11,
   GRASS_MAX: 6,
   HOUSE_MAX: 8,
 }
@@ -154,9 +154,10 @@ export class AssetsLoader {
       endFrame: 4
     });
 
-    for (let idx = 1; idx <= ASSETS.TERRAIN_MAX; idx++) {
-      scene.load.image("terrain_" + idx, "./assets/tilemap/terrain_" + idx + ".png");
-    }
+    scene.load.image("terrain_12", "./assets/tilemap/terrain_12.png");
+    // for (let idx = 0; idx <= ASSETS.TERRAIN_MAX; idx++) {
+    //   scene.load.image("terrain_" + idx, "./assets/tilemap/terrain_" + idx + ".png");
+    // }
     for (let idx = 1; idx <= ASSETS.GRASS_MAX; idx++) {
       scene.load.image("grass_" + idx, "./assets/tilemap/grass_" + idx + ".png");
     }
