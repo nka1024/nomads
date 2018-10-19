@@ -33,6 +33,7 @@ import { TowerUnit } from "../actors/TowerUnit";
 import { ReactorUnit } from "../actors/ReactorUnit";
 import { DialogWindow } from "../windows/DialogWindow";
 import { DebugPanel } from "../windows/DebugPanel";
+import { StoryModule } from "../modules/scene/StoryModule";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -56,6 +57,7 @@ export class GameplayRootScene extends Phaser.Scene {
   private contextMenuModule: ContextMenuModule;
   private cursorModule: SceneCursorModule;
   private clicksTracker: GameobjectClicksModule;
+  private story: StoryModule;
 
   constructor() {
     super({
@@ -75,6 +77,7 @@ export class GameplayRootScene extends Phaser.Scene {
     this.contextMenuModule = new ContextMenuModule(this, this.hero, this.clicksTracker);
     this.cursorModule = new SceneCursorModule(this, this.grid);
     this.mapImporterModule = new MapImporterModule(this, this.grid);
+    this.story = new StoryModule(this, this.hero);
   }
 
   private onWindowResize(w: number, h: number) {
@@ -102,22 +105,6 @@ export class GameplayRootScene extends Phaser.Scene {
 
     this.grid.createFog();
 
-    let dialog1 = new DialogWindow('Миги', 'Сэйширо, кажется мы нашли ее. Сканеры обнаружили слабое излучение к северу от твоей текущей позиции.', false, 'portrait_migi');
-    dialog1.onComplete = () => {
-        let dialog2 = new DialogWindow('Сэйширо', 'Думаешь это протомох?', false, 'portrait_seyshiro');
-        dialog2.show();
-
-        dialog2.onComplete = () => {
-          let dialog3 = new DialogWindow('Миги', '...', false, 'portrait_migi');
-          dialog3.show();
-
-          dialog3.onComplete = () => {
-            let dialog4 = new DialogWindow('Миги', 'Нужно проверить. Направляйся туда и начинай сбор, я дам знать если замечу следы Ка-Тэн.', false, 'portrait_migi');
-            dialog4.show();
-          };
-        };
-    };
-    dialog1.show();
     let player = new HeroUnit(this, 0, 0, this.grid, Hero.makeHeroConf());
 
     this.resourcesPanel = new ResourcesPanel();
@@ -148,6 +135,8 @@ export class GameplayRootScene extends Phaser.Scene {
         }
       }
     };
+
+    this.story.start();
 
     this.mapImporterModule.grassHandler = (o: GameObjects.Image, item: any) => {
       let tile = this.grid.worldToGrid({ x: o.x, y: o.y - o.height / 2 });
@@ -238,7 +227,6 @@ export class GameplayRootScene extends Phaser.Scene {
     };
 
     this.onWindowResize(window.innerWidth, window.innerHeight);
-
   }
 
   private recallSquad(squad: SquadUnit) {
