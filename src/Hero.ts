@@ -12,8 +12,16 @@ export type UnitData = {
   name: string;
   side: string;
   armor: number;
+  
   attack: number;
+  attackBonus: number;
   defense: number;
+  defenseBonus: number;
+  harvest?: number;
+  harvestBonus?: number;
+  repair?: number;
+  repairBonus?: number;
+
   health: number;
   energy: number;
   range: number;
@@ -27,6 +35,7 @@ export type HeroData = {
 }
 
 export class Hero {
+  public static expTable = [100, 300, 1000, 2000, 10000];
   public resources: number = 0;
   public data: HeroData;
   constructor() {
@@ -48,6 +57,8 @@ export class Hero {
       range: 1,
       experience: 0,
       level: 1,
+      attackBonus: 0,
+      defenseBonus: 0
     };
   }
 
@@ -65,27 +76,12 @@ export class Hero {
       health: 1,
       energy: 1,
       experience: 0,
-      level: 3
+      level: 3,
+      attackBonus: 0,
+      defenseBonus: 0
     };
   }
-  public static makeReconSquadConf(): UnitData {
-    return {
-      id: "recon_squad",
-      name: "Scouts",
-      icon: "infantry_1_icon",
-      side: 'defend',
-      type: "scout",
-      armor: 1,
-      attack: 0,
-      defense: 0,
-      health: 1,
-      energy: 1,
-      range: 1,
-      experience: 0,
-      level: 1
-    };
-  }
-
+  
   public static makeRogueSquadConf(): UnitData {
     return {
       id: "enemy_squad",
@@ -100,7 +96,9 @@ export class Hero {
       energy: 1,
       range: 2,
       experience: 0,
-      level: 99
+      level: 99,
+      attackBonus: 0,
+      defenseBonus: 0
     };
   }
 
@@ -119,7 +117,9 @@ export class Hero {
       energy: 1,
       range: 1,
       experience: 0,
-      level: 99
+      level: 99,
+      attackBonus: 0,
+      defenseBonus: 0
     };
   }
 
@@ -137,7 +137,9 @@ export class Hero {
       energy: 1,
       range: 1,
       experience: 0,
-      level: 99
+      level: 99,
+      attackBonus: 0,
+      defenseBonus: 0
     };
   }
 
@@ -155,7 +157,9 @@ export class Hero {
       energy: 1,
       range: 0,
       experience: 0,
-      level: 99
+      level: 99,
+      attackBonus: 0,
+      defenseBonus: 0
     };
   }
 
@@ -164,7 +168,7 @@ export class Hero {
     this.data = { units: [] };
     this.data.units.push(Hero.makeHarvesterConf());
     this.data.units.push(Hero.makeBuilderConf());
-    // this.data.units.push(Hero.makeGuardianConf());
+    this.data.units.push(Hero.makeGuardianConf());
   }
 
   private static guardianIdx: number = 0;
@@ -182,7 +186,9 @@ export class Hero {
       health: 1,
       energy: 1,
       experience: 0,
-      level: 1
+      level: 1,
+      attackBonus: 0,
+      defenseBonus: 0
     }
   };
 
@@ -201,16 +207,20 @@ export class Hero {
       energy: 1,
       range: 2,
       experience: 0,
-      level: 1
+      level: 1,
+      attackBonus: 0,
+      defenseBonus: 0,
+      harvest: 1,
+      harvestBonus: 0,
     }
   };
 
   private static builderIdx: number = 0;
   public static makeBuilderConf(): UnitData {
     return {
-      id: 'type_2_unit_'+this.builderIdx,
+      id: 'type_2_unit_' + this.builderIdx,
       icon: "icon_builder",
-      name: "Билдер",
+      name: "Строитель",
       type: "builder",
       side: 'defend',
       armor: 40,
@@ -220,9 +230,45 @@ export class Hero {
       health: 1,
       energy: 1,
       experience: 0,
-      level: 1
+      level: 1,
+      attackBonus: 0,
+      defenseBonus: 0,
+      repair: 1,
+      repairBonus: 0
     }
   };
 
-  
+
+  public static printHTMLData(conf: UnitData) {
+    let lvl = conf.level;
+    let exp = conf.experience + ' / ' + Hero.expTable[conf.level - 1];;
+    let atk = conf.attack;
+    let atkBonus = conf.attackBonus > 0 ? '+' + conf.attackBonus : ''
+    let def = conf.defense;
+    let defBonus = conf.defenseBonus > 0 ? '+' + conf.defenseBonus : ''
+    let hp = Math.floor(conf.armor * conf.health) + ' / ' + conf.armor;
+    let makeRow = (attr, base, bonus) => {
+      return '<tr><td >' + attr + '</td>' +
+        '<td >&nbsp;</td>' +
+        '<td style="text-align: right">' + base + '</td>' +
+        '<td style="color: #23c600">' + bonus + '</td></tr>';
+    }
+    let optional = '';
+
+    if (conf.type == 'builder') {
+      optional = makeRow('Ремонт', conf.repair, conf.repairBonus > 0 ? '+' + conf.repairBonus : '');
+    } else if (conf.type == 'harvester') {
+      optional = makeRow('Сбор', conf.harvest, conf.harvestBonus > 0 ? '+' + conf.harvestBonus : '');
+    }
+    let result = '<table style="left: 0; right: 0; margin-left: auto; margin-right: auto;">' +
+      makeRow('Уровень', lvl, '') +
+      makeRow('Опыт', exp, '') +
+      makeRow('&nbsp', '', '') +
+      optional +
+      makeRow('Атака', atk, atkBonus) +
+      makeRow('Защита', def, defBonus) +
+      makeRow('Структура', hp, '') +
+      '</table>';
+    return result;
+  }
 }

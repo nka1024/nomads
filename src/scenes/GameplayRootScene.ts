@@ -171,8 +171,8 @@ export class GameplayRootScene extends Phaser.Scene {
 
 
     // player.mover.placeToTile({ i: 8, j: 12 });
-    // player.mover.placeToTile({i:63, j :58});
-    player.mover.placeToTile({i:21, j :10});
+    player.mover.placeToTile({i:63, j :58});
+    // player.mover.placeToTile({i:21, j :10});
 
     this.cameras.main.centerOn(player.x, player.y);
     this.unitsGrp.add(this.player);

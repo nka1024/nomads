@@ -92,11 +92,17 @@ export class ContextMenuModule {
 
   private showContextWindowForObject(object: BaseUnit) {
     this.destroyContextWindow();
-
+    
     if (object.conf.type == 'reactor') { 
       this.contextWindow = this.makeReactorWindow(object);
     } else if (object.conf.type == 'builder') { 
-      this.contextWindow = this.makeBuilderSquadWindow(object);
+      this.contextWindow = this.makeBuilderWindow(object);
+    } else if (object.conf.type == 'hero') {
+      this.contextWindow = this.makeTransporterWindow(object);
+    } else if (object.conf.type == 'harvester') {
+      this.contextWindow = this.makeHarvesterWindow(object);
+    } else if (object.conf.type == 'guardian') {
+      this.contextWindow = this.makeGuardianWindow(object);
     } else if (object.conf.id.indexOf('type') != -1) {
       this.contextWindow = this.makeHeroSquadWindow(object);
     } else {
@@ -136,15 +142,32 @@ export class ContextMenuModule {
     return window;
   }
 
-  private makeBuilderSquadWindow(object: BaseUnit): ContextMenuWindow {
+  private makeBuilderWindow(object: BaseUnit): ContextMenuWindow {
     let builder = object as BuilderUnit;
     let p = this.worldToScreen(object);
-    let buttons = ["Строить", "Ремонт", "Вернуть"];
-    let window = new ContextMenuWindow(p.x - ContextMenuWindow.defaultWidth / 2, p.y + 16, buttons);
-    window.buttons[0].addEventListener('click', () => {
+    let buttons = ["Данные", "Ремонт", "Строить", "Вернуть"];
+    let menu = new ContextMenuWindow(p.x - ContextMenuWindow.defaultWidth / 2, p.y + 16, buttons);
+    menu.buttons[0].addEventListener('click', () => {
+      let window = new MessageWindow('Строитель', 
+        '<p>Строитель восстанавливает поврежденные Тахикодзи и возводит стационарные защитные турели используя общий запас энергии.</p>' +
+        '<p>Накапливает опыт выполняя ремонтные работы.</p>' + 
+        '<div style="padding:10px"><hr style="color: #eaeeee82; border-width: 1px; border-style: dashed"></div>' +
+        Hero.printHTMLData(object.conf)
+        );
+      window.owner = object;
+      window.image = "portrait_builder";
+      
+      window.addButton('Закрыть', () => {
+        window.destroy()
+      });
+
+      window.show();
+    });
+
+    menu.buttons[2].addEventListener('click', () => {
       builder.startBuild();
     });
-    window.buttons[1].addEventListener('click', () => {
+    menu.buttons[1].addEventListener('click', () => {
       this.repairWindow = new MessageWindow('', 'Выберите цель ремонта');
       this.repairWindow.top = 0
       this.repairWindow.owner = object;
@@ -155,10 +178,10 @@ export class ContextMenuModule {
       });
       this.repairWindow.show();
     });
-    window.buttons[2].addEventListener('click', () => {
+    menu.buttons[3].addEventListener('click', () => {
       this.onReturnClicked(object);
     });
-    return window
+    return menu
   }
 
 
@@ -201,6 +224,81 @@ export class ContextMenuModule {
     return menu;
   }
 
+
+  private makeTransporterWindow(object: BaseUnit): ContextMenuWindow {
+    let p = this.worldToScreen(object);
+    let buttons = ["Данные"];
+    let menu = new ContextMenuWindow(p.x - ContextMenuWindow.defaultWidth / 2, p.y + 16, buttons);
+    menu.buttons[0].addEventListener('click', () => {
+      let window = new MessageWindow('Боевой транспортировщик Тахикодзи', 
+        '<p >Служит мобильной базой для перемещения по пустоши. Оснащен отсеком для перевозки Тахикодзи и турелью ближнего боя.</p>' +
+        '<p >Транспортировщик накапливает опыт нанося урон вражеским еденицам.</p>' + 
+        '<div style="padding:10px"><hr style="color: #eaeeee82; border-width: 1px; border-style: dashed"></div>' +
+        Hero.printHTMLData(object.conf)
+        );
+      window.owner = object;
+      window.image = "portrait_transporter";
+      
+      window.addButton('Закрыть', () => {
+        window.destroy()
+      });
+
+      window.show();
+    });
+    return menu;
+  }
+
+  private makeHarvesterWindow(object: BaseUnit): ContextMenuWindow {
+    let p = this.worldToScreen(object);
+    let buttons = ["Данные", "Вернуть"];
+    let menu = new ContextMenuWindow(p.x - ContextMenuWindow.defaultWidth / 2, p.y + 16, buttons);
+    menu.buttons[0].addEventListener('click', () => {
+      let window = new MessageWindow('Жнец', 
+        '<p>Мирный Тахикодзи, питающийся протомхом и перерабатывающий его в чистую энергию</p>' +
+        '<p>Накапливает опыт, поглощая протомох.</p>' + 
+        '<div style="padding:10px"><hr style="color: #eaeeee82; border-width: 1px; border-style: dashed"></div>' +
+        Hero.printHTMLData(object.conf)
+        );
+      window.owner = object;
+      window.image = "portrait_harvester";
+      
+      window.addButton('Закрыть', () => {
+        window.destroy()
+      });
+
+      window.show();
+    });
+    menu.buttons[1].addEventListener('click', () => {
+      this.onReturnClicked(object);
+    });
+    return menu;
+  }
+
+  private makeGuardianWindow(object: BaseUnit): ContextMenuWindow {
+    let p = this.worldToScreen(object);
+    let buttons = ["Данные", "Вернуть"];
+    let menu = new ContextMenuWindow(p.x - ContextMenuWindow.defaultWidth / 2, p.y + 16, buttons);
+    menu.buttons[0].addEventListener('click', () => {
+      let window = new MessageWindow('Страж', 
+        '<p>Стражи - боевые Тахикодзи, защищающие кочевников от Ка-Тэн. Их корпус оснащен хорошей броней и дальнобойным оружием.</p>' +
+        '<p>Страэи накапливает опыт, нанося урон противникам</p>' + 
+        '<div style="padding:10px"><hr style="color: #eaeeee82; border-width: 1px; border-style: dashed"></div>' +
+        Hero.printHTMLData(object.conf)
+        );
+      window.owner = object;
+      window.image = "portrait_guardian";
+      
+      window.addButton('Закрыть', () => {
+        window.destroy()
+      });
+
+      window.show();
+    });
+    menu.buttons[1].addEventListener('click', () => {
+      this.onReturnClicked(object);
+    });
+    return menu;
+  }
 
   private destroyContextWindow() {
     if (this.contextWindow != null) {
