@@ -15,6 +15,8 @@ export class ToolsPanel extends BaseWindow {
     public positionText:HTMLElement;
     public statusText:HTMLElement;
     public playButton:HTMLInputElement;
+    public eraseButton:HTMLInputElement;
+    public brushButton:HTMLInputElement;
     
     constructor() {
         super();
@@ -22,6 +24,8 @@ export class ToolsPanel extends BaseWindow {
         this.positionText = this.element.querySelector(".text_cordinates");
         this.statusText = this.element.querySelector(".text_status");
         this.playButton = this.element.querySelector(".play_button");
+        this.brushButton = this.element.querySelector(".tools_button_brush");
+        this.eraseButton = this.element.querySelector(".tools_button_erase");
     }
 
     // Window HTML properties

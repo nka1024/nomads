@@ -17,7 +17,7 @@ export class ObjectsListPanel extends BaseWindow {
     public filenamePrefix:string;
 
     public treesButton:HTMLInputElement;
-    public rocksButton:HTMLInputElement;
+    public actorsButton:HTMLInputElement;
     public housesButton:HTMLInputElement;
 
     // private 
@@ -39,7 +39,7 @@ export class ObjectsListPanel extends BaseWindow {
 
         this.objContainer = this.element.querySelector(".obj_list");
         this.treesButton = this.element.querySelector(".trees_button");
-        this.rocksButton = this.element.querySelector(".rocks_button");
+        this.actorsButton = this.element.querySelector(".actors_button");
         this.housesButton = this.element.querySelector(".houses_button");
         this.populate()
         // this.removeAll();
@@ -52,6 +52,11 @@ export class ObjectsListPanel extends BaseWindow {
         this.housesButton.addEventListener('click', () => {
             this.filenamePrefix = 'house';
             this.maxIdx = ASSETS.HOUSE_MAX;
+            this.repopulate();
+        });
+        this.actorsButton.addEventListener('click', () => {
+            this.filenamePrefix = 'actor';
+            this.maxIdx = 3;
             this.repopulate();
         });
     }

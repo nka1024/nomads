@@ -8,10 +8,13 @@
 import { TileGrid } from "../../TileGrid";
 import { UI_DEPTH } from "../../const/const";
 import { GameObjects } from "phaser";
+import { Point } from "../../types/Position"
 
 export class MapImporterModule {
   private scene: Phaser.Scene;
   private grid: TileGrid;
+
+  public enemyHandler: (p: Point, type: string) => void;
 
   public grassHandler: (obj:GameObjects.Image, item: any) => void;
 
@@ -51,6 +54,16 @@ export class MapImporterModule {
   }
 
   private createObjectFromConfig(data: any): GameObjects.Image {
+    if (data.texture.startsWith('actor_') && this.enemyHandler) {
+      let enemyType = null;
+      if (data.texture == 'actor_2') enemyType = 'tower'
+      if (data.texture == 'actor_3') enemyType = 'boss'
+      this.enemyHandler(data, enemyType);
+      return null;      
+    } else return this.createImageFromConfig(data);
+  }
+
+  private createImageFromConfig(data: any) {
     let obj = new GameObjects.Image(this.scene, data.x, data.y, null);
     obj.scaleX = 1;
     obj.scaleY = 1;

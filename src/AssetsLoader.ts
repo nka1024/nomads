@@ -164,5 +164,8 @@ export class AssetsLoader {
     for (let idx = 1; idx <= ASSETS.HOUSE_MAX; idx++) {
       scene.load.image("house_" + idx, "./assets/tilemap/house_" + idx + ".png");
     }
+    for (let idx = 1; idx <= 3; idx++) {
+      scene.load.image("actor_" + idx, "./assets/tilemap/actor_" + idx + ".png");
+    }
   }
 }

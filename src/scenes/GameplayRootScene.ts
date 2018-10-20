@@ -34,6 +34,7 @@ import { ReactorUnit } from "../actors/ReactorUnit";
 import { DialogWindow } from "../windows/DialogWindow";
 import { DebugPanel } from "../windows/DebugPanel";
 import { StoryModule } from "../modules/scene/StoryModule";
+import { Point } from "../types/Position";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -125,28 +126,37 @@ export class GameplayRootScene extends Phaser.Scene {
             if (squad.state.isChasing) {
               squad.chase.stop();
             }
-            squad.mover.moveTo(cursor);
+            squad.mover.moveTo(cursor, true);
           }
         } else {
           if (player.state.isFighting) {
             player.combat.stopFight('command');
           }
-          player.mover.moveTo(cursor);
+          player.mover.moveTo(cursor, true);
         }
       }
     };
 
-    this.story.start();
+    // this.story.start();
+
+    this.unitsGrp = this.add.group();
+    this.unitsGrp.runChildUpdate = true;
+    this.clicksTracker.addObjectsGroup(this.unitsGrp);
+
+
 
     this.mapImporterModule.grassHandler = (o: GameObjects.Image, item: any) => {
       let tile = this.grid.worldToGrid({ x: o.x, y: o.y - o.height / 2 });
       this.grid.addGrass(o, tile, 100);
     };
+
+    this.mapImporterModule.enemyHandler = (p: Point, type: string) => {
+      let tile = this.grid.worldToGrid(p)
+      console.log('type: ' + type)
+      this.createEnemy(tile.i, tile.j, type);
+    }
     this.mapImporterModule.importMap(this.cache.json.get('map'));
 
-    this.unitsGrp = this.add.group();
-    this.unitsGrp.runChildUpdate = true;
-    this.clicksTracker.addObjectsGroup(this.unitsGrp);
 
 
     this.add.existing(player);
@@ -156,7 +166,8 @@ export class GameplayRootScene extends Phaser.Scene {
 
 
     // player.mover.placeToTile({ i: 8, j: 12 });
-    player.mover.placeToTile({i:63, j :58});
+    // player.mover.placeToTile({i:63, j :58});
+    player.mover.placeToTile({i:21, j :10});
 
     this.cameras.main.centerOn(player.x, player.y);
     this.unitsGrp.add(this.player);
@@ -200,14 +211,15 @@ export class GameplayRootScene extends Phaser.Scene {
       }
     });
 
-    this.createEnemy(4, 16, 'tower');
 
-    this.createEnemy(4, 11, 'boss');
-    this.createEnemy(4, 12);
-    this.createEnemy(4, 10);
-    this.createEnemy(3, 11);
-    this.createEnemy(5, 11);
-    this.createEnemy(6, 1);
+    // this.createEnemy(4, 16, 'tower');
+
+    // this.createEnemy(4, 11, 'boss');
+    // this.createEnemy(4, 12);
+    // this.createEnemy(4, 10);
+    // this.createEnemy(3, 11);
+    // this.createEnemy(5, 11);
+    // this.createEnemy(6, 1);
     // this.createEnemy(13, 18);
     // this.createEnemy(8, 19);
     // this.createEnemy(15, 10);

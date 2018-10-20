@@ -297,7 +297,7 @@ export class TileGrid {
     return img;
   }
 
-  public editTile(cursor: Phaser.GameObjects.Image, color: string) {
+  public editTile(cursor: Point, color: string) {
     let tile = this.worldToGrid(cursor);
     let currentTile = this.tiles[tile.i][tile.j];
     if (currentTile != null) {
@@ -305,7 +305,7 @@ export class TileGrid {
     }
     let img = this.createTile(tile, color);
     this.tiles[tile.i][tile.j] = img;
-    this.data[tile.i][tile.j] = "red" ? 1 : 0;
+    this.data[tile.i][tile.j] = color == "red" ? 1 : 0;
 
     // todo: optimize?
     this.pathfinder.setGrid(this.data);

@@ -16,10 +16,11 @@ import { TileGrid } from "../TileGrid";
 import { HeroUnit } from "../actors/HeroUnit";
 import { UI_DEPTH } from "../const/const";
 import { Hero } from "../Hero";
-
+import { Point, Tile } from "../types/Position"
+import { GameObjects } from "phaser";
 
 export class EditorRootScene extends Phaser.Scene {
-  
+
   private MAP_SCALE: number = 1;
 
   private grid: TileGrid;
@@ -28,7 +29,9 @@ export class EditorRootScene extends Phaser.Scene {
   private cursor: Phaser.GameObjects.Sprite;
 
   private player: HeroUnit;
-  
+
+  private tool: string = 'brush';
+
   constructor() {
     super({
       key: "EditorRootScene"
@@ -51,12 +54,21 @@ export class EditorRootScene extends Phaser.Scene {
     this.cursor.setInteractive();
 
     this.importMap(this.cache.json.get('map'));
-    
+
     this.toolsPanel = new ToolsPanel();
     this.toolsPanel.show()
 
     var menu = new MenuPanel();
     menu.show();
+
+    this.toolsPanel.eraseButton.addEventListener('click', () => {
+      console.log('swtich tool to erase');
+      this.tool = 'erase';
+    });
+    this.toolsPanel.brushButton.addEventListener('click', () => {
+      this.tool = 'brush';
+      console.log('swtich tool to brush');
+    });
 
     this.toolsPanel.playButton.addEventListener('click', () => {
       if (this.player) {
@@ -65,7 +77,7 @@ export class EditorRootScene extends Phaser.Scene {
         this.toolsPanel.playButton.value = "PLAY";
       } else {
         let player = new HeroUnit(this, 444, 280, this.grid, Hero.makeHeroConf());
-        player.depth = player.y+16;
+        player.depth = player.y + 16;
         this.add.existing(player);
         this.player = player;
         this.toolsPanel.playButton.value = "STOP";
@@ -118,8 +130,8 @@ export class EditorRootScene extends Phaser.Scene {
       this.showExportWindow();
     });
   }
-  
-  private importMap(map:any) {
+
+  private importMap(map: any) {
     // cleanup
     for (let child of this.children.getAll()) {
       // exclude cursor
@@ -165,16 +177,33 @@ export class EditorRootScene extends Phaser.Scene {
         if (this.player != null) {
           // player movemenet
           this.player.mover.moveTo(this.cursor);
-        } else if (!this.grid.visible) { 
+        } else if (!this.grid.visible) {
           // object placement
-          if (this.objectsListPanel != null) {
-            this.createObject();
-            // randomize after object placed
-            // this.cursor.setTexture("tree_" + this.getRandomInt(1, 9))
+
+          if (this.tool == 'brush') {
+            if (this.objectsListPanel != null) {
+              this.createObject();
+              // randomize after object placed
+              // this.cursor.setTexture("tree_" + this.getRandomInt(1, 9))
+            }
+          } else if (this.tool == 'erase') {
+            console.log('erase');
+            let objs = this.input.hitTestPointer(this.input.activePointer);
+            console.log(objs);
+            for (let obj of objs) {
+              if (!(obj as GameObjects.Image).texture.key.startsWith('terrain'))
+                obj.destroy();
+            }
           }
-        } else { 
+        } else {
           // tile placement
-          this.grid.editTile(this.cursor, 'red');
+          let walkable = this.grid.isWalkable(this.grid.worldToGrid(this.cursor));
+          this.grid.editTile(this.cursor, walkable ? 'red' : 'green');
+
+          // for (let i = -2; i <= 2; i++)
+          // for (let j = -2; j <= 2; j++)
+          // this.grid.editTile({x: this.cursor.x + 32 * i, y: this.cursor.y + 32 * j}, walkable ? 'red' : 'green');
+
         }
       }
     }
@@ -226,7 +255,7 @@ export class EditorRootScene extends Phaser.Scene {
     let obj = new Phaser.GameObjects.Image(this, 0, 0, null);
     obj.scaleX = this.MAP_SCALE;
     obj.scaleY = this.MAP_SCALE;
-    
+
     if (data.texture.startsWith('terrain')) {
       console.log('wow');
       obj.originX = 0;
@@ -236,14 +265,16 @@ export class EditorRootScene extends Phaser.Scene {
       obj.originY = 1;
     }
     obj.setTexture(data.texture);
-
+    obj.setInteractive();
     obj.x = data.x;
     obj.y = data.y;
     obj.depth = data.depth;
     this.add.existing(obj);
+    
   }
 
   private createObject() {
+    
     let obj = new Phaser.GameObjects.Image(this, 0, 0, null);
     obj.scaleX = this.cursor.scaleX;
     obj.scaleY = this.cursor.scaleY;
@@ -252,11 +283,11 @@ export class EditorRootScene extends Phaser.Scene {
     obj.setTexture(this.cursor.texture.key);
     obj.x = this.cursor.x;
     obj.y = this.cursor.y;
+    obj.setInteractive();
 
-    
     // put terrain underneath everything
     if (this.objectsListPanel.filenamePrefix.startsWith("terrain")) {
-      
+
       obj.depth = -Number.MAX_VALUE;
     } else {
       obj.depth = obj.y;
