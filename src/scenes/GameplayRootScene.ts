@@ -35,6 +35,7 @@ import { DialogWindow } from "../windows/DialogWindow";
 import { DebugPanel } from "../windows/DebugPanel";
 import { StoryModule } from "../modules/scene/StoryModule";
 import { Point } from "../types/Position";
+import { MenuWindow } from "../windows/MenuWindow";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -59,6 +60,11 @@ export class GameplayRootScene extends Phaser.Scene {
   private cursorModule: SceneCursorModule;
   private clicksTracker: GameobjectClicksModule;
   private story: StoryModule;
+
+  private menuWindow: MenuWindow;
+
+  private escapeKey: Phaser.Input.Keyboard.Key;
+  
 
   constructor() {
     super({
@@ -144,7 +150,6 @@ export class GameplayRootScene extends Phaser.Scene {
     this.clicksTracker.addObjectsGroup(this.unitsGrp);
 
 
-
     this.mapImporterModule.grassHandler = (o: GameObjects.Image, item: any) => {
       let tile = this.grid.worldToGrid({ x: o.x, y: o.y - o.height / 2 });
       this.grid.addGrass(o, tile, 100);
@@ -212,20 +217,6 @@ export class GameplayRootScene extends Phaser.Scene {
     });
 
 
-    // this.createEnemy(4, 16, 'tower');
-
-    // this.createEnemy(4, 11, 'boss');
-    // this.createEnemy(4, 12);
-    // this.createEnemy(4, 10);
-    // this.createEnemy(3, 11);
-    // this.createEnemy(5, 11);
-    // this.createEnemy(6, 1);
-    // this.createEnemy(13, 18);
-    // this.createEnemy(8, 19);
-    // this.createEnemy(15, 10);
-    // this.createEnemy(20, 9);
-    // this.createEnemy(14, 1);
-
     this.contextMenuModule.onSummonClicked = (source: BaseUnit, conf: UnitData) => {
       
       this.hero.data.units.push(conf);
@@ -241,6 +232,8 @@ export class GameplayRootScene extends Phaser.Scene {
     };
 
     this.onWindowResize(window.innerWidth, window.innerHeight);
+
+    this.escapeKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
   }
 
   private recallSquad(squad: SquadUnit) {
@@ -351,6 +344,30 @@ export class GameplayRootScene extends Phaser.Scene {
       }
       this.grid.update();
     }
+
+
+    if (this.escapeKey.isDown) {
+      this.escapeKey.isDown = false;
+
+      if (!this.menuWindow) {
+        this.menuWindow = new MenuWindow();
+        this.menuWindow.show();
+        this.menuWindow.exitButton.addEventListener('click', () => {
+          console.log('EEXXIITT');
+        });
+        this.menuWindow.fullscreenButton.addEventListener('click', () => {
+          console.log('FFUULLLLSSCCRREENN');
+        });
+        this.menuWindow.windowButton.addEventListener('click', () => {
+          console.log('WWIINNDDOOWW');
+        });
+      } else {
+        this.menuWindow.destroy();
+        this.menuWindow = null;
+      }
+
+    }
+
 
   }
 

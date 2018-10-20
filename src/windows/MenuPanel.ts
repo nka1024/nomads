@@ -30,7 +30,7 @@ export class MenuPanel extends BaseWindow {
     protected getWindowName(): string { return "menu_window" }
     protected getInnerHTML(): string  { return MenuPanel.innerHtml }
     static initialize() {
-        MenuPanel.innerHtml = BaseWindow.getPrefab(".menu_window_prefab").innerHTML;
+        MenuPanel.innerHtml = BaseWindow.getPrefab(".menu_panel_prefab").innerHTML;
     }
 
 

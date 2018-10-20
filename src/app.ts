@@ -59,6 +59,8 @@ window.onload = () => {
   resize(window.innerWidth, window.innerHeight);
 
   reverse(document.body);
+  // nw.Window.get().leaveFullscreen();
+  // nw.App.closeAllWindows();
 };
 
 function reverse(n) {        // Reverse the order of the children of Node n

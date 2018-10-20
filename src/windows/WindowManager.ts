@@ -18,6 +18,7 @@ import { ResourcesPanel } from "./ResourcesPanel";
 import { MessageWindow } from "./MessageWindow";
 import { DialogWindow } from "./DialogWindow";
 import { DebugPanel } from "./DebugPanel";
+import { MenuWindow } from "./MenuWindow";
 
 export class WindowManager {
 
@@ -36,6 +37,7 @@ export class WindowManager {
       TargetListPanel.initialize();
       ResourcesPanel.initialize();
       DebugPanel.initialize();
+      MenuWindow.initialize();
     } catch (e) {
       console.log('missing window')
     }

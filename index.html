@@ -230,7 +230,7 @@
   </div>
 
   <!-- MENU FORM -->
-  <div class="menu_window_prefab" hidden=true>
+  <div class="menu_panel_prefab" hidden=true>
     <div id="container" class="menu_container lefted" hidden=false style="display: block; position: absolute; width: 100px;">
       <section id="main" style="padding: 5px;">
         <div id="loginForm">
@@ -288,8 +288,52 @@
     </div>
   </div>
 
+  <!-- MENU_WINDOW prefab-->
+  <div class="menu_window_prefab" hidden=true>
+      <div id="container" class="empty_container " style="
+        position: relative;
+          background-color: #151615e0; 
+          display: block;
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          left: 0;
+          right: 0;
+          ">
+  
+        <div id="container" class="empty_container2 centered" style="
+          position: absolute;
+          margin: auto; 
+          overflow: auto; 
+          width: 320px; 
+          display: inline-table;
+          top:0; left: 0; right: 0; bottom: 0;">
+          <section id="main" style="padding: 10px; background-color: rgba(0, 0, 0, 0.79); border-radius: 4px">
+            <div id="loginForm" class="obj_list">
+              
+                <div class="submit" >
+                    <input class="btn btn-blue fullscreen_button" id="submitButton" type="button" value="Полный экран" >
+                </div>
+  
+                <div class="submit">
+                    <input class="btn btn-blue window_button" id="submitButton" type="button" value="В окне" >
+                </div>
 
-  <!-- DIALOG_POPUP prefab-->
+                <br>
+                <div class="submit" >
+                    <input class="btn btn-blue exit_button" id="submitButton" type="button" value="Покинуть игру">
+                </div>
+
+            </div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    
+
+  <!-- DIALOG_WINDOW prefab-->
   <div class="dialog_window_prefab" hidden=true>
       <div id="container" class="empty_container " style="
           position: relative;
@@ -336,7 +380,7 @@
       </div>
     </div>
 
-  <!-- DIALOG_POPUP prefab-->
+  <!-- MESSAGE_WINDOW prefab-->
   <div class="message_window_prefab" hidden=true>
     <div id="container" class="empty_container " style="
       position: relative;
