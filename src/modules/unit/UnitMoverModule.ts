@@ -78,7 +78,7 @@ export class UnitMoverModule implements IUnitModule {
       grid.findPath(tilePos, tileDest, (path) => {
         this.state.isPathfinding = false;
         this.path = path;
-        this.drawPathDots(grid);
+        // this.drawPathDots(grid);
         if (immediateStart) {
           this.startMoving(grid);
         }    
@@ -90,7 +90,7 @@ export class UnitMoverModule implements IUnitModule {
   }
 
   public stop() {
-    this.destroyAllDots();
+    // this.destroyAllDots();
     this.finishPath();
   }
 
@@ -117,7 +117,7 @@ export class UnitMoverModule implements IUnitModule {
   }
 
   public destroy() {
-    this.destroyAllDots();
+    // this.destroyAllDots();
     this.unclaimTile();
     this.onStepComplete = null;
     this.onPathComplete = null;
@@ -126,7 +126,7 @@ export class UnitMoverModule implements IUnitModule {
     this.unit = null;
     this.pathBySteps = null;
     this.path = null;
-    this.pathDots = null;
+    // this.pathDots = null;
     this.state = null;
   }
 
@@ -168,7 +168,7 @@ export class UnitMoverModule implements IUnitModule {
     }
     this.nextDest = this.pathBySteps[0];
     
-    this.destroyNextDot();
+    // this.destroyNextDot();
   }
 
   private moveNextStep() {
@@ -183,7 +183,7 @@ export class UnitMoverModule implements IUnitModule {
       this.pathBySteps.splice(0, 1);
       if (this.pathBySteps.length > 0) {
         this.nextDest = this.pathBySteps[0];
-        this.destroyNextDot();
+        // this.destroyNextDot();
         if (this.onStepComplete != null) {
           this.onStepComplete(this.pathBySteps.length, this.nextDest);
         }
@@ -200,7 +200,7 @@ export class UnitMoverModule implements IUnitModule {
     // this.path = null;
     this.pathBySteps = null;
     this.onStepComplete = null;
-    this.destroyNextDot();
+    // this.destroyNextDot();
     if (this.onPathComplete != null) {
       let callback = this.onPathComplete;
       this.onPathComplete = null;
@@ -235,34 +235,34 @@ export class UnitMoverModule implements IUnitModule {
   // dot path images
 
   private drawPathDots(grid: TileGrid) {
-    this.destroyAllDots();
+    // this.destroyAllDots();
 
-    if (this.path == null) {
-      return;
-    }
+    // if (this.path == null) {
+    //   return;
+    // }
 
-    let dots = [];
-    for (let pos of this.path) {
-      let worldPos = grid.gridToWorld(pos);
-      let img = this.scene.add.image(worldPos.x + 16, worldPos.y + 16, "path_mid_14x14");
-      dots.push(img)
-    }
-    this.pathDots = dots;
+    // let dots = [];
+    // for (let pos of this.path) {
+    //   let worldPos = grid.gridToWorld(pos);
+    //   let img = this.scene.add.image(worldPos.x + 16, worldPos.y + 16, "path_mid_14x14");
+    //   dots.push(img)
+    // }
+    // this.pathDots = dots;
   }
 
   private destroyNextDot() {
-    if (this.path && this.pathDots && this.pathDots.length > 0) {
-      this.pathDots.splice(0, 1)[0].destroy();
-    }
+    // if (this.path && this.pathDots && this.pathDots.length > 0) {
+    //   this.pathDots.splice(0, 1)[0].destroy();
+    // }
   }
 
   private destroyAllDots() {
-    if (this.pathDots) {
-      for (let dot of this.pathDots) {
-        dot.destroy();
-      }
-      this.pathDots = null;
-    }
+    // if (this.pathDots) {
+    //   for (let dot of this.pathDots) {
+    //     dot.destroy();
+    //   }
+    //   this.pathDots = null;
+    // }
   }
 
 }
