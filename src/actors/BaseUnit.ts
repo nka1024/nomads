@@ -20,6 +20,7 @@ import { UnitSelectionModule } from "../modules/unit/UnitSelectionModule";
 import { UnitShootModule } from "../modules/unit/UnitShootModule";
 import { UnitExplosionModule } from "../modules/unit/UnitExplosionModule";
 import { Geom } from "phaser";
+import { UnitExperienceModule } from "../modules/unit/UnitExperienceModule";
 
 export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
 
@@ -40,6 +41,7 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
   public chase: UnitChaseModule;
   public state: UnitStateModule;
   public explosion: UnitExplosionModule;
+  public experience: UnitExperienceModule;
 
   protected core: UnitModuleCore;
 
@@ -61,6 +63,7 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
     this.shoot      = new UnitShootModule(this, scene, this.state);
     this.combat     = new UnitCombatModule(this, scene, this.mover, this.state, grid);
     this.explosion  = new UnitExplosionModule(this, scene, this.state, this.combat);
+    this.experience = new UnitExperienceModule(this, scene);
 
     this.core = new UnitModuleCore([
       this.selection, 
@@ -72,7 +75,8 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
       this.chase, 
       this.combat, 
       this.explosion, 
-      this.shoot
+      this.shoot,
+      this.experience
     ]);
 
     this.setInteractive();

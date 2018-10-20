@@ -56,7 +56,7 @@ export class ObjectsListPanel extends BaseWindow {
         });
         this.actorsButton.addEventListener('click', () => {
             this.filenamePrefix = 'actor';
-            this.maxIdx = 3;
+            this.maxIdx = 4;
             this.repopulate();
         });
     }

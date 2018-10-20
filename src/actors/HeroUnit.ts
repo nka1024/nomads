@@ -15,7 +15,7 @@ import { ProgressModule } from "../modules/unit/ProgressModule";
 import { ScouteeModule } from "../modules/unit/ScouteeModule";
 import { UnitModuleCore } from "../modules/UnitModuleCore";
 import { BaseUnit } from "./BaseUnit";
-import { UnitData } from "../Hero";
+import { UnitData, Hero } from "../Hero";
 import { CONST } from "../const/const";
 
 export class HeroUnit extends BaseUnit implements IUnit, IScoutable {
@@ -37,6 +37,8 @@ export class HeroUnit extends BaseUnit implements IUnit, IScoutable {
     this.scoutee = new ScouteeModule(this.progress);
     this.core.addModule(this.scoutee)
 
+    this.shoot.spread = 2;
+
     var idleAnim = {
       key: 'player_idle',
       frames: scene.anims.generateFrameNumbers('mothership_48x48', { start: 0, end: 7 }),
@@ -56,6 +58,16 @@ export class HeroUnit extends BaseUnit implements IUnit, IScoutable {
     this.walkAnim = scene.anims.create(walkAnim);
 
     this.anims.setCurrentFrame(this.idleAnim.frames[4]);
+
+    this.combat.events.on('damage_done', (damage) => {
+      this.experience.addExperience(damage);
+      
+    });
+    this.experience.events.on('level_up', (level) => {
+      this.conf.attack += Hero.expHeroAttack[level-1];
+      this.conf.defense += Hero.expHeroDefense[level-1];
+      this.conf.armor += Hero.expHeroArmor[level-1];
+    })   
   }
 
   public playUnitAnim(key: string, ignoreIfPlaying: boolean) {

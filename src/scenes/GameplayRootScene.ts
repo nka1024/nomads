@@ -266,8 +266,10 @@ export class GameplayRootScene extends Phaser.Scene {
       enemyUnit = new BossUnit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeBossSquadConf());
     } else if (opt == 'tower') {
       enemyUnit = new TowerUnit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeTowerConf());
+    } else if (opt == 'k11'){
+      enemyUnit = new K10Unit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeK11SquadConf());
     } else {
-      enemyUnit = new K10Unit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeRogueSquadConf());
+      enemyUnit = new K10Unit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeK10SquadConf());
     }
     enemyUnit.mover.placeToTile(enemyUnit.tile);
     this.add.existing(enemyUnit);

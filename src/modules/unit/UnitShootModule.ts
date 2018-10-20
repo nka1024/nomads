@@ -19,6 +19,7 @@ export class UnitShootModule implements IUnitModule {
   private scene: Scene;
   private state: UnitStateModule;
 
+  public spread: number = 3;
   private baseDistance: number = 5;
   private tmpSpeed: Phaser.Math.Vector2 = new Phaser.Math.Vector2(0, 0);
   private bullets: { object: GameObjects.Image, speed: Point, dest: Point, travel: number }[] = [];
@@ -50,8 +51,8 @@ export class UnitShootModule implements IUnitModule {
     let b = this.state.fightTarget;
     var angle = Math.atan2(b.y - a.y, b.x - a.x) * (180 / Math.PI);
 
-    let p1 = this.rotate({ x: 0, y: -3 }, -angle);
-    let p2 = this.rotate({ x: 0, y: 3 }, -angle);
+    let p1 = this.rotate({ x: 0, y: -this.spread }, -angle);
+    let p2 = this.rotate({ x: 0, y: this.spread }, -angle);
     this.makeBullet(p1);
     this.makeBullet(p2);
   }

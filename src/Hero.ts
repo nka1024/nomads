@@ -35,7 +35,12 @@ export type HeroData = {
 }
 
 export class Hero {
-  public static expTable = [100, 300, 1000, 2000, 10000];
+  public static expTable = [10, 300, 1000, 2000, 10000];
+
+  public static expHeroAttack = [4, 5, 6, 10, 12];
+  public static expHeroDefense = [1, 1, 2, 2, 3];
+  public static expHeroArmor = [50, 300, 1000, 2000, 10000];
+
   public resources: number = 0;
   public data: HeroData;
   constructor() {
@@ -82,13 +87,13 @@ export class Hero {
     };
   }
   
-  public static makeRogueSquadConf(): UnitData {
+  public static makeK10SquadConf(): UnitData {
     return {
       id: "enemy_squad",
       icon: "infantry_2_icon",
       name: "Rogues",
       side: 'attack',
-      type: "infantry",
+      type: "k10",
       armor: 30,
       attack: 2,
       defense: 1,
@@ -102,6 +107,25 @@ export class Hero {
     };
   }
 
+  public static makeK11SquadConf(): UnitData {
+    return {
+      id: "enemy_squad",
+      icon: "infantry_2_icon",
+      name: "Rogues",
+      side: 'attack',
+      type: "k11",
+      armor: 100,
+      attack: 10,
+      defense: 5,
+      health: 1,
+      energy: 1,
+      range: 2,
+      experience: 0,
+      level: 99,
+      attackBonus: 0,
+      defenseBonus: 0
+    };
+  }
 
   public static makeBossSquadConf(): UnitData {
     return {

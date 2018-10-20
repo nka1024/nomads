@@ -77,6 +77,12 @@ export class AssetsLoader {
       endFrame: 7
     });
 
+    scene.load.spritesheet('k11_idle_anim_48x48', './assets/sprites/k11_idle_anim_48x48.png', {
+      frameWidth: 48,
+      frameHeight: 48,
+      endFrame: 7
+    });
+
     scene.load.spritesheet('explosion_anim_1_48x48', './assets/sprites/explosion_anim_1_48x48.png', {
       frameWidth: 48,
       frameHeight: 48,
@@ -164,7 +170,7 @@ export class AssetsLoader {
     for (let idx = 1; idx <= ASSETS.HOUSE_MAX; idx++) {
       scene.load.image("house_" + idx, "./assets/tilemap/house_" + idx + ".png");
     }
-    for (let idx = 1; idx <= 3; idx++) {
+    for (let idx = 1; idx <= 4; idx++) {
       scene.load.image("actor_" + idx, "./assets/tilemap/actor_" + idx + ".png");
     }
   }

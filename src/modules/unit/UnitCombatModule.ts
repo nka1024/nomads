@@ -153,11 +153,14 @@ export class UnitCombatModule implements IUnitModule {
       console.log('stopping attack: target is dead');
       this.stopFight("dead_target")
     } else {
-      // let damage = (Math.random() / 100 + Math.random() / 50) * 2;
-      let damage = this.owner.conf.attack - this.owner.conf.defense;
+      let atk = this.owner.conf.attack + this.owner.conf.attackBonus;
+      let def = this.target.conf.defense + this.owner.conf.defenseBonus;
+
+      let damage = atk - def;
       if (damage < 0) damage = 0;
       this.target.combat.sufferAttack({ attacker: this.owner, damage: damage });
 
+      this.events.emit('damage_done', damage);
       this.showFloatyText(damage);
     }
   }

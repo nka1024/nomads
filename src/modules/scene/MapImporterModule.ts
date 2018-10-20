@@ -58,6 +58,7 @@ export class MapImporterModule {
       let enemyType = null;
       if (data.texture == 'actor_2') enemyType = 'tower'
       if (data.texture == 'actor_3') enemyType = 'boss'
+      if (data.texture == 'actor_4') enemyType = 'k11'
       this.enemyHandler(data, enemyType);
       return null;      
     } else return this.createImageFromConfig(data);

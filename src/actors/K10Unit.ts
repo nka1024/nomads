@@ -12,14 +12,26 @@ import { SquadUnit } from "./SquadUnit";
 export class K10Unit extends SquadUnit {
 
   private static idleAnim: Phaser.Animations.Animation;
+  private static idleAnim2: Phaser.Animations.Animation;
   private static initializedSentry: boolean = false;
+
+  
 
   constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData) {
     super(scene, x, y, grid, conf);
 
     this.playUnitAnim('idle', true);
 
-    this.anims.setCurrentFrame(K10Unit.idleAnim.frames[Math.floor((Math.random() * 8))]);
+    let frames = this.conf.type == "k10" ? K10Unit.idleAnim.frames : K10Unit.idleAnim2.frames;
+    this.anims.setCurrentFrame(frames[Math.floor((Math.random() * 8))]);
+
+    if (this.conf.type == "k11") {
+      this.scaleX = 1.5;
+      this.scaleY = 1.5;
+      this.shoot.spread = 6;
+    } else {
+      this.shoot.spread = 4;
+    }
   }
 
   protected isInitialized(): boolean {
@@ -39,6 +51,16 @@ export class K10Unit extends SquadUnit {
     };
 
     K10Unit.idleAnim = this.scene.anims.create(idleAnim);
+
+    var idleAnim2 = {
+      key: 'k11_idle',
+      frames: this.scene.anims.generateFrameNumbers('k11_idle_anim_48x48', { start: 0, end: 7 }),
+      frameRate: 5,
+      repeat: -1,
+      repeatDelay: 0
+    };
+
+    K10Unit.idleAnim2 = this.scene.anims.create(idleAnim2);
   }
 
   public playUnitAnim(key: string, ignoreIfPlaying: boolean) {
@@ -62,7 +84,7 @@ export class K10Unit extends SquadUnit {
 
     this.flipX = false;
 
-    let frames = K10Unit.idleAnim.frames;
+    let frames = this.conf.type == "k10" ? K10Unit.idleAnim.frames : K10Unit.idleAnim2.frames;
     let speed = null;
     if (this.state.isMoving) {
       speed = this.mover.speed;
