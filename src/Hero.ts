@@ -37,7 +37,7 @@ export type HeroData = {
 export class Hero {
   public static expTable = [50, 200, 400, 1000, 5000];
 
-  public static expHeroAttack = [2, 4, 6, 10, 12];
+  public static expHeroAttack = [4, 2, 3, 6, 12];
   public static expHeroDefense = [1, 2, 3, 4, 5];
   public static expHeroArmor = [100, 150, 200, 250, 300];
 
@@ -52,6 +52,10 @@ export class Hero {
   public static expHarvesterYield = [5, 8, 12, 14, 16];
   public static expHarvesterDefense = [1, 2, 3, 4, 5];
   public static expHarvesterArmor = [100, 150, 200, 250, 300];
+
+  public static expK10Attack = [5, 8];
+  public static expK10ADefense = [1, 2];
+  public static expK10Armor = [100, 150];
 
   public resources: number = 0;
   public data: HeroData;
@@ -106,9 +110,9 @@ export class Hero {
       name: "Rogues",
       side: 'attack',
       type: "k10",
-      armor: 50,
-      attack: 4,
-      defense: 1,
+      armor: this.expK10Armor[0],
+      attack: this.expK10Attack[0],
+      defense: this.expK10ADefense[0],
       health: 1,
       energy: 1,
       range: 2,
@@ -126,9 +130,9 @@ export class Hero {
       name: "Rogues",
       side: 'attack',
       type: "k11",
-      armor: 200,
-      attack: 10,
-      defense: 4,
+      armor: this.expK10Armor[1],
+      attack: this.expK10Attack[1],
+      defense: this.expK10ADefense[1],
       health: 1,
       energy: 1,
       range: 3,

@@ -106,7 +106,7 @@ export class ContextMenuModule {
     } else if (object.conf.id.indexOf('type') != -1) {
       this.contextWindow = this.makeHeroSquadWindow(object);
     } else {
-      this.contextWindow = this.makeEnemySquadWindow(object);
+      // this.contextWindow = this.makeEnemySquadWindow(object);
     }
     this.contextWindow.object = object;
 

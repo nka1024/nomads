@@ -113,6 +113,7 @@ export class GameplayRootScene extends Phaser.Scene {
     this.grid.createFog();
 
     let player = new HeroUnit(this, 0, 0, this.grid, Hero.makeHeroConf());
+    this.story.injectDependencies(player);
 
     this.resourcesPanel = new ResourcesPanel();
     this.resourcesPanel.populate(this.hero);
@@ -172,7 +173,7 @@ export class GameplayRootScene extends Phaser.Scene {
 
 
     // player.mover.placeToTile({ i: 8, j: 12 });
-    player.mover.placeToTile({i:63, j :58});
+    player.mover.placeToTile({i:63, j :54});
     // player.mover.placeToTile({i:21, j :10});
 
     this.cameras.main.centerOn(player.x, player.y);
@@ -338,7 +339,8 @@ export class GameplayRootScene extends Phaser.Scene {
       this.cameraDragModule.update();
     }
     this.clicksTracker.update();
-
+    this.story.update();
+    
     if (this.grid) {
       this.fogUpdateCnt++
       if (this.fogUpdateCnt > 60) {
