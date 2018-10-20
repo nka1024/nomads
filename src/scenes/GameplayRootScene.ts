@@ -153,6 +153,7 @@ export class GameplayRootScene extends Phaser.Scene {
     this.mapImporterModule.grassHandler = (o: GameObjects.Image, item: any) => {
       let tile = this.grid.worldToGrid({ x: o.x, y: o.y - o.height / 2 });
       this.grid.addGrass(o, tile, 100);
+      o.depth = o.y - 24;
     };
 
     this.mapImporterModule.enemyHandler = (p: Point, type: string) => {
@@ -196,7 +197,7 @@ export class GameplayRootScene extends Phaser.Scene {
     }
 
     let reactor =  new ReactorUnit(this, 0,0, this.grid, Hero.makeReactorConf());
-    reactor.mover.placeToTile({i: 8, j:13});
+    reactor.mover.placeToTile({i: 54, j: 75});
     this.unitsGrp.add(reactor);
     this.add.existing(reactor);
 
@@ -291,7 +292,7 @@ export class GameplayRootScene extends Phaser.Scene {
       if (conf.type == 'harvester') {
         squad = new HarvesterUnit(this, from.x + 16, from.y + 16, this.grid, conf);
       } else if (conf.type == 'builder') {
-        squad = new BuilderUnit(this, from.x + 16, from.y + 16, this.grid, conf, this.unitsGrp);
+        squad = new BuilderUnit(this, this.hero, from.x + 16, from.y + 16, this.grid, conf, this.unitsGrp);
       } else if (conf.type == 'sentry') {
         squad = new SentryUnit(this, from.x + 16, from.y + 16, this.grid, conf);
       } else if (conf.type == 'guardian') {

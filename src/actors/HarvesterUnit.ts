@@ -8,7 +8,7 @@
 import { TileGrid } from "../TileGrid";
 import { ScouteeModule } from "../modules/unit/ScouteeModule";
 import { BaseUnit } from "./BaseUnit";
-import { UnitData } from "../Hero";
+import { UnitData, Hero } from "../Hero";
 import { GameplayRootScene } from "../scenes/GameplayRootScene";
 import { SquadUnit } from "./SquadUnit";
 import { Animations } from "phaser";
@@ -43,6 +43,13 @@ export class HarvesterUnit extends SquadUnit {
         this.anims.play('harvester_mine', true);
       }
     });
+
+    this.experience.events.on('level_up', (level) => {
+      this.conf.yieldBonus += Hero.expHarvesterYield[level-1];
+      this.conf.defenseBonus += Hero.expHarvesterDefense[level-1];
+      this.conf.armor += Hero.expHarvesterArmor[level-1];
+      this.conf.health = 1;
+    })   
   }
   
   protected isInitialized():boolean {
@@ -123,9 +130,10 @@ export class HarvesterUnit extends SquadUnit {
   }
 
   private performMining() {
-    let volume = Math.floor(Math.random() * 10) + 1;
+    let volume = this.conf.yield + this.conf.yieldBonus + Math.floor(Math.random() * 3);
     this.showFloatyText(volume);
     if(this.grid.hasGrass(this.tile)) {
+      this.onMining(volume);
       this.grid.consumeGrass(this.tile, volume);
       (this.scene as GameplayRootScene).hero.resources += volume;
     } else {
@@ -158,6 +166,10 @@ export class HarvesterUnit extends SquadUnit {
       this.mineTimer.paused = true;
       this.playUnitAnim('idle', true);
     }
+  }
+
+  private onMining(volume: number) {
+    this.experience.addExperience(volume);
   }
 
 

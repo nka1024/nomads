@@ -6,7 +6,7 @@
 */
 
 import { TileGrid } from "../TileGrid";
-import { UnitData } from "../Hero";
+import { UnitData, Hero } from "../Hero";
 import { SquadUnit } from "./SquadUnit";
 
 export class GuardianUnit extends SquadUnit {
@@ -18,6 +18,18 @@ export class GuardianUnit extends SquadUnit {
     super(scene, x, y, grid, conf);
 
     this.playUnitAnim('idle', true);
+
+    
+    this.combat.events.on('damage_done', (damage) => {
+      this.experience.addExperience(damage);
+      
+    });
+    this.experience.events.on('level_up', (level) => {
+      this.conf.attackBonus += Hero.expGuardianAttack[level - 1];
+      this.conf.defenseBonus += Hero.expGuardianDefense[level - 1];
+      this.conf.armor += Hero.expGuardianArmor[level - 1];
+      this.conf.health = 1;
+    })   
   }
 
   protected isInitialized(): boolean {

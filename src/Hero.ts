@@ -17,8 +17,8 @@ export type UnitData = {
   attackBonus: number;
   defense: number;
   defenseBonus: number;
-  harvest?: number;
-  harvestBonus?: number;
+  yield?: number;
+  yieldBonus?: number;
   repair?: number;
   repairBonus?: number;
 
@@ -35,11 +35,23 @@ export type HeroData = {
 }
 
 export class Hero {
-  public static expTable = [10, 300, 1000, 2000, 10000];
+  public static expTable = [50, 200, 400, 1000, 5000];
 
-  public static expHeroAttack = [4, 5, 6, 10, 12];
-  public static expHeroDefense = [1, 1, 2, 2, 3];
-  public static expHeroArmor = [50, 300, 1000, 2000, 10000];
+  public static expHeroAttack = [2, 4, 6, 10, 12];
+  public static expHeroDefense = [1, 2, 3, 4, 5];
+  public static expHeroArmor = [100, 150, 200, 250, 300];
+
+  public static expGuardianAttack = [2, 4, 6, 10, 12];
+  public static expGuardianDefense = [1, 2, 3, 4, 5];
+  public static expGuardianArmor = [100, 150, 200, 250, 300];
+
+  public static expBuilderRepair = [5, 8, 12, 14, 16];
+  public static expBuilderDefense = [1, 2, 3, 4, 5];
+  public static expBuilderArmor = [100, 150, 200, 250, 300];
+
+  public static expHarvesterYield = [5, 8, 12, 14, 16];
+  public static expHarvesterDefense = [1, 2, 3, 4, 5];
+  public static expHarvesterArmor = [100, 150, 200, 250, 300];
 
   public resources: number = 0;
   public data: HeroData;
@@ -54,12 +66,12 @@ export class Hero {
       icon: "infantry_1_icon",
       type: "hero",
       side: 'defend',
-      armor: 50,
-      attack: 4,
-      defense: 2,
-      health: 0.2,
+      armor: Hero.expHeroArmor[0],
+      attack: Hero.expHeroAttack[0],
+      defense: Hero.expHeroDefense[0],
+      health: 1,
       energy: 1,
-      range: 1,
+      range: 2,
       experience: 0,
       level: 1,
       attackBonus: 0,
@@ -74,8 +86,8 @@ export class Hero {
       name: "Турель",
       type: "sentry",
       side: 'defend',
-      armor: 20,
-      attack: 3,
+      armor: 30,
+      attack: 4,
       defense: 1,
       range: 2,
       health: 1,
@@ -94,8 +106,8 @@ export class Hero {
       name: "Rogues",
       side: 'attack',
       type: "k10",
-      armor: 30,
-      attack: 2,
+      armor: 50,
+      attack: 4,
       defense: 1,
       health: 1,
       energy: 1,
@@ -114,12 +126,12 @@ export class Hero {
       name: "Rogues",
       side: 'attack',
       type: "k11",
-      armor: 100,
+      armor: 200,
       attack: 10,
-      defense: 5,
+      defense: 4,
       health: 1,
       energy: 1,
-      range: 2,
+      range: 3,
       experience: 0,
       level: 99,
       attackBonus: 0,
@@ -134,9 +146,9 @@ export class Hero {
       name: "Rogues",
       side: 'attack',
       type: "infantry",
-      armor: 100,
-      attack: 2,
-      defense: 1,
+      armor: 2000,
+      attack: 20,
+      defense: 10,
       health: 1,
       energy: 1,
       range: 1,
@@ -203,9 +215,9 @@ export class Hero {
       name: "Страж",
       type: "guardian",
       side: 'defend',
-      armor: 40,
-      attack: 3,
-      defense: 1,
+      armor: Hero.expGuardianArmor[0],
+      attack: Hero.expGuardianAttack[0],
+      defense: Hero.expGuardianDefense[0],
       range: 2,
       health: 1,
       energy: 1,
@@ -224,9 +236,9 @@ export class Hero {
       name: "Жнец",
       type: "harvester",
       side: 'defend',
-      armor: 30,
+      armor: Hero.expHarvesterArmor[0],
       attack: 0,
-      defense: 0,
+      defense: Hero.expHarvesterDefense[0],
       health: 1,
       energy: 1,
       range: 2,
@@ -234,8 +246,8 @@ export class Hero {
       level: 1,
       attackBonus: 0,
       defenseBonus: 0,
-      harvest: 1,
-      harvestBonus: 0,
+      yield: Hero.expHarvesterYield[0],
+      yieldBonus: 0,
     }
   };
 
@@ -247,9 +259,9 @@ export class Hero {
       name: "Строитель",
       type: "builder",
       side: 'defend',
-      armor: 40,
+      armor: Hero.expBuilderArmor[0],
       attack: 0,
-      defense: 1,
+      defense: Hero.expBuilderDefense[0],
       range: 1,
       health: 1,
       energy: 1,
@@ -257,7 +269,7 @@ export class Hero {
       level: 1,
       attackBonus: 0,
       defenseBonus: 0,
-      repair: 1,
+      repair: Hero.expBuilderRepair[0],
       repairBonus: 0
     }
   };
@@ -282,7 +294,7 @@ export class Hero {
     if (conf.type == 'builder') {
       optional = makeRow('Ремонт', conf.repair, conf.repairBonus > 0 ? '+' + conf.repairBonus : '');
     } else if (conf.type == 'harvester') {
-      optional = makeRow('Сбор', conf.harvest, conf.harvestBonus > 0 ? '+' + conf.harvestBonus : '');
+      optional = makeRow('Сбор', conf.yield, conf.yieldBonus > 0 ? '+' + conf.yieldBonus : '');
     }
     let result = '<table style="left: 0; right: 0; margin-left: auto; margin-right: auto;">' +
       makeRow('Уровень', lvl, '') +

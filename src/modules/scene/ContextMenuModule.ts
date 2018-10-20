@@ -281,7 +281,7 @@ export class ContextMenuModule {
     menu.buttons[0].addEventListener('click', () => {
       let window = new MessageWindow('Страж', 
         '<p>Стражи - боевые Тахикодзи, защищающие кочевников от Ка-Тэн. Их корпус оснащен хорошей броней и дальнобойным оружием.</p>' +
-        '<p>Страэи накапливает опыт, нанося урон противникам</p>' + 
+        '<p>Стражи накапливает опыт, нанося урон противникам</p>' + 
         '<div style="padding:10px"><hr style="color: #eaeeee82; border-width: 1px; border-style: dashed"></div>' +
         Hero.printHTMLData(object.conf)
         );

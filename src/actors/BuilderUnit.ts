@@ -17,15 +17,16 @@ export class BuilderUnit extends SquadUnit {
 
   private static initializedBuilder: boolean = false;
 
+  private hero: Hero;
   private unitsGroup: GameObjects.Group;
 
   private repairTimer: Phaser.Time.TimerEvent;
   private buildTimer: Phaser.Time.TimerEvent;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData, unitsGroup: GameObjects.Group) {
+  constructor(scene: Phaser.Scene, hero: Hero, x: number, y: number, grid: TileGrid, conf: UnitData, unitsGroup: GameObjects.Group) {
     super(scene, x, y, grid, conf);
     this.unitsGroup = unitsGroup;
-
+    this.hero = hero;
     this.core.addModules([this.selection]);
 
     this.playUnitAnim('idle', true);
@@ -52,6 +53,13 @@ export class BuilderUnit extends SquadUnit {
         this.anims.play('builder_build', true);
       }
     });
+    
+    this.experience.events.on('level_up', (level) => {
+      this.conf.repairBonus += Hero.expBuilderRepair[level-1];
+      this.conf.defenseBonus += Hero.expBuilderDefense[level-1];
+      this.conf.armor += Hero.expBuilderArmor[level-1];
+      this.conf.health = 1;
+    })   
   }
 
   protected isInitialized(): boolean {
@@ -152,10 +160,14 @@ export class BuilderUnit extends SquadUnit {
 
   private repairTarget: BaseUnit;
   private isRepairing: boolean;
-  private repPower: number = 1;
   private performRepair() {
-
     if (this.state.isMoving) {
+      return
+    }
+
+    let rep = this.conf.repair + this.conf.repairBonus + Math.floor(Math.random()*3);
+
+    if (this.hero.resources < rep) {
       return
     }
 
@@ -165,8 +177,11 @@ export class BuilderUnit extends SquadUnit {
     if (this.repairTarget) {
       let target = this.repairTarget;
       if (target.conf.health < 1) {
-        this.showFloatyText('+' + this.repPower, 'green', true);
-        target.conf.health += this.repPower / target.conf.armor;
+  
+        this.hero.resources -= rep
+        this.showFloatyText('+' + rep, 'green', true);
+        target.conf.health += (rep) / target.conf.armor;
+        this.onRepair(rep);
         if (target.conf.health > 1) {
           target.conf.health = 1;
           this.stopRepair();
@@ -177,6 +192,10 @@ export class BuilderUnit extends SquadUnit {
     } else {
       this.stopRepair();
     }
+  }
+
+  private onRepair(amount: number) {
+    this.experience.addExperience(amount);
   }
 
   // Building
@@ -196,11 +215,16 @@ export class BuilderUnit extends SquadUnit {
   }
 
   private performBuilding() {
+    let rep = 2
+    if (this.hero.resources < rep) 
+      this.stopBuild();
+
     let progress = Math.floor(Math.random() * 10) + 1;
 
     this.showFloatyText('.', 'green');
     this.buildProgress += progress / 100;
     this.progress.progress = this.buildProgress;
+    this.hero.resources -= rep
     if (this.buildProgress < 1) {
 
     } else {

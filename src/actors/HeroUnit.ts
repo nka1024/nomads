@@ -64,9 +64,10 @@ export class HeroUnit extends BaseUnit implements IUnit, IScoutable {
       
     });
     this.experience.events.on('level_up', (level) => {
-      this.conf.attack += Hero.expHeroAttack[level-1];
-      this.conf.defense += Hero.expHeroDefense[level-1];
+      this.conf.attackBonus += Hero.expHeroAttack[level-1];
+      this.conf.defenseBonus += Hero.expHeroDefense[level-1];
       this.conf.armor += Hero.expHeroArmor[level-1];
+      this.conf.health = 1;
     })   
   }
 
