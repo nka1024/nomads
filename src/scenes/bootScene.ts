@@ -20,6 +20,7 @@ export class BootScene extends Phaser.Scene {
       this.scene.start("EditorRootScene");
     } else {
       this.scene.start(CONST.DEV ? "GameplayRootScene" : "LogoScene");
+      // this.scene.start("GameOverScene");
     }
   }
 }

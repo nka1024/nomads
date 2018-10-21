@@ -106,31 +106,19 @@ export class ContextMenuModule {
       this.contextWindow = this.makeHarvesterWindow(object);
     } else if (object.conf.type == 'guardian') {
       this.contextWindow = this.makeGuardianWindow(object);
-    } else if (object.conf.id.indexOf('type') != -1) {
-      this.contextWindow = this.makeHeroSquadWindow(object);
     } else {
       // this.contextWindow = this.makeEnemySquadWindow(object);
     }
-    this.contextWindow.object = object;
+    if (this.contextWindow) {
+      this.contextWindow.object = object;
 
-    this.contextWindow.onDestroy = (w) => {
-      this.contextWindow = null
-    };
-    this.contextWindow.show();
+      this.contextWindow.onDestroy = (w) => {
+        this.contextWindow = null
+      };
+      this.contextWindow.show();
+    }
     this.scene.input.activePointer.isDown = false;
-  }
 
-  private makeHeroSquadWindow(object: BaseUnit): ContextMenuWindow {
-    let p = this.worldToScreen(object);
-    let buttons = ["Move", "Вернуть"];
-    let window = new ContextMenuWindow(p.x - ContextMenuWindow.defaultWidth / 2, p.y + 16, buttons);
-    window.buttons[0].addEventListener('click', () => {
-      this.onMoveClicked(object);
-    });
-    window.buttons[1].addEventListener('click', () => {
-      this.onReturnClicked(object);
-    });
-    return window
   }
 
   private makeEnemySquadWindow(object: BaseUnit): ContextMenuWindow {

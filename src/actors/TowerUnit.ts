@@ -10,15 +10,19 @@ import { UnitData } from "../Hero";
 import { SquadUnit } from "./SquadUnit";
 import { Geom } from "phaser";
 import { BaseUnit } from "./BaseUnit";
+import { StoryModule } from "../modules/scene/StoryModule";
 
 export class TowerUnit extends SquadUnit {
 
   private static idleAnim: Phaser.Animations.Animation;
   private static initializedTower: boolean = false;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData) {
+  private story: StoryModule;
+
+  constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData, story: StoryModule) {
     super(scene, x, y, grid, conf);
 
+    this.story = story;
     this.playUnitAnim('idle', true);
 
     this.input.hitArea = new Geom.Rectangle(58, 58, 28, 28);
@@ -78,6 +82,10 @@ export class TowerUnit extends SquadUnit {
     super.destroy()
   }
 
+  death() {
+    this.story.startArc(this.story.towerDeathArc);
+
+  }
   public aggressedBy(who: BaseUnit) {
     // this.chase.start(who, this.conf.range, () => { });
   }

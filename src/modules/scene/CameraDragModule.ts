@@ -34,25 +34,27 @@ export class CameraDragModule {
   }
 
   private resetKeys() {
-    this.cursorKeys = this.scene.input.keyboard.createCursorKeys();
-    this.scene.input.keyboard.removeKey('W');
-    this.scene.input.keyboard.removeKey('A');
-    this.scene.input.keyboard.removeKey('S');
-    this.scene.input.keyboard.removeKey('D');
-    this.scene.input.keyboard.removeKey(this.cursorKeys.down);
-    this.scene.input.keyboard.removeKey(this.cursorKeys.up);
-    this.scene.input.keyboard.removeKey(this.cursorKeys.left);
-    this.scene.input.keyboard.removeKey(this.cursorKeys.right);
-    this.wasdKeys = this.scene.input.keyboard.addKeys('W,A,S,D');
-    this.wasdKeys = this.scene.input.keyboard.addKeys('W,A,S,D');
-    this.cursorKeys.down.isDown = false;
-    this.cursorKeys.up.isDown = false;
-    this.cursorKeys.left.isDown = false;
-    this.cursorKeys.right.isDown = false;
-    this.wasdKeys['W'].isDown = false;
-    this.wasdKeys['A'].isDown = false;
-    this.wasdKeys['S'].isDown = false;
-    this.wasdKeys['D'].isDown = false;
+    if (this.scene && this.scene.input) {
+      this.cursorKeys = this.scene.input.keyboard.createCursorKeys();
+      this.scene.input.keyboard.removeKey('W');
+      this.scene.input.keyboard.removeKey('A');
+      this.scene.input.keyboard.removeKey('S');
+      this.scene.input.keyboard.removeKey('D');
+      this.scene.input.keyboard.removeKey(this.cursorKeys.down);
+      this.scene.input.keyboard.removeKey(this.cursorKeys.up);
+      this.scene.input.keyboard.removeKey(this.cursorKeys.left);
+      this.scene.input.keyboard.removeKey(this.cursorKeys.right);
+      this.wasdKeys = this.scene.input.keyboard.addKeys('W,A,S,D');
+      this.wasdKeys = this.scene.input.keyboard.addKeys('W,A,S,D');
+      this.cursorKeys.down.isDown = false;
+      this.cursorKeys.up.isDown = false;
+      this.cursorKeys.left.isDown = false;
+      this.cursorKeys.right.isDown = false;
+      this.wasdKeys['W'].isDown = false;
+      this.wasdKeys['A'].isDown = false;
+      this.wasdKeys['S'].isDown = false;
+      this.wasdKeys['D'].isDown = false;
+    }
   }
 
 

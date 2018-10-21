@@ -73,6 +73,7 @@ export class GameplayRootScene extends Phaser.Scene {
     super({
       key: "GameplayRootScene"
     });
+    
   }
 
   preload() {
@@ -191,7 +192,6 @@ export class GameplayRootScene extends Phaser.Scene {
     this.unitsPanel.show();
     this.unitsPanel.onUnitAttack = (conf: UnitData) => {
       let squad = this.findOrDeploySquad(conf);
-      squad.chase.deployDefender(player);
 
       this.add.existing(squad);
       this.unitsGrp.add(squad);
@@ -207,6 +207,14 @@ export class GameplayRootScene extends Phaser.Scene {
 
     let reactor =  new ReactorUnit(this, 0,0, this.grid, Hero.makeReactorConf());
     reactor.mover.placeToTile({i: 54, j: 75});
+    this.unitsGrp.add(reactor);
+    this.add.existing(reactor);
+    reactor =  new ReactorUnit(this, 0,0, this.grid, Hero.makeReactorConf());
+    reactor.mover.placeToTile({i: 40, j: 2});
+    this.unitsGrp.add(reactor);
+    this.add.existing(reactor);
+    reactor =  new ReactorUnit(this, 0,0, this.grid, Hero.makeReactorConf());
+    reactor.mover.placeToTile({i: 23, j: 38});
     this.unitsGrp.add(reactor);
     this.add.existing(reactor);
 
@@ -273,9 +281,9 @@ export class GameplayRootScene extends Phaser.Scene {
     let worldPos = this.grid.gridToWorld({ i: i, j: j });
     let enemyUnit: BaseUnit;
     if (opt == 'boss') {
-      enemyUnit = new BossUnit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeBossSquadConf());
+      enemyUnit = new BossUnit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeBossSquadConf(), this.story);
     } else if (opt == 'tower') {
-      enemyUnit = new TowerUnit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeTowerConf());
+      enemyUnit = new TowerUnit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeTowerConf(), this.story);
     } else if (opt == 'k11'){
       enemyUnit = new K10Unit(this, worldPos.x + 16, worldPos.y + 16, this.grid, Hero.makeK11SquadConf());
     } else {
@@ -284,7 +292,7 @@ export class GameplayRootScene extends Phaser.Scene {
     enemyUnit.mover.placeToTile(enemyUnit.tile);
     this.add.existing(enemyUnit);
     this.unitsGrp.add(enemyUnit);
-    enemyUnit.events.addListener('death', () => { this.handleUnitDeath(enemyUnit); });
+    enemyUnit.events.addListener('death', () => { enemyUnit.death(); this.handleUnitDeath(enemyUnit); });
   }
 
   public findOrDeploySquad(conf: UnitData) {

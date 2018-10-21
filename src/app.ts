@@ -13,6 +13,7 @@ import { BootScene } from "./scenes/bootScene";
 import { EditorRootScene } from "./scenes/editorRootScene";
 import { GameplayRootScene } from "./scenes/GameplayRootScene";
 import { LogoScene } from "./scenes/LogoScene";
+import { GameOverScene } from "./scenes/GameOverScene";
 
 
 var game = null;
@@ -33,7 +34,7 @@ window.onload = () => {
     type: Phaser.CANVAS,
     // type: Phaser.WEBGL,
     parent: "game",
-    scene: [BootScene, EditorRootScene, GameplayRootScene, LogoScene],
+    scene: [BootScene, EditorRootScene, GameplayRootScene, LogoScene, GameOverScene],
     input: {
       keyboard: true,
       mouse: true,

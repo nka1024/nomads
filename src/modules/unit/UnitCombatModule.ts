@@ -57,6 +57,10 @@ export class UnitCombatModule implements IUnitModule {
     });
     // this.fightAudio = this.scene.sound.add('turret_1', {loop: false, volume: 0.2});
     this.fightAudio = this.scene.sound.add('combat_1', {loop: false, volume: 0.3, delay: Math.random()});
+    this.mover.events.on('step_complete', () => {
+      if (this.owner.conf.type != 'hero')
+        this.findTargets();
+    });
   }
 
   private setTarget(target: BaseUnit) {
@@ -64,7 +68,6 @@ export class UnitCombatModule implements IUnitModule {
     this.state.fightTarget = target;
     this.state.isFighting = target != null;
   }
-
 
   private playSound() {
     if (this.target && this.state.isFighting) {
@@ -79,7 +82,7 @@ export class UnitCombatModule implements IUnitModule {
     if (!this.pacifist) {
       // start fight if attacker and defender are in the same tile
       // if (this.state.isChasing && !this.state.isFighting && !this.state.isMoving) {
-      if (!this.state.isFighting  && !this.state.isPathfinding) {
+      if (!this.state.isFighting && !this.state.isMoving && !this.state.isPathfinding) {
         this.findTargets();
       }
     }

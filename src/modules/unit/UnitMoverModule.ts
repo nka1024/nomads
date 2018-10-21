@@ -37,6 +37,7 @@ export class UnitMoverModule implements IUnitModule {
   public claimedTile: Tile;
 
   private moveAudio: Phaser.Sound.BaseSound;
+  public events: Phaser.Events.EventEmitter;
 
   constructor(unit: BaseUnit, scene: Phaser.Scene, state: UnitStateModule, grid: TileGrid, speed: number) {
     this.moveSpeed = speed;
@@ -46,6 +47,7 @@ export class UnitMoverModule implements IUnitModule {
     this.grid = grid;
 
     this.moveAudio = this.scene.sound.add('phh_1', {loop: false, volume: 0.3});
+    this.events = new Phaser.Events.EventEmitter();
   }
 
 
@@ -190,6 +192,7 @@ export class UnitMoverModule implements IUnitModule {
       if (this.pathBySteps.length > 0) {
         this.nextDest = this.pathBySteps[0];
         // this.destroyNextDot();
+        this.events.emit('step_complete');
         if (this.onStepComplete != null) {
           this.onStepComplete(this.pathBySteps.length, this.nextDest);
         }

@@ -35,27 +35,27 @@ export type HeroData = {
 }
 
 export class Hero {
-  public static expTable = [50, 300, 1000, 3000, 10000];
+  public static expTable = [50, 300, 1000, 3000, 10000, 50000, 999999];
 
-  public static expHeroAttack = [5, 2, 3, 6, 12];
-  public static expHeroDefense = [1, 2, 3, 4, 5];
-  public static expHeroArmor = [100, 20, 40, 60, 100];
+  public static expHeroAttack = [5, 2, 3, 6, 12,                      0, 0];
+  public static expHeroDefense = [1, 2, 3, 4, 5,                      0, 0];
+  public static expHeroArmor = [100, 20, 40, 60, 100,                 0, 0];
 
   public static expK10Attack = [4, 8];
   public static expK10ADefense = [1, 3];
-  public static expK10Armor = [80, 150];
+  public static expK10Armor = [80, 450];
 
-  public static expGuardianAttack = [6, 2, 3, 10, 12];
-  public static expGuardianDefense = [0, 1, 3, 4, 5];
-  public static expGuardianArmor = [100, 20, 40, 60, 100];
+  public static expGuardianAttack = [6, 2, 3, 10, 12,                 0, 0];
+  public static expGuardianDefense = [0, 1, 3, 4, 5,                  0, 0];
+  public static expGuardianArmor = [100, 20, 40, 60, 100,             0, 0];
 
-  public static expBuilderRepair = [3, 2, 3, 5, 6];
-  public static expBuilderDefense = [0, 1, 2, 4, 5];
-  public static expBuilderArmor = [40, 10, 20, 25, 30];
+  public static expBuilderRepair = [3, 2, 3, 5, 6,                    0, 0];
+  public static expBuilderDefense = [0, 1, 2, 4, 5,                   0, 0];
+  public static expBuilderArmor = [40, 10, 20, 25, 30,                0, 0];
 
-  public static expHarvesterYield = [5, 2, 3, 6, 16];
-  public static expHarvesterDefense = [2, 2, 3, 4, 5];
-  public static expHarvesterArmor = [40, 150, 200, 250, 300];
+  public static expHarvesterYield = [5, 2, 3, 6, 16,                  0, 0];
+  public static expHarvesterDefense = [2, 2, 3, 4, 5,                 0, 0];
+  public static expHarvesterArmor = [40, 150, 200, 250, 300,          0, 0];
 
   public resources: number = 0;
   public data: HeroData;
@@ -150,12 +150,12 @@ export class Hero {
       name: "Rogues",
       side: 'attack',
       type: "infantry",
-      armor: 2000,
+      armor: 3000,
       attack: 20,
-      defense: 10,
+      defense: 4,
       health: 1,
       energy: 1,
-      range: 1,
+      range: 3,
       experience: 0,
       level: 99,
       attackBonus: 0,
@@ -170,12 +170,12 @@ export class Hero {
       name: "Rogues",
       side: 'attack',
       type: "infantry",
-      armor: 100,
+      armor: 1000,
       attack: 1,
       defense: 1,
       health: 1,
       energy: 1,
-      range: 1,
+      range: 3,
       experience: 0,
       level: 99,
       attackBonus: 0,
@@ -222,7 +222,7 @@ export class Hero {
       armor: Hero.expGuardianArmor[0],
       attack: Hero.expGuardianAttack[0],
       defense: Hero.expGuardianDefense[0],
-      range: 3,
+      range: 2,
       health: 1,
       energy: 1,
       experience: 0,

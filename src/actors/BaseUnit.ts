@@ -119,5 +119,6 @@ export class BaseUnit extends Phaser.GameObjects.Sprite implements IUnit {
   public get side():string {
     return this.conf.side;
   }
-  
+  public death() {
+  }
 }
