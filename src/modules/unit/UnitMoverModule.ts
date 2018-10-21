@@ -142,10 +142,10 @@ export class UnitMoverModule implements IUnitModule {
   // Private
 
   private claimTile(tile: Tile) {
-    if (this.grid.isFree(tile)) {
+    // if (this.grid.isFree(tile)) {
       this.grid.claim(tile, this.unit);
       this.claimedTile = tile;
-    }
+    // }
   }
 
   private unclaimTile() {

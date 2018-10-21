@@ -192,7 +192,9 @@ export class GameplayRootScene extends Phaser.Scene {
     this.unitsPanel.show();
     this.unitsPanel.onUnitAttack = (conf: UnitData) => {
       let squad = this.findOrDeploySquad(conf);
-
+      if (conf.type != 'harvester')
+        squad.chase.deployDefender(player);
+      
       this.add.existing(squad);
       this.unitsGrp.add(squad);
       this.deployedSquads.push(squad);

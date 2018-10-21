@@ -49,14 +49,14 @@ export class UnitCombatModule implements IUnitModule {
     });
 
     this.attackSoundTimer = this.scene.time.addEvent({
-      delay: 1000 + Math.random()*500,
+      delay: 1000 + Math.random() * 500,
       callback: this.playSound,
       callbackScope: this,
       loop: true,
       paused: false
     });
     // this.fightAudio = this.scene.sound.add('turret_1', {loop: false, volume: 0.2});
-    this.fightAudio = this.scene.sound.add('combat_1', {loop: false, volume: 0.3, delay: Math.random()});
+    this.fightAudio = this.scene.sound.add('combat_1', { loop: false, volume: 0.3, delay: Math.random() });
     this.mover.events.on('step_complete', () => {
       if (this.owner.conf.type != 'hero')
         this.findTargets();
@@ -78,12 +78,18 @@ export class UnitCombatModule implements IUnitModule {
 
   // Overrides
 
+  private updateTargetsCnt: integer = 0;
   update() {
+
     if (!this.pacifist) {
       // start fight if attacker and defender are in the same tile
       // if (this.state.isChasing && !this.state.isFighting && !this.state.isMoving) {
-      if (!this.state.isFighting && !this.state.isMoving && !this.state.isPathfinding) {
-        this.findTargets();
+      this.updateTargetsCnt += 1
+      if (this.updateTargetsCnt > 20) {
+        this.updateTargetsCnt = 0
+        if (!this.state.isFighting && !this.state.isMoving && !this.state.isPathfinding) {
+          this.findTargets();
+        }
       }
     }
   }
@@ -111,19 +117,19 @@ export class UnitCombatModule implements IUnitModule {
           this.startFight(attack.attacker);
         }
       } else {
-        if ((this.owner.conf.health - (attack.damage/this.owner.conf.armor)) <= 0) {
+        if ((this.owner.conf.health - (attack.damage / this.owner.conf.armor)) <= 0) {
           this.stopFight("death");
         }
       }
     }
 
     // only destroy after all logic
-    this.owner.conf.health -= attack.damage/this.owner.conf.armor;
+    this.owner.conf.health -= attack.damage / this.owner.conf.armor;
 
     this.events.emit("damage_taken");
     if (this.owner.conf.health <= 0) {
       this.owner.events.emit('death');
-    } 
+    }
   }
 
   public startFight(target: BaseUnit) {
@@ -165,9 +171,9 @@ export class UnitCombatModule implements IUnitModule {
       if (!this.isTargetInRange(this.target)) {
         this.stopFight("target_too_far");
         return;
-      } 
+      }
     }
-    
+
     if (!this.state.fightTarget || !this.state.fightTarget.active) {
       this.stopFight("no_target");
       return;
@@ -177,7 +183,7 @@ export class UnitCombatModule implements IUnitModule {
       console.log('stopping attack: target is dead');
       this.stopFight("dead_target")
     } else {
-      let atk = this.owner.conf.attack + this.owner.conf.attackBonus + Math.floor(Math.random()*3);
+      let atk = this.owner.conf.attack + this.owner.conf.attackBonus + Math.floor(Math.random() * 3);
       let def = this.target.conf.defense + this.owner.conf.defenseBonus;
 
       let damage = atk - def;
@@ -205,11 +211,12 @@ export class UnitCombatModule implements IUnitModule {
   private findTargets() {
     let side = this.owner.side == "attack" ? "defend" : "attack";
     let nearest = this.grid.findClosestUnits(this.owner.tile, side, this.owner.conf.range);
+
     for (let squad of nearest) {
       // if (!squad.state.isMoving) {
-        console.log('wanna attack ' + squad.conf.id);
-        this.startFight(squad);
-        break;
+      console.log('wanna attack ' + squad.conf.id);
+      this.startFight(squad);
+      break;
       // }
     }
   }

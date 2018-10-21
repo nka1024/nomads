@@ -57,6 +57,10 @@ export class UnitChaseModule implements IUnitModule {
     }
   }
 
+  public deployDefender(target: BaseUnit) {
+    this.start(target, 1, null);
+  }
+
   public start(target: BaseUnit, range: number, onComplete: () => void) {
     this.range = range;
     this.unclaimDest();

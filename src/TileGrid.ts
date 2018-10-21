@@ -26,7 +26,7 @@ export class TileGrid {
   private grid: Phaser.GameObjects.Image[];
   private tiles: Phaser.GameObjects.Image[][];
   private data: number[][];
-  private claims: BaseUnit[][];
+  private claims: BaseUnit[][][];
   private dests: number[][];
   private fog: Phaser.GameObjects.Image[][];
   private grasses: any = {};
@@ -50,7 +50,7 @@ export class TileGrid {
       for (let j = 0; j < this.gridSize; j++) {
         this.data[i][j] = 0;
         this.tiles[i][j] = null;
-        this.claims[i][j] = null;
+        this.claims[i][j] = [];
         this.dests[i][j] = 0;
         this.fog[i][j] = null;
       }
@@ -220,7 +220,7 @@ export class TileGrid {
   public isFree(tile: Tile): boolean {
     return this.legit(tile) &&
       this.data[tile.i][tile.j] == 0 &&
-      this.claims[tile.i][tile.j] == null;
+      this.claims[tile.i][tile.j].length == 0;
   }
 
   public isFreeDest(tile: Tile): boolean {
@@ -242,11 +242,17 @@ export class TileGrid {
   }
 
   public claim(tile: Tile, unit: BaseUnit) {
-    this.claims[tile.i][tile.j] = unit;
+    let claims = this.claims[tile.i][tile.j];
+    if (!claims.includes(unit)) {
+      claims.push(unit);
+    }
   }
 
   public unclaim(tile: Tile, unit: BaseUnit) {
-    this.claims[tile.i][tile.j] = null;
+    let claims = this.claims[tile.i][tile.j];
+    if (claims.includes(unit)) {
+      this.claims[tile.i][tile.j] = claims.filter((v,idx,arr) => {return v != unit});
+    }
   }
 
   public findClosestFreeTile(to: Tile, from: Tile): Tile {
@@ -272,10 +278,13 @@ export class TileGrid {
           work.i = to.i + i;
           work.j = to.j + j;
           if (this.legit(work)) {
-            let squad = this.claims[work.i][work.j] as SquadUnit;
-            if (squad) {
-              if (squad.side == side)
-                result.push(squad);
+            let claims = this.claims[work.i][work.j];
+            for (let unit of claims) {
+              let squad = unit as SquadUnit;
+              if (squad) {
+                if (squad.side == side)
+                  result.push(squad);
+              }
             }
           }
         }
