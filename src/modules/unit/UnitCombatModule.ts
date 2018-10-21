@@ -59,7 +59,7 @@ export class UnitCombatModule implements IUnitModule {
     if (!this.pacifist) {
       // start fight if attacker and defender are in the same tile
       // if (this.state.isChasing && !this.state.isFighting && !this.state.isMoving) {
-      if (!this.state.isFighting && !this.state.isMoving && !this.state.isPathfinding) {
+      if (!this.state.isFighting  && !this.state.isPathfinding) {
         this.findTargets();
       }
     }
@@ -118,6 +118,7 @@ export class UnitCombatModule implements IUnitModule {
     // this.flipOriginByDirection(direction, false);
     // same tile
     this.attackTimer.paused = false;
+    this.events.emit('started_fight');
   }
 
   /// reason: 'death', 'dead_target', 'no_target', 'return', 'command', 'target_too_far', 'cleanup'

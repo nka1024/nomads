@@ -37,8 +37,10 @@ export class UnitChaseModule implements IUnitModule {
 
   private setTarget(target: BaseUnit) {
     this.target = target;
-    this.state.chaseTarget = target;
-    this.state.isChasing = target != null;
+    if (this.state) {
+      this.state.chaseTarget = target;
+      this.state.isChasing = target != null;
+    }
   }
 
   private claimDest(tile: Tile) {

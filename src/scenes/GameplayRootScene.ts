@@ -160,7 +160,6 @@ export class GameplayRootScene extends Phaser.Scene {
 
     this.mapImporterModule.enemyHandler = (p: Point, type: string) => {
       let tile = this.grid.worldToGrid(p)
-      console.log('type: ' + type)
       this.createEnemy(tile.i, tile.j, type);
     }
     this.mapImporterModule.importMap(this.cache.json.get('map'));
@@ -174,7 +173,8 @@ export class GameplayRootScene extends Phaser.Scene {
 
 
     // player.mover.placeToTile({ i: 8, j: 12 });
-    player.mover.placeToTile({i:63, j :54});
+    // player.mover.placeToTile({i:63, j :54});
+    player.mover.placeToTile({i: 53, j: 73});
     // player.mover.placeToTile({i:21, j :10});
 
     this.cameras.main.centerOn(player.x, player.y);

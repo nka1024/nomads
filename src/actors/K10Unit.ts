@@ -32,6 +32,9 @@ export class K10Unit extends SquadUnit {
     } else {
       this.shoot.spread = 4;
     }
+    this.combat.events.on('started_fight', () => {
+      this.onStartedFight();
+    });
   }
 
   public static deinit() {
@@ -81,6 +84,20 @@ export class K10Unit extends SquadUnit {
     }
   }
 
+  private onStartedFight() {
+    console.log('EVT: fight started');
+
+    let nearest = this.grid.findClosestUnits(this.tile, 'attack', 2);
+    for (let squad of nearest) {
+      // if (!squad.state.isMoving) {
+        // console.log('wanna attack ' + squad.conf.id);
+        if(!squad.state.isFighting) {
+          let dest = this.grid.gridToWorld(this.state.fightTarget.tile);
+          squad.mover.moveTo(dest, true);
+        }
+      // }
+    }
+  }
   // Overrides
 
 
@@ -118,6 +135,7 @@ export class K10Unit extends SquadUnit {
   destroy() {
     super.destroy()
   }
+
 
   // public aggressedBy(who: BaseUnit) {
   // this.chase.start(who, this.conf.range, () => { });
