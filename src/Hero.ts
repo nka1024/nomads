@@ -35,27 +35,27 @@ export type HeroData = {
 }
 
 export class Hero {
-  public static expTable = [50, 200, 400, 1000, 5000];
+  public static expTable = [50, 300, 1000, 3000, 10000];
 
-  public static expHeroAttack = [4, 2, 3, 6, 12];
-  public static expHeroDefense = [1, 2, 3, 4, 5];
-  public static expHeroArmor = [100, 150, 200, 250, 300];
+  public static expHeroAttack = [5, 2, 3, 6, 12];
+  public static expHeroDefense = [0, 2, 3, 4, 5];
+  public static expHeroArmor = [100, 20, 40, 60, 100];
 
-  public static expGuardianAttack = [2, 4, 6, 10, 12];
-  public static expGuardianDefense = [1, 2, 3, 4, 5];
-  public static expGuardianArmor = [100, 150, 200, 250, 300];
+  public static expK10Attack = [4, 8];
+  public static expK10ADefense = [1, 3];
+  public static expK10Armor = [100, 150];
+
+  public static expGuardianAttack = [6, 2, 3, 10, 12];
+  public static expGuardianDefense = [0, 1, 3, 4, 5];
+  public static expGuardianArmor = [100, 20, 40, 60, 100];
 
   public static expBuilderRepair = [5, 8, 12, 14, 16];
-  public static expBuilderDefense = [1, 2, 3, 4, 5];
-  public static expBuilderArmor = [100, 150, 200, 250, 300];
+  public static expBuilderDefense = [0, 1, 2, 4, 5];
+  public static expBuilderArmor = [40, 10, 20, 25, 30];
 
-  public static expHarvesterYield = [5, 8, 12, 14, 16];
-  public static expHarvesterDefense = [1, 2, 3, 4, 5];
-  public static expHarvesterArmor = [100, 150, 200, 250, 300];
-
-  public static expK10Attack = [5, 8];
-  public static expK10ADefense = [1, 2];
-  public static expK10Armor = [100, 150];
+  public static expHarvesterYield = [5, 2, 3, 6, 16];
+  public static expHarvesterDefense = [2, 2, 3, 4, 5];
+  public static expHarvesterArmor = [40, 150, 200, 250, 300];
 
   public resources: number = 0;
   public data: HeroData;

@@ -10,6 +10,7 @@ import { Scene } from "phaser";
 import { DialogWindow } from "../../windows/DialogWindow";
 import { Tile } from "../../types/Position";
 import { HeroUnit } from "../../actors/HeroUnit";
+import { CONST } from "../../const/const";
 
 declare type StoryActor = {
   id: integer,
@@ -41,7 +42,7 @@ export class StoryModule {
   private scene: Scene;
   private hero: Hero;
   private player: HeroUnit;
-  private debug: boolean = true;
+  private debug: boolean = CONST.DEV;
 
   constructor(scene: Phaser.Scene, hero: Hero) {
     this.scene = scene;
