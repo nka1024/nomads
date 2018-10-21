@@ -28,6 +28,9 @@ export class SceneCursorModule {
   }
 
   public update() {
+    if (!this.scene) {
+      return;
+    }
     this.cursorFollow();
     this.cursorTouchHandler();
   }
@@ -64,4 +67,10 @@ export class SceneCursorModule {
     this.cursor.visible = this.grid.isWalkable(this.grid.worldToGrid(snap));
   }
 
+  public destroy() {
+    this.scene = null;
+    this.cursor = null;
+    this.grid = null;
+    this.onClick = null;
+  }
 }

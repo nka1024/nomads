@@ -23,11 +23,14 @@ export class UnitCombatModule implements IUnitModule {
   private mover: UnitMoverModule;
 
   private attackTimer: Phaser.Time.TimerEvent;
+  private attackSoundTimer: Phaser.Time.TimerEvent;
   private target: BaseUnit;
 
   public events: EventEmitter;
 
   public pacifist: boolean;
+
+  private fightAudio: Phaser.Sound.BaseSound;
 
   constructor(owner: BaseUnit, scene: Scene, mover: UnitMoverModule, state: UnitStateModule, grid: TileGrid) {
     this.owner = owner;
@@ -44,6 +47,16 @@ export class UnitCombatModule implements IUnitModule {
       loop: true,
       paused: true
     });
+
+    this.attackSoundTimer = this.scene.time.addEvent({
+      delay: 1000 + Math.random()*500,
+      callback: this.playSound,
+      callbackScope: this,
+      loop: true,
+      paused: false
+    });
+    // this.fightAudio = this.scene.sound.add('turret_1', {loop: false, volume: 0.2});
+    this.fightAudio = this.scene.sound.add('combat_1', {loop: false, volume: 0.3, delay: Math.random()});
   }
 
   private setTarget(target: BaseUnit) {
@@ -52,6 +65,13 @@ export class UnitCombatModule implements IUnitModule {
     this.state.isFighting = target != null;
   }
 
+
+  private playSound() {
+    if (this.target && this.state.isFighting) {
+      if (!this.fightAudio.isPlaying)
+        this.fightAudio.play();
+    }
+  }
 
   // Overrides
 

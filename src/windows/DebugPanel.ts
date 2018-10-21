@@ -55,6 +55,10 @@ export class DebugPanel extends BaseWindow {
     this.volumeText.innerHTML = tile.j + ' : ' + tile.i;
   }
 
+  public destroy() {
+    this.stopDataSyncLoop();
+    super.destroy();
+  }
 
   // Window HTML properties
   protected getWindowName(): string { return "debug_panel" }

@@ -50,6 +50,10 @@ export class ResourcesPanel extends BaseWindow {
     }
   }
 
+  public destroy() {
+    this.stopDataSyncLoop();
+    super.destroy();
+  }
 
   // Window HTML properties
   protected getWindowName(): string { return "resources_panel" }

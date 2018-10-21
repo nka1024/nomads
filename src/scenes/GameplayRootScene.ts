@@ -36,6 +36,7 @@ import { DebugPanel } from "../windows/DebugPanel";
 import { StoryModule } from "../modules/scene/StoryModule";
 import { Point } from "../types/Position";
 import { MenuWindow } from "../windows/MenuWindow";
+import { CONST } from "../const/const";
 
 
 export class GameplayRootScene extends Phaser.Scene {
@@ -66,6 +67,7 @@ export class GameplayRootScene extends Phaser.Scene {
 
   private escapeKey: Phaser.Input.Keyboard.Key;
   
+  private themeMusic: Phaser.Sound.BaseSound;
 
   constructor() {
     super({
@@ -102,6 +104,11 @@ export class GameplayRootScene extends Phaser.Scene {
   }
 
   create(data): void {
+    this.themeMusic = this.sound.add('theme', { loop: true });
+    if (!CONST.DEV) {
+      this.themeMusic.play();
+    }
+
     this.injectDependencies();
     this.cameras.main.setBackgroundColor(0x1f1f1f);
 
@@ -173,8 +180,8 @@ export class GameplayRootScene extends Phaser.Scene {
 
 
     // player.mover.placeToTile({ i: 8, j: 12 });
-    // player.mover.placeToTile({i:63, j :54});
-    player.mover.placeToTile({i: 53, j: 73});
+    player.mover.placeToTile({i:63, j :54});
+    // player.mover.placeToTile({i: 53, j: 73});
     // player.mover.placeToTile({i:21, j :10});
 
     this.cameras.main.centerOn(player.x, player.y);
@@ -402,5 +409,13 @@ export class GameplayRootScene extends Phaser.Scene {
     K10Unit.deinit();
     SentryUnit.deinit();
     TowerUnit.deinit();
+
+    this.cameraDragModule.destroy();
+    this.clicksTracker.destroy();
+    this.contextMenuModule.destroy();
+    this.cursorModule.destroy();
+
+    this.themeMusic.stop();
+    
   }
 }

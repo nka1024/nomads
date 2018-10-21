@@ -207,8 +207,8 @@ export class Hero {
   private createTestData() {
     this.data = { units: [] };
     this.data.units.push(Hero.makeHarvesterConf());
-    this.data.units.push(Hero.makeBuilderConf());
-    this.data.units.push(Hero.makeGuardianConf());
+    // this.data.units.push(Hero.makeBuilderConf());
+    // this.data.units.push(Hero.makeGuardianConf());
   }
 
   private static guardianIdx: number = 0;
@@ -235,7 +235,7 @@ export class Hero {
   private static harvesterIdx: number = 0;
   public static makeHarvesterConf(): UnitData {
     return {
-      id: "type_1_unit_" + Hero.harvesterIdx,
+      id: "type_1_unit_" + Hero.harvesterIdx++,
       icon: "icon_harvester",
       name: "Жнец",
       type: "harvester",
@@ -258,7 +258,7 @@ export class Hero {
   private static builderIdx: number = 0;
   public static makeBuilderConf(): UnitData {
     return {
-      id: 'type_2_unit_' + this.builderIdx,
+      id: 'type_2_unit_' + this.builderIdx++,
       icon: "icon_builder",
       name: "Строитель",
       type: "builder",

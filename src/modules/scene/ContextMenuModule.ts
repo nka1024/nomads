@@ -48,6 +48,9 @@ export class ContextMenuModule {
   // Public
 
   public update() {
+    if (!this.scene) {
+      return;
+    }
     // close context window if clicked outside of it
     if (this.scene.input.activePointer.justDown && !this.clicksTracker.objectClickedInThisFrame) {
       this.destroyContextWindow();
@@ -306,6 +309,18 @@ export class ContextMenuModule {
       this.contextWindow.destroy();
       this.contextWindow = null;
     }
+  }
+
+  public destroy() {
+    this.destroyContextWindow();
+    this.scene = null;
+    this.hero = null;
+    this.clicksTracker = null;
+
+    this.onMoveClicked = null;
+    this.onReconClicked = null;
+    this.onReturnClicked = null;
+    this.onSummonClicked = null;
   }
 
 }

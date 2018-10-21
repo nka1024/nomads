@@ -30,6 +30,9 @@ export class CameraDragModule {
   // Public
   
   public update() {
+    if (!this.scene) {
+      return;
+    }
     this.cameraDrag();
     this.cameraPan();
   }
@@ -81,5 +84,12 @@ export class CameraDragModule {
     if(this.cursorKeys.down.isDown || this.wasdKeys['S'].isDown) {
       this.scene.cameras.main.scrollY += speed;
     }
+  }
+
+  public destroy() {
+    this.scene = null;
+    this.dragStart = null;
+    this.cursorKeys = null;
+    this.wasdKeys = null;
   }
 }

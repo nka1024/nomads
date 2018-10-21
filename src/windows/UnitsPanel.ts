@@ -88,6 +88,10 @@ export class UnitsPanel extends BaseWindow {
     this.allUnitItems = [];
   }
 
+  public destroy() {
+    this.stopDataSyncLoop();
+    super.destroy();
+  }
 
   // Element creation & configuration
 

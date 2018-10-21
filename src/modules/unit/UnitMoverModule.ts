@@ -36,12 +36,16 @@ export class UnitMoverModule implements IUnitModule {
 
   public claimedTile: Tile;
 
+  private moveAudio: Phaser.Sound.BaseSound;
+
   constructor(unit: BaseUnit, scene: Phaser.Scene, state: UnitStateModule, grid: TileGrid, speed: number) {
     this.moveSpeed = speed;
     this.unit = unit;
     this.state = state;
     this.scene = scene;
     this.grid = grid;
+
+    this.moveAudio = this.scene.sound.add('phh_1', {loop: false, volume: 0.3});
   }
 
 
@@ -80,10 +84,12 @@ export class UnitMoverModule implements IUnitModule {
         this.path = path;
         // this.drawPathDots(grid);
         if (immediateStart) {
+          this.moveAudio.play();
           this.startMoving(grid);
         }    
       });
     } else {
+      this.moveAudio.play();
       // destination confirmed, start moving
       this.startMoving(grid);
     }

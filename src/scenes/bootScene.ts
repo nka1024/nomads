@@ -1,3 +1,5 @@
+import { CONST } from "../const/const";
+
 /**
 * @author       Kirill Nepomnyaschiy <nka1024@gmail.com>
 * @copyright    nka1024
@@ -17,8 +19,7 @@ export class BootScene extends Phaser.Scene {
     if (document.baseURI.indexOf("editor.html") != -1) {
       this.scene.start("EditorRootScene");
     } else {
-      this.scene.start("GameplayRootScene");
-      // this.scene.start("LogoScene");
+      this.scene.start(CONST.DEV ? "GameplayRootScene" : "LogoScene");
     }
   }
 }

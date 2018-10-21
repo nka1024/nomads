@@ -17,6 +17,18 @@ export class AssetsLoader {
   public static preload(scene: Phaser.Scene) {
     scene.load.json("map", "./assets/map.json");
 
+    scene.load.audio('blup_1', './assets/audio/blup_1.mp3');
+    scene.load.audio('blup_2', './assets/audio/blup_2.mp3');
+    scene.load.audio('boop_1', './assets/audio/boop_1.mp3');
+    scene.load.audio('explode_1', './assets/audio/explode_1.mp3');
+    scene.load.audio('move_1', './assets/audio/move_1.mp3');
+    scene.load.audio('move_2', './assets/audio/move_2.mp3');
+    scene.load.audio('move_3', './assets/audio/move_3.mp3');
+    scene.load.audio('theme', './assets/audio/Nomads_Theme.mp3');
+    scene.load.audio('phh_1', './assets/audio/phh_1.mp3');
+    scene.load.audio('combat_1', './assets/audio/combat_1.mp3');
+    scene.load.audio('turret_1', './assets/audio/turret_1.mp3');
+
     scene.load.image("grid_128_50", "./assets/grid_128_a50.png");
     scene.load.image("grid_128_30", "./assets/grid_128_a50.png");
     scene.load.image("path_end_14x14", "./assets/path_end_14x14.png");

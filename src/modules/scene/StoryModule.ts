@@ -28,6 +28,7 @@ declare type StoryArc = {
   trigger: Tile[],
   started?: boolean,
   finished?: boolean,
+  unpaused?: boolean
 }
 
 export class StoryModule {
@@ -60,10 +61,11 @@ export class StoryModule {
       trigger: [{ i: 63, j: 54 }],
       started: false,
       finished: this.debug,
+      unpaused: true,
       messages: [
         {
           actor: 1,
-          text: 'Сэйширо, кажется мы нашли ее. Сканеры обнаружили слабое излучение к северу от твоей текущей позиции.'
+          text: 'Сэйширо, кажется мы нашли ее. Сканеры обнаружили слабое излучение к западу от твоей текущей позиции.'
         },
         {
           actor: 0,
@@ -154,6 +156,19 @@ export class StoryModule {
     });
 
 
+    this.arcs.push({
+      trigger: [{i: 48, j: 65},{i: 48, j: 66},{i: 48, j: 67},{i: 48, j: 68},{i: 48, j: 69},{i: 48, j: 70},{i: 48, j: 71},{i: 48, j: 72},{i: 48, j: 72}] ,
+      started: false,
+      finished: false,
+      messages: [
+        {
+          actor: 1,
+          text: 'Осторожно! Дальше на севере большое скопление Ка-Тэн. Будь отсторожен, скорее всего они все нападут разом.'
+        }
+      ]
+    });
+
+
     this.deathArc = {
       trigger: [{ i: 63, j: 54 }],
       started: false,
@@ -177,14 +192,17 @@ export class StoryModule {
   }
 
   private showStoryMessage(arc: StoryArc, idx: integer) {
-    this.scene.scene.pause();
+    if (!arc.unpaused)
+      this.scene.scene.pause();
     let message = arc.messages[idx];
     let actor = this.actors[message.actor];
 
     let window = new DialogWindow(actor.name, message.text, false, actor.portrait);
     window.show();
     window.onComplete = () => {
-      this.scene.scene.resume();
+      if (!arc.unpaused)
+        this.scene.scene.resume();
+
       if (idx < arc.messages.length - 1) {
         this.showStoryMessage(arc, idx + 1);
       } else {
@@ -198,7 +216,7 @@ export class StoryModule {
     window.show();
   }
 
-  private updateInterval: number = 32;
+  private updateInterval: number = -50;
   public update() {
     this.updateInterval++
     if (this.updateInterval > 20) {
