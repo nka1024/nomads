@@ -76,7 +76,17 @@ export class GuardianUnit extends SquadUnit {
     super.update();
     this.targetScanUpdate();
 
-    this.flipX = this.mover.speed.x < 0;
+    let speed = null;
+    if (this.state.isMoving) {
+      speed = this.mover.speed;
+    }
+    else if (this.state.isFighting) {
+      let t1 = this.tile;
+      let t2 = this.state.fightTarget.tile;
+      speed = { x: t2.j - t1.j, y: t2.i - t1.i }
+    }
+    if (speed)
+      this.flipX = speed.x < 0;
   }
 
   destroy() {
