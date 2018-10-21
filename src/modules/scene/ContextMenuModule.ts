@@ -214,7 +214,7 @@ export class ContextMenuModule {
       this.reactorWindow.owner = object;
       this.reactorWindow.image = "portrait_reactor";
       addButton('Жнец', 'Жнеца', Hero.makeHarvesterConf(), CONST.HARVESTER_COST);
-      addButton('Строитель', 'Строителя', Hero.makeHarvesterConf(), CONST.BUILDER_COST);
+      addButton('Строитель', 'Строителя', Hero.makeBuilderConf(), CONST.BUILDER_COST);
       addButton('Страж', 'Стража', Hero.makeGuardianConf(), CONST.GUARDIAN_COST);
       
       this.reactorWindow.addButton('Отмена', () => {
