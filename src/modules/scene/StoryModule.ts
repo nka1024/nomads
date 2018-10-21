@@ -61,7 +61,7 @@ export class StoryModule {
       trigger: [{ i: 63, j: 54 }],
       started: false,
       finished: this.debug,
-      unpaused: true,
+      unpaused: false,
       messages: [
         {
           actor: 1,

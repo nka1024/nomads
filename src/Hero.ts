@@ -222,7 +222,7 @@ export class Hero {
       armor: Hero.expGuardianArmor[0],
       attack: Hero.expGuardianAttack[0],
       defense: Hero.expGuardianDefense[0],
-      range: 2,
+      range: 3,
       health: 1,
       energy: 1,
       experience: 0,
