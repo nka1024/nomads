@@ -35,7 +35,7 @@ export type HeroData = {
 }
 
 export class Hero {
-  public static expTable = [50, 300, 1000, 3000, 10000, 50000, 999999];
+  public static expTable = [50, 300, 1000, 2000, 3000, 50000, 999999];
 
   public static expHeroAttack = [5, 2, 3, 6, 12,                      0, 0];
   public static expHeroDefense = [1, 2, 3, 4, 5,                      0, 0];
