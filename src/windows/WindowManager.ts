@@ -22,7 +22,13 @@ import { MenuWindow } from "./MenuWindow";
 
 export class WindowManager {
 
+  private static initialized: Boolean = false;
   public static initialize() {
+    if (this.initialized) {
+      return;
+    }
+    this.initialized = true;
+    
     OkPopup.initialize();
     MenuPanel.initialize();
     ObjectsListPanel.initialize();

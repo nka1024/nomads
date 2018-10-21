@@ -62,6 +62,10 @@ export class BuilderUnit extends SquadUnit {
     })   
   }
 
+  public static deinit() {
+    this.initializedBuilder = false;
+  }
+
   protected isInitialized(): boolean {
     return BuilderUnit.initializedBuilder;
   }

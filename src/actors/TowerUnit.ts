@@ -26,6 +26,12 @@ export class TowerUnit extends SquadUnit {
     this.originX = 0.75
   }
 
+  public static deinit() {
+    this.initializedTower = false;
+    if(this.idleAnim) this.idleAnim.destroy();
+    this.idleAnim = null;
+  }
+
   protected isInitialized(): boolean {
     return TowerUnit.initializedTower;
   }

@@ -26,6 +26,12 @@ export class ReactorUnit extends SquadUnit {
     // this.originX = 0.75
   }
 
+  public static deinit() {
+    ReactorUnit.initializedReactor = false;
+    ReactorUnit.idleAnim.destroy();
+    ReactorUnit.idleAnim = null;
+  }
+
   protected isInitialized(): boolean {
     return ReactorUnit.initializedReactor;
   }

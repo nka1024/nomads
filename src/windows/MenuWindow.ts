@@ -19,6 +19,7 @@ export class MenuWindow extends BaseWindow {
   public fullscreenButton: HTMLInputElement;
   public windowButton: HTMLInputElement;
   public exitButton: HTMLInputElement;
+  public restartButton: HTMLInputElement;
 
   constructor() {
     super();
@@ -29,6 +30,7 @@ export class MenuWindow extends BaseWindow {
     this.fullscreenButton = this.element.querySelector(".fullscreen_button");
     this.windowButton = this.element.querySelector(".window_button");
     this.exitButton = this.element.querySelector(".exit_button");
+    this.restartButton = this.element.querySelector(".restart_button");
     // this.top = 150;
     this.left = -1;
 

@@ -32,6 +32,12 @@ export class GuardianUnit extends SquadUnit {
     })   
   }
 
+  public static deinit() {
+    GuardianUnit.initializedGuardian = false;
+    if (GuardianUnit.idleAnim) GuardianUnit.idleAnim.destroy();
+    GuardianUnit.idleAnim = null;
+  }
+
   protected isInitialized(): boolean {
     return GuardianUnit.initializedGuardian;
   }

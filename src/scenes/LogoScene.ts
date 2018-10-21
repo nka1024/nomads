@@ -133,12 +133,17 @@ export class LogoScene extends Phaser.Scene {
   }
 
   create(data): void {
+    console.log('create logo scene');
+    this.logoFinished = false;
+    this.storyIdx = 0;
+
     this.cameras.main.setBackgroundColor(0x000000);
     // this.cameras.main.setBackgroundColor(0xffffff);
     this.onWindowResize(window.innerWidth, window.innerHeight);
     this.events.on('resize', (w: number, h: number) => this.onWindowResize(w, h));
     
     this.spaceKey = this.input.keyboard.addKey(Input.Keyboard.KeyCodes.SPACE);
+    if (this.timer1) this.timer1.destroy();
     this.timer1 = this.time.addEvent({
       delay: 2000,
       callback: this.nextSlide,
@@ -169,9 +174,6 @@ export class LogoScene extends Phaser.Scene {
         this.cutsceneBackground.x -= speed;
       }
     }
-
-
-
 
     let isDown = this.spaceKey.isDown || this.input.activePointer.isDown
     if (isDown && this.currentImage.alpha > 0.2) {

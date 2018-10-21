@@ -15,6 +15,7 @@ export class BossUnit extends SquadUnit {
   private static idleAnim: Phaser.Animations.Animation;
   private static initializedBoss: boolean = false;
 
+
   constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData) {
     super(scene, x, y, grid, conf);
 
@@ -22,6 +23,12 @@ export class BossUnit extends SquadUnit {
 
     this.input.hitArea = new Geom.Rectangle(34, 68, 28, 28);
     this.originY = 0.75
+  }
+
+  public static deinit() {
+    BossUnit.initializedBoss = false;
+    BossUnit.idleAnim.destroy();
+    BossUnit.idleAnim = null;
   }
 
   protected isInitialized(): boolean {

@@ -28,8 +28,9 @@ export class HeroUnit extends BaseUnit implements IUnit, IScoutable {
   public scoutee: ScouteeModule;
   public core: UnitModuleCore;
   
-  private idleAnim: Phaser.Animations.Animation;
-  private walkAnim: Phaser.Animations.Animation;
+  private static initializedHero: boolean;
+  private static idleAnim: Phaser.Animations.Animation;
+  private static walkAnim: Phaser.Animations.Animation;
 
   constructor(scene: Phaser.Scene, x: number, y: number, grid: TileGrid, conf: UnitData) {
     super(scene, x, y, CONST.HERO_SPEED, grid, conf, "mothership_48x48");
@@ -39,25 +40,12 @@ export class HeroUnit extends BaseUnit implements IUnit, IScoutable {
 
     this.shoot.spread = 2;
 
-    var idleAnim = {
-      key: 'player_idle',
-      frames: scene.anims.generateFrameNumbers('mothership_48x48', { start: 0, end: 7 }),
-      frameRate: 5,
-      repeat: -1,
-      repeatDelay: 0
-    };
-    
-    this.idleAnim = scene.anims.create(idleAnim);
-    var walkAnim = {
-      key: 'player_walk',
-      frames: scene.anims.generateFrameNumbers('mothership_48x48', { start: 0, end: 7 }),
-      frameRate: 10,
-      repeat: -1,
-      repeatDelay: 0
-    };
-    this.walkAnim = scene.anims.create(walkAnim);
+    if (!this.isInitialized()) {
+      this.setInitialized(true);
+      this.initializeOnce();
+    }
 
-    this.anims.setCurrentFrame(this.idleAnim.frames[4]);
+    this.anims.setCurrentFrame(HeroUnit.idleAnim.frames[4]);
 
     this.combat.events.on('damage_done', (damage) => {
       this.experience.addExperience(damage);
@@ -71,6 +59,43 @@ export class HeroUnit extends BaseUnit implements IUnit, IScoutable {
     })   
   }
 
+  public static deinit() {
+    HeroUnit.initializedHero = false;
+  
+    if (HeroUnit.idleAnim) HeroUnit.idleAnim.destroy();
+    HeroUnit.idleAnim = null;
+
+    if (HeroUnit.walkAnim) HeroUnit.walkAnim.destroy();
+    HeroUnit.walkAnim = null;
+  }
+
+  protected isInitialized(): boolean {
+    return HeroUnit.initializedHero;
+  }
+  protected setInitialized(value: boolean) {
+    HeroUnit.initializedHero = value;
+  }
+
+  protected initializeOnce() {
+    var idleAnim = {
+      key: 'player_idle',
+      frames: this.scene.anims.generateFrameNumbers('mothership_48x48', { start: 0, end: 7 }),
+      frameRate: 5,
+      repeat: -1,
+      repeatDelay: 0
+    };
+    
+    HeroUnit.idleAnim = this.scene.anims.create(idleAnim);
+    var walkAnim = {
+      key: 'player_walk',
+      frames: this.scene.anims.generateFrameNumbers('mothership_48x48', { start: 0, end: 7 }),
+      frameRate: 10,
+      repeat: -1,
+      repeatDelay: 0
+    };
+    HeroUnit.walkAnim = this.scene.anims.create(walkAnim);
+  }
+
   public playUnitAnim(key: string, ignoreIfPlaying: boolean) {
     
   }
@@ -78,7 +103,7 @@ export class HeroUnit extends BaseUnit implements IUnit, IScoutable {
   update() {
     this.depth = this.y - 4;
     
-    let frames = this.idleAnim.frames;
+    let frames = HeroUnit.idleAnim.frames;
     let speed = this.mover.speed;
 
     if(speed.x > 0 && speed.y == 0) this.anims.setCurrentFrame(frames[3])
@@ -93,8 +118,7 @@ export class HeroUnit extends BaseUnit implements IUnit, IScoutable {
   }
 
   destroy() {
-    super.destroy();
-    this.core.destroy();
+    if (this.core) this.core.destroy();
     this.core = null;
     this.mover = null;
     this.progress = null;

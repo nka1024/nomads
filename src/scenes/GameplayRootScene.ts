@@ -52,6 +52,7 @@ export class GameplayRootScene extends Phaser.Scene {
   // windows
   private unitsPanel: UnitsPanel;
   private resourcesPanel: ResourcesPanel;
+  private debugPanel: DebugPanel;
 
   // modules
   private cameraDragModule: CameraDragModule;
@@ -119,8 +120,8 @@ export class GameplayRootScene extends Phaser.Scene {
     this.resourcesPanel.populate(this.hero);
     this.resourcesPanel.show();
 
-    let fpsPanel = new DebugPanel(this, this.grid, this.cursorModule);
-    fpsPanel.show();
+    this.debugPanel = new DebugPanel(this, this.grid, this.cursorModule);
+    this.debugPanel.show();
 
     this.cursorModule.onClick = (cursor) => {
       if (!this.cameraDragModule.isDrag && !this.clicksTracker.objectClickedInThisFrame) {
@@ -340,7 +341,7 @@ export class GameplayRootScene extends Phaser.Scene {
     }
     this.clicksTracker.update();
     this.story.update();
-    
+
     if (this.grid) {
       this.fogUpdateCnt++
       if (this.fogUpdateCnt > 60) {
@@ -357,6 +358,12 @@ export class GameplayRootScene extends Phaser.Scene {
       if (!this.menuWindow) {
         this.menuWindow = new MenuWindow();
         this.menuWindow.show();
+        this.menuWindow.restartButton.addEventListener('click', () => {
+          this.prepareForRestart();
+          this.scene.start("LogoScene");
+          this.menuWindow.destroy();
+          this.menuWindow = null;
+        });
         this.menuWindow.exitButton.addEventListener('click', () => {
           console.log('EEXXIITT');
         });
@@ -373,7 +380,27 @@ export class GameplayRootScene extends Phaser.Scene {
 
     }
 
+    if (this.player.conf.health <= 0) {
+      this.story.startArc(this.story.deathArc);
+      
+      this.prepareForRestart();
+    }
 
   }
 
+  private prepareForRestart() {
+    this.resourcesPanel.destroy();
+    this.debugPanel.destroy();
+    this.unitsPanel.destroy();
+
+    HeroUnit.deinit();
+    BossUnit.deinit();
+    BuilderUnit.deinit();
+    GuardianUnit.deinit();
+    ReactorUnit.deinit();
+    HarvesterUnit.deinit();
+    K10Unit.deinit();
+    SentryUnit.deinit();
+    TowerUnit.deinit();
+  }
 }

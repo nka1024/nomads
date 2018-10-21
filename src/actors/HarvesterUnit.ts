@@ -52,6 +52,10 @@ export class HarvesterUnit extends SquadUnit {
     })   
   }
   
+  public static deinit() {
+    HarvesterUnit.initializedGathger = false;
+  }
+
   protected isInitialized():boolean {
     return HarvesterUnit.initializedGathger;
   }

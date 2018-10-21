@@ -36,6 +36,8 @@ export class StoryModule {
   ];
 
   private arcs: StoryArc[] = [];
+
+  public deathArc: StoryArc;
   private scene: Scene;
   private hero: Hero;
   private player: HeroUnit;
@@ -146,12 +148,26 @@ export class StoryModule {
         {
           actor: 1,
           text: 'Похоже, до нас здесь было другое племя. Интересно, что с ними стало...'
-        },
-        
+        }
       ]
     });
 
 
+    this.deathArc = {
+      trigger: [{ i: 63, j: 54 }],
+      started: false,
+      finished: false,
+      messages: [
+        {
+          actor: 0,
+          text: 'Кажется, это конец... Прости, Миги...'
+        },
+        {
+          actor: 1,
+          text: 'Сэйширо! НЕЕЕТ!!'
+        },
+      ]
+    }
   }
 
   public startArc(arc: StoryArc) {
@@ -172,6 +188,9 @@ export class StoryModule {
         this.showStoryMessage(arc, idx + 1);
       } else {
         arc.finished = true;
+        if (arc == this.deathArc) {
+          this.scene.scene.start("LogoScene");
+        }
       }
     };
 

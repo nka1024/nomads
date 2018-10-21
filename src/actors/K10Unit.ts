@@ -34,6 +34,14 @@ export class K10Unit extends SquadUnit {
     }
   }
 
+  public static deinit() {
+    K10Unit.initializedSentry = false;
+    K10Unit.idleAnim.destroy();
+    K10Unit.idleAnim = null;
+    K10Unit.idleAnim2.destroy();
+    K10Unit.idleAnim2 = null;
+  }
+
   protected isInitialized(): boolean {
     return K10Unit.initializedSentry;
   }

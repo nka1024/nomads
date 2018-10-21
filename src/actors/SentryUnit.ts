@@ -32,6 +32,12 @@ export class SentryUnit extends SquadUnit {
 
     this.events.on('death', () => {this.destroy()});
   }
+  
+  public static deinit() {
+    SentryUnit.initializedSentry = false;
+    if (SentryUnit.idleAnim) SentryUnit.idleAnim.destroy();
+    SentryUnit.idleAnim = null;
+  }
 
   private spinTower() {
     if (!this.state.isFighting) {
