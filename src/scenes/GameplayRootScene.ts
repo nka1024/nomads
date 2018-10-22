@@ -236,11 +236,11 @@ export class GameplayRootScene extends Phaser.Scene {
       }
     });
 
-
     this.contextMenuModule.onSummonClicked = (source: BaseUnit, conf: UnitData) => {
       
       this.hero.data.units.push(conf);
       this.unitsPanel.populate(this.hero.data.units);
+      this.unitsPanel.selectDeployed(this.unitsGrp.getChildren() as BaseUnit[]);
       this.findOrDeploySquad(conf);
     };
 
@@ -335,7 +335,11 @@ export class GameplayRootScene extends Phaser.Scene {
       this.player.selection.showHard();
     }
     // deselect unit item
-    this.unitsPanel.deselect(unit);
+    // this.unitsPanel.deselect(unit);
+    this.hero.data.units = this.hero.data.units.filter((o, i, arr) => {o!= unit.conf})
+    this.unitsPanel.populate(this.hero.data.units);
+    this.unitsPanel.selectDeployed(this.unitsGrp.getChildren() as BaseUnit[]);
+    
 
     this.unitsGrp.remove(unit, true);
     unit.destroy();

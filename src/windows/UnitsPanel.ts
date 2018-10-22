@@ -60,6 +60,15 @@ export class UnitsPanel extends BaseWindow {
 
   // Data population
 
+  public selectDeployed(units: BaseUnit[]) {
+    for (let item of this.allUnitItems) {
+      for(let unit of units)
+      if (item.conf.id == unit.conf.id) {
+        item.setSelected(true);
+      }
+    }
+  }
+
   public populate(units: Array<UnitData>) {
     this.clear();
     let first = true;
