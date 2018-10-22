@@ -209,6 +209,9 @@ export class UnitCombatModule implements IUnitModule {
   }
 
   private findTargets() {
+    if (this.owner.conf.type == 'harvester' || this.owner.conf.type == 'builder') {
+      return;
+    }
     let side = this.owner.side == "attack" ? "defend" : "attack";
     let nearest = this.grid.findClosestUnits(this.owner.tile, side, this.owner.conf.range);
 
