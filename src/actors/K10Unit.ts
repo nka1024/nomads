@@ -91,7 +91,7 @@ export class K10Unit extends SquadUnit {
     for (let squad of nearest) {
       // if (!squad.state.isMoving) {
         // console.log('wanna attack ' + squad.conf.id);
-        if(!squad.state.isFighting) {
+        if(!squad.state.isFighting && squad.conf.type != 'tower') {
           let dest = this.grid.gridToWorld(this.state.fightTarget.tile);
           squad.mover.moveTo(dest, true);
         }

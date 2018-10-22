@@ -169,7 +169,7 @@ export class Hero {
       icon: "infantry_2_icon",
       name: "Rogues",
       side: 'attack',
-      type: "infantry",
+      type: "tower",
       armor: 1000,
       attack: 1,
       defense: 1,
