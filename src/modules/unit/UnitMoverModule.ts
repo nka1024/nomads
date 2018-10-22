@@ -72,6 +72,9 @@ export class UnitMoverModule implements IUnitModule {
     let tileDest = grid.worldToGrid(dest);
     let tilePos = grid.worldToGrid(this.unit);
 
+    if (this.dest && tileDest.i == this.dest.i && tileDest.j == this.dest.j) {
+      return
+    }
     if (tileDest.i == tilePos.i && tileDest.j == tilePos.j) {
       console.log('already there');
       this.finishPath();
