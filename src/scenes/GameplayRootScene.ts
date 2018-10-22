@@ -385,14 +385,33 @@ export class GameplayRootScene extends Phaser.Scene {
           this.menuWindow.destroy();
           this.menuWindow = null;
         });
+
+        this.menuWindow.cameraButton.addEventListener('click', () => {
+          this.cameras.main.centerOn(this.player.x, this.player.y);
+        });
+
         this.menuWindow.exitButton.addEventListener('click', () => {
           console.log('EEXXIITT');
         });
         this.menuWindow.fullscreenButton.addEventListener('click', () => {
           console.log('FFUULLLLSSCCRREENN');
+          this.time.addEvent({
+            delay: 2000,
+            callback: () => {this.cameras.main.centerOn(this.player.x, this.player.y);},
+            callbackScope: this,
+            loop: false,
+            paused: false
+          });
         });
         this.menuWindow.windowButton.addEventListener('click', () => {
           console.log('WWIINNDDOOWW');
+          this.time.addEvent({
+            delay: 2000,
+            callback: () => {this.cameras.main.centerOn(this.player.x, this.player.y);},
+            callbackScope: this,
+            loop: false,
+            paused: false
+          });
         });
       } else {
         this.menuWindow.destroy();

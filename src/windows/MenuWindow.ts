@@ -20,6 +20,7 @@ export class MenuWindow extends BaseWindow {
   public windowButton: HTMLInputElement;
   public exitButton: HTMLInputElement;
   public restartButton: HTMLInputElement;
+  public cameraButton: HTMLInputElement;
 
   constructor() {
     super();
@@ -31,6 +32,8 @@ export class MenuWindow extends BaseWindow {
     this.windowButton = this.element.querySelector(".window_button");
     this.exitButton = this.element.querySelector(".exit_button");
     this.restartButton = this.element.querySelector(".restart_button");
+    this.cameraButton = this.element.querySelector(".camera_button");
+    
     // this.top = 150;
     this.left = -1;
 
