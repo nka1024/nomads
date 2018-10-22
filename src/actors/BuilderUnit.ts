@@ -22,6 +22,7 @@ export class BuilderUnit extends SquadUnit {
 
   private repairTimer: Phaser.Time.TimerEvent;
   private buildTimer: Phaser.Time.TimerEvent;
+  private justRepaired: boolean;
 
   constructor(scene: Phaser.Scene, hero: Hero, x: number, y: number, grid: TileGrid, conf: UnitData, unitsGroup: GameObjects.Group) {
     super(scene, x, y, grid, conf);
@@ -123,7 +124,8 @@ export class BuilderUnit extends SquadUnit {
 
       this.anims.play('builder_walk', ignoreIfPlaying);
     } else {
-      if (!this.isBuilding && !this.isRepairing) {
+      let repairing = this.isRepairing && this.repairTarget && (this.repairTarget.conf.health < 1 || this.justRepaired);
+      if (!this.isBuilding && !repairing) {
         this.anims.play('builder_idle', ignoreIfPlaying);
       }
     }
@@ -159,19 +161,23 @@ export class BuilderUnit extends SquadUnit {
       this.repairTarget = null;
       console.log('clear interval from stopRep: ' + this.repairTimer);
       this.playUnitAnim('idle', true);
+      this.justRepaired = false;
     }
   }
 
   private repairTarget: BaseUnit;
   private isRepairing: boolean;
   private performRepair() {
+    if (this.repairTarget && this.repairTarget.conf.health >= 1) {
+      if (this.justRepaired) 
+        this.justRepaired = false;
+      else 
+        this.playUnitAnim('idle', true); 
+      return;
+    } 
+
     if (this.state.isMoving) {
       return
-    }
-
-    if (this.repairTarget && this.repairTarget.conf.health >= 1) {
-      this.playUnitAnim('idle', true);
-      return;
     }
 
     let rep = this.conf.repair + this.conf.repairBonus + Math.floor(Math.random()*3);
@@ -191,6 +197,7 @@ export class BuilderUnit extends SquadUnit {
         this.showFloatyText('+' + rep, 'green', true);
         target.conf.health += (rep) / target.conf.armor;
         this.onRepair(rep);
+        this.justRepaired = true;
         // if (target.conf.health > 1) {
         //   target.conf.health = 1;
         //   this.stopRepair();
