@@ -64,7 +64,7 @@ export class UnitsPanel extends BaseWindow {
     for (let item of this.allUnitItems) {
       for(let unit of units)
       if (item.conf.id == unit.conf.id) {
-        item.setSelected(true);
+        item.setSelected(true, false);
       }
     }
   }
@@ -87,7 +87,7 @@ export class UnitsPanel extends BaseWindow {
   public deselect(unit: BaseUnit) {
     for (let item of this.allUnitItems) {
       if (item.conf.id == unit.conf.id) {
-        item.setSelected(false);
+        item.setSelected(false, true);
       }
     }
   }
@@ -124,7 +124,7 @@ export class UnitsPanel extends BaseWindow {
     };
     let onIconClick = () => {
         // hide currently unfolded unit list if clicked on any of them
-        item.setSelected(!item.isSelected)
+        item.setSelected(!item.isSelected, true)
     }
     item.icon.addEventListener('click', onIconClick);
 

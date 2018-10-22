@@ -336,7 +336,7 @@ export class GameplayRootScene extends Phaser.Scene {
     }
     // deselect unit item
     // this.unitsPanel.deselect(unit);
-    this.hero.data.units = this.hero.data.units.filter((o, i, arr) => {o!= unit.conf})
+    this.hero.data.units = this.hero.data.units.filter((o, i, arr) => {return o!= unit.conf})
     this.unitsPanel.populate(this.hero.data.units);
     this.unitsPanel.selectDeployed(this.unitsGrp.getChildren() as BaseUnit[]);
     

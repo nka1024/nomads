@@ -26,7 +26,7 @@ export class UnitItem {
     this.health = unit.querySelector(".unit_type_item_health");
     this.energy = unit.querySelector(".unit_type_item_energy");
     this.energy.style.display = 'none';
-    this.setSelected(false);
+    this.setSelected(false, false);
   }
 
   public populate(conf: UnitData) {
@@ -41,12 +41,12 @@ export class UnitItem {
     this.configureProgress(this.energy, conf.energy);
   }
   
-  public setSelected(selected: boolean) {
+  public setSelected(selected: boolean, notify: boolean) {
     let was = this.isSelected;
     this.icon.style.borderWidth = selected ? '3px' : '0px';
     this.icon.style.borderStyle = selected ? 'solid' : 'none';
 
-    if (this.onSelectionChange && was != selected) {
+    if (notify && this.onSelectionChange && was != selected) {
       this.onSelectionChange(selected);
     }
   }
