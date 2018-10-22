@@ -169,6 +169,11 @@ export class BuilderUnit extends SquadUnit {
       return
     }
 
+    if (this.repairTarget && this.repairTarget.conf.health >= 1) {
+      this.playUnitAnim('idle', true);
+      return;
+    }
+
     let rep = this.conf.repair + this.conf.repairBonus + Math.floor(Math.random()*3);
 
     if (this.hero.resources < rep) {
@@ -186,10 +191,10 @@ export class BuilderUnit extends SquadUnit {
         this.showFloatyText('+' + rep, 'green', true);
         target.conf.health += (rep) / target.conf.armor;
         this.onRepair(rep);
-        if (target.conf.health > 1) {
-          target.conf.health = 1;
-          this.stopRepair();
-        }
+        // if (target.conf.health > 1) {
+        //   target.conf.health = 1;
+        //   this.stopRepair();
+        // }
       } else {
         this.stopRepair();
       }
