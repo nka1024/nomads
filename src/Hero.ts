@@ -38,19 +38,19 @@ export class Hero {
   public static expTable = [50, 300, 1000, 2000, 3000, 50000, 999999];
   // public static expTable = [1, 2, 3, 4, 5, 50000, 999999];
 
-  public static expHeroAttack = [5, 2, 3, 6, 7,                      0, 0];
-  public static expHeroDefense = [1, 2, 2, 2, 2,                      0, 0];
+  public static expHeroAttack = [5, 2, 1, 3, 3,                      0, 0];
+  public static expHeroDefense = [0, 1, 1, 1, 2,                      0, 0];
   public static expHeroArmor = [100, 120, 160, 160, 200,                 0, 0];
 
-  public static expK10Attack = [4, 12];
+  public static expK10Attack = [6, 16];
   public static expK10ADefense = [1, 3];
-  public static expK10Armor = [80, 450];
+  public static expK10Armor = [80, 350];
 
-  public static expGuardianAttack = [6, 2, 3, 10, 12,                 0, 0];
+  public static expGuardianAttack = [6, 1, 1, 3, 3,                 0, 0];
   public static expGuardianDefense = [0, 1, 3, 2, 2,                  0, 0];
   public static expGuardianArmor = [100, 50, 120, 140, 160,             0, 0];
 
-  public static expBuilderRepair = [3, 2, 3, 5, 6,                    0, 0];
+  public static expBuilderRepair = [2, 1, 2, 2, 3,                    0, 0];
   public static expBuilderDefense = [0, 1, 2, 4, 5,                   0, 0];
   public static expBuilderArmor = [40, 50, 60, 85, 100,                0, 0];
 
@@ -151,7 +151,7 @@ export class Hero {
       name: "Rogues",
       side: 'attack',
       type: "infantry",
-      armor: 3000,
+      armor: 1500,
       attack: 20,
       defense: 4,
       health: 1,
@@ -171,12 +171,12 @@ export class Hero {
       name: "Rogues",
       side: 'attack',
       type: "tower",
-      armor: 1000,
-      attack: 9,
+      armor: 500,
+      attack: 12,
       defense: 1,
       health: 1,
       energy: 1,
-      range: 3,
+      range: 4,
       experience: 0,
       level: 99,
       attackBonus: 0,
